@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- "web.xml Deployment Descriptor Elements": http://docs.oracle.com/cd/E13222_01/wls/docs81/webapp/web_xml.html -->
+<!-- "The Deployment Descriptor: web.xml" : https://developers.google.com/appengine/docs/java/config/webxml -->
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
+
+
+</web-app>
