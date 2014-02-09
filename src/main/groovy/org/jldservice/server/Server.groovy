@@ -1,3 +1,5 @@
+package org.jldservice.server
+
 import groovyx.net.ws.WSServer
 
 def server = new WSServer()
