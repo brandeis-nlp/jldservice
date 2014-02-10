@@ -13,17 +13,18 @@ class TestMaven {
 
     @Before
     public void setup() {
+        println "~~~~~~~~~~~"+this.class.getName()+"~~~~~~~~~~~~~"
     }
 
     @After
     public void tearDown() {
+        println "########################"
     }
-
 
     @Test
     public void testMaven() {
         def mvn = new Maven()
-//        mvn.resolve(null,null)
+        mvn.resolve(null,null)
     }
 
 }
