@@ -1,0 +1,211 @@
+
+<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js" >  </script>
+<style>
+body, p, td, pre, input, textarea {
+font-size: 14pt; }
+
+body {
+background-color:lightyellow;
+counter-reset: section subsection figure;}
+
+h1 {
+text-align:center }
+
+h2 {
+counter-increment: section; }
+
+h3 {
+counter-increment: subsection; }
+
+h4 {
+counter-increment: figure; }
+
+h2:before {
+content:counter(section) ". "; }
+
+h3:before {
+content:counter(section) "." counter(subsection) " "; }
+
+h4:before{
+content:"Fig. " counter(section) "." counter(figure) " - ";}
+
+.reset {
+counter-reset:subsection figure;}
+
+.nav-bar{
+list-style-type:none;
+margin:0;
+padding:0; }
+
+img {
+margin-left: 10pt;
+border: thin solid gray; }
+
+.sample {
+background-color: black;
+font-size: 12pt;
+color:white;
+padding: 4pt;
+margin-left: 10pt;
+margin-right: 30pt;
+display: block;
+white-space: pre-line;}
+
+.code {
+padding: 4pt;
+font-size: 12pt;
+background-color: whitesmoke;
+border: thin dotted gray;
+margin-left: 10pt;
+margin-right: 30pt;
+display: block;
+white-space: pre-line;}
+
+.author {
+font-size: 16pt;
+text-align:center;}
+
+
+/*  grid tables  */
+table.g {
+margin: 8px;
+border-width: 1px;
+border-color: gray;
+border-collapse: collapse; }
+
+table.g th {
+border-width: 1px;
+padding: 8px 8px 8px 8px;
+border-style: solid;
+border-color: gray;
+background-color: lightyellow; }
+
+table.g td {
+text-align:center;
+border-width: 1px;
+padding: 8px 8px 8px 8px;
+border-style:solid;
+border-color: gray;
+background-color: #ffffff; }
+
+/*  vertical tables  */
+table.v {
+margin: 8px;
+border-collapse: collapse; }
+
+table.v thead {
+border-right: 10px solid;
+border-left: 10px solid;
+background: #fc9;
+border-color: #fc9;}
+
+table.v th {
+padding: 4px 20px 4px 20px;
+border: 1px #fff solid; }
+
+table.v tbody{
+text-align:left;
+border-right: 10px solid;
+border-left: 10px solid;
+border-color: #adf;
+background: #adf;
+vertical-align: top; }
+
+table.v td {
+padding:  4px 20px 4px 20px;
+border: 1px #fff solid; }
+
+/*  horizontal tables  */
+table.h {
+margin: 8px;
+border-collapse:collapse; }
+
+table.h th {
+padding:  4px 40px 4px 40px;
+border:1px solid #98bf21;
+background-color:#A7C942;
+color:#fff; }
+
+table.h td {
+text-align:center;
+border:1px solid #98bf21;
+padding: 4px 40px 4px 40px; }
+
+table.h tr.alt td {
+color:#000;
+background-color:#EAF2D3; }
+/**
+http://learnlayout.com/inline-block.html
+http://www.w3schools.com/cssref/css_colornames.asp
+**/
+
+div.link {
+display: inline-block;
+width: 80px;
+height: 100px;
+position: relative;
+text-align:center;
+vertical-align: middle; }
+
+div.black {
+border-color: Black ;
+border-width: 2px; }
+
+div.black span.h {
+background-color: Black       ;
+color: Snow ;  }
+
+div.white {
+border-color: Lavender  ;
+border-width: 2px; }
+
+div.white span.h {
+background-color: Snow       ;
+color: Black ; }
+
+div.red {  border-color: HotPink }
+
+div.red span.h {
+background-color: HotPink;
+color: LightCyan;         }
+
+div.yellow { border-color: GoldenRod  }
+
+div.yellow span.h {
+background-color: GoldenRod    ;
+color: Azure ;         }
+
+div.blue { border-color: DodgerBlue }
+
+div.blue span.h {
+background-color: DodgerBlue     ;
+color: Snow ;  }
+
+div.green { border-color: ForestGreen }
+
+div.green span.h {
+background-color: MediumSeaGreen    ;
+color: Ivory   ; }
+
+div.box {
+display: inline-block;
+width: 200px;
+height: 100px;
+margin: 8px;
+border-style:solid;
+border-width: 1.5px;
+position: relative;
+text-align:center;
+vertical-align: middle;  }
+
+div.box span.h {
+top: 0;
+left: 0;
+right: 0;
+text-align:left;
+padding: 1px 2px 2px 1px;
+position: absolute;
+font-weight:bold;
+line-height: 1em;  }
+
+</style>
