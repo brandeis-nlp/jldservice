@@ -1,17 +1,11 @@
-package org.jldservice.maven
-/**
- * @Chunqi SHI (diligence.cs@gmail.com)
- */
+package org.jldservice.json
 
 import org.junit.After
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
-import static org.junit.Assert.*
 
 
-
-class TestPomXml {
+class TestJsonSchema {
 
     @Before
     public void setup() {
@@ -23,12 +17,10 @@ class TestPomXml {
         println "#################################################"
     }
 
-
     @Test
     public void testMaven() {
-        def xml = new PomXml()
-        xml.addDependencies("<empty/>")
-        xml.addDependenciesCopyDirectory("mydirectory")
+        def js = new JsonSchema()
+        println js.toJsonSchema(String.class)
     }
 
 }

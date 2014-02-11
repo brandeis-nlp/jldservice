@@ -19,6 +19,19 @@ class PomXml{
         println "--------addDependencies---------"
         println xmlInput
         def xmlOuput = addDependencies(xmlInput, depxmlstr)
+        println "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
+        println xmlOuput
+        def filePath = new File(".").getAbsolutePath()
+
+    }
+
+    static def addDependenciesCopyDirectory(directory){
+        def xmlInput = this.class.getClass().getResource("/pom.xml").text
+        println "--------addDependenciesCopyDirectory---------"
+        println xmlInput
+        println "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
+        def xmlOuput = addDependenciesCopyDirectory(xmlInput, directory)
+        println xmlOuput
         def filePath = new File(".").getAbsolutePath()
 
     }
@@ -32,6 +45,17 @@ class PomXml{
         def result = writer.toString()
         return result
     }
+
+    static def addDependenciesCopyDirectory(pomxmlstr, directory) {
+        def pomxml = new XmlParser().parseText(pomxmlstr)
+        def plugin = pomxml.build.plugins.plugin.find{ it.artifactId.get(0).text() == "maven-dependency-plugin" }
+        plugin.configuration.outputDirectory.get(0).setValue(directory)
+        def writer = new StringWriter()
+        new XmlNodePrinter(new PrintWriter(writer)).print(pomxml)
+        def result = writer.toString()
+        return result
+    }
+
 
 }
 //
