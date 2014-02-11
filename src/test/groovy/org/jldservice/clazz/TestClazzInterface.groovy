@@ -18,7 +18,7 @@ class TestMaven {
 
     @After
     public void tearDown() {
-        println "########################"
+        println "#################################################"
     }
 
 

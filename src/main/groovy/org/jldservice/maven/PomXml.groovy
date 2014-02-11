@@ -2,6 +2,7 @@ package org.jldservice.maven
 
 import org.custommonkey.xmlunit.Diff
 import org.custommonkey.xmlunit.XMLUnit
+import groovy.util.XmlParser
 
 /**
  * @Chunqi SHI (diligence.cs@gmail.com)
@@ -15,6 +16,8 @@ class PomXml{
 
     static def addDependencies(depxmlstr){
         def xmlInput = this.class.getClass().getResource("/pom.xml").text
+        println "--------addDependencies---------"
+        println xmlInput
         def xmlOuput = addDependencies(xmlInput, depxmlstr)
         def filePath = new File(".").getAbsolutePath()
 

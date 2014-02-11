@@ -15,17 +15,19 @@ class TestPomXml {
 
     @Before
     public void setup() {
+        println "~~~~~~~~~~~"+this.class.getName()+"~~~~~~~~~~~~~"
     }
 
     @After
     public void tearDown() {
+        println "#################################################"
     }
 
 
     @Test
     public void testMaven() {
         def xml = new PomXml()
-        xml.addDependencies("<empty/>")
+//        xml.addDependencies("<empty/>")
     }
 
 }

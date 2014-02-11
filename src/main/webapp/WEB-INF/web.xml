@@ -2,6 +2,38 @@
 <!-- "web.xml Deployment Descriptor Elements": http://docs.oracle.com/cd/E13222_01/wls/docs81/webapp/web_xml.html -->
 <!-- "The Deployment Descriptor: web.xml" : https://developers.google.com/appengine/docs/java/config/webxml -->
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
+    <servlet>
+        <servlet-name>GroovyServlet</servlet-name>
+        <servlet-class>groovy.servlet.GroovyServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GroovyTemplate</servlet-name>
+        <servlet-class>groovy.servlet.TemplateServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GroovyServlet</servlet-name>
+        <url-pattern>*.groovy</url-pattern>
+    </servlet-mapping>
 
+    <servlet-mapping>
+        <servlet-name>GroovyServlet</servlet-name>
+        <url-pattern>/clazz/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>GroovyTemplate</servlet-name>
+        <url-pattern>*.gsp</url-pattern>
+    </servlet-mapping>
+
+    <!--<Context path="/groovy" docBase="c:/groovy-servlet"/>-->
+
+    <!--<mime-mapping>-->
+        <!--<extension>wsdl</extension>-->
+        <!--<mime-type>text/xml</mime-type>-->
+    <!--</mime-mapping>-->
+    <!--<mime-mapping>-->
+        <!--<extension>xsd</extension>-->
+        <!--<mime-type>text/xml</mime-type>-->
+    <!--</mime-mapping>-->
 
 </web-app>

@@ -11,12 +11,11 @@ import java.io.File;
 // https://github.com/mariuszs/maven-cli-example
 
 class Maven {
-
     public void resolve (dependencies, targetclass){
         MavenCli cli = new MavenCli();
         System.out.println(new File(".").getAbsolutePath());
-        def cmds = ["-f", "maven.xml","clean", "install"] as String[];
-        cli.doMain(cmds, ".", System.out, System.out);
+        def cmds = ["compile"] as String[];
+        cli.doMain(cmds, new File(".").getAbsolutePath(), System.out, System.out);
     }
 
 }
