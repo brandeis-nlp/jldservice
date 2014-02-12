@@ -11,11 +11,14 @@ import java.io.File;
 // https://github.com/mariuszs/maven-cli-example
 
 class Maven {
-    public void resolve (dependencies, targetclass){
-        MavenCli cli = new MavenCli();
-        System.out.println(new File(".").getAbsolutePath());
-        def cmds = ["compile"] as String[];
-        cli.doMain(cmds, new File(".").getAbsolutePath(), System.out, System.out);
-    }
 
+    public static void copyDependencies (dependencies, libdirectory){
+        def pomxml = new PomXml()
+        pomxml.addDependencies(dependencies)
+        def targetxml = pomxml.setDependenciesCopyDirectory(libdirectory)
+        new File(libdirectory, "pom.xml").withWriter() { it << targetxml }
+        MavenCli cli = new MavenCli();
+        def cmds = ["dependency:copy-dependencies"] as String[];
+        cli.doMain(cmds, libdirectory, System.out, System.out);
+    }
 }

@@ -9,7 +9,7 @@ import org.junit.Ignore
 import org.junit.Test
 import static org.junit.Assert.*
 
-class TestMaven {
+class TestClazzInterface {
 
     @Before
     public void setup() {
@@ -27,7 +27,8 @@ class TestMaven {
         def ci = new ClazzInterface()
 //        println ci.pubFuncFromClassName("org.jldservice.clazz.ClazzInterface")
         println ci.pubFuncFromClassName("org.apache.maven.cli.MavenCli")
-
+        println ""
+        println ci.pubConstructorFromClassName("opennlp.tools.sentdetect.SentenceModel")
     }
 
 }

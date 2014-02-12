@@ -27,8 +27,13 @@ class TestPomXml {
     @Test
     public void testMaven() {
         def xml = new PomXml()
-        xml.addDependencies("<empty/>")
-        xml.addDependenciesCopyDirectory("mydirectory")
+        println "--------------addDependencies-----------------"
+        println xml.addDependencies("<empty/>")
+        println "---------setDependenciesCopyDirectory---------"
+        println xml.setDependenciesCopyDirectory("mydirectory")
+        println ""
+        def mvn = new Maven()
+//        mvn.copyDependencies(null,null)
     }
 
 }

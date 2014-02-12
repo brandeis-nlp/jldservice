@@ -8,7 +8,6 @@
     <artifactId>pomxml</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
-
     <repositories> <!-- internal repository -->
         <repository>
             <id>the Maven central repository</id>
@@ -17,17 +16,16 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.1-901.jdbc4</version>
+        </dependency>
     </dependencies>
 
     <build>
         <finalName>pomxml-maven-download</finalName>
         <plugins>
-            <plugin>
-                <groupId>org.codehaus.groovy</groupId>
-                <artifactId>groovy-eclipse-compiler</artifactId>
-                <version>2.8.0-01</version>
-                <extensions>true</extensions>
-            </plugin>
             <plugin>
                 <!-- http://maven.apache.org/plugins/maven-dependency-plugin/copy-dependencies-mojo.html -->
                 <groupId>org.apache.maven.plugins</groupId>
@@ -35,7 +33,7 @@
                 <version>2.8</version>
                 <configuration>
                    <outputDirectory>
-
+                       /Users/shi/Project/chunqishi/jldservice/target/javalinkdata-service/WEB-INF/lib
                    </outputDirectory>
                 </configuration>
             </plugin>

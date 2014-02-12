@@ -2,6 +2,8 @@ import groovy.json.JsonBuilder
 import org.codehaus.groovy.reflection.CachedMethod
 import org.jldservice.clazz.ClazzInterface
 import org.jldservice.json.JsonSchema
+import org.jldservice.maven.Maven
+import groovy.xml.XmlUtil
 
 // application
 import javax.servlet.ServletContext
@@ -35,6 +37,17 @@ def parajsonldid = request.getParameter("jsonldid");
 if (parajsonldid == null) {
     parajsonldid = ""
 }
+
+//def paramavendep = request.getParameter("mavendep");
+//def libpath = application.getRealPath("WEB-INF/lib")
+//if (paramavendep == null || "".equals(paramavendep.trim())) {
+//    paramavendep = "";
+//} else {
+//    if (!new File(libpath).exists()) {
+//        new File(libpath).mkdirs()
+//    }
+//    new Maven().copyDependencies(paramavendep, libpath);
+//}
 
 if (!session) {
     session = request.getSession(true);
@@ -152,6 +165,9 @@ println """<!DOCTYPE HTML>
 ${request}
 </p>
 <p>
+${application}
+</p>
+<p>
 Hello, ${request.remoteHost}: ${session.counter}! ${new Date()}
 </p>
 <p>
@@ -174,6 +190,7 @@ ${application.getServerInfo()}
 <p>
     JSON-LD: <br/> <textarea name="jsonldid" formmethod="get" cols="40" rows="10">${parajsonldid}</textarea>
 </p>
+
 <p>
     <input type="reset" / ><input name="clazzname" type="submit"/>
 </p>

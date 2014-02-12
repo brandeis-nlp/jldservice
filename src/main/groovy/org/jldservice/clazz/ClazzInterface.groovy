@@ -2,6 +2,8 @@ package org.jldservice.clazz
 
 import org.codehaus.groovy.reflection.CachedMethod
 
+import java.lang.reflect.AnnotatedElement
+import java.lang.reflect.Constructor
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
 
@@ -47,4 +49,19 @@ class ClazzInterface {
         return funcs
     }
 
+    def pubConstructorFromClassName(clzname) {
+        def clz = this.class.classLoader.loadClass(clzname)
+        if (clz != null) {
+            return pubConstructorFromClass(clz)
+        }
+        return null
+    }
+
+    static def pubConstructorFromClass(clz) {
+        def constructors = [];
+        clz.getConstructors().eachWithIndex { AnnotatedElement entry, int i ->
+            constructors.add(entry);
+        }
+        return constructors
+    }
 }

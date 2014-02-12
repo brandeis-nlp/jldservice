@@ -23,8 +23,8 @@ class TestMaven {
 
     @Test
     public void testMaven() {
-        def mvn = new Maven()
-//        mvn.resolve(null,null)
+//        def mvn = new Maven()
+//        mvn.copyDependencies(null,null)
     }
 
 }

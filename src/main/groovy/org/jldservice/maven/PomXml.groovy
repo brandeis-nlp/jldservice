@@ -14,26 +14,24 @@ import groovy.util.XmlParser
 
 class PomXml{
 
-    static def addDependencies(depxmlstr){
-        def xmlInput = this.class.getClass().getResource("/pom.xml").text
-        println "--------addDependencies---------"
-        println xmlInput
-        def xmlOuput = addDependencies(xmlInput, depxmlstr)
-        println "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
-        println xmlOuput
-        def filePath = new File(".").getAbsolutePath()
-
+    def xmlInput;
+    def xmlOutput;
+    def addDependencies(depxmlstr){
+        if (xmlInput == null) {
+            xmlInput = this.getClass().getResource("/pom.xml").text;
+            xmlOutput = xmlInput;
+        }
+        xmlOutput = addDependencies(xmlOutput, depxmlstr)
+        return xmlOutput
     }
 
-    static def addDependenciesCopyDirectory(directory){
-        def xmlInput = this.class.getClass().getResource("/pom.xml").text
-        println "--------addDependenciesCopyDirectory---------"
-        println xmlInput
-        println "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
-        def xmlOuput = addDependenciesCopyDirectory(xmlInput, directory)
-        println xmlOuput
-        def filePath = new File(".").getAbsolutePath()
-
+    def setDependenciesCopyDirectory(directory){
+        if (xmlInput == null) {
+            xmlInput = this.getClass().getResource("/pom.xml").text;
+            xmlOutput = xmlInput;
+        }
+        xmlOutput = setDependenciesCopyDirectory(xmlOutput, directory)
+        return xmlOutput
     }
 
     static def addDependencies(pomxmlstr, depxmlstr){
@@ -46,7 +44,7 @@ class PomXml{
         return result
     }
 
-    static def addDependenciesCopyDirectory(pomxmlstr, directory) {
+    static def setDependenciesCopyDirectory(pomxmlstr, directory) {
         def pomxml = new XmlParser().parseText(pomxmlstr)
         def plugin = pomxml.build.plugins.plugin.find{ it.artifactId.get(0).text() == "maven-dependency-plugin" }
         plugin.configuration.outputDirectory.get(0).setValue(directory)
