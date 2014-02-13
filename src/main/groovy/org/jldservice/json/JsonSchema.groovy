@@ -17,6 +17,7 @@ class JsonSchema{
             com.fasterxml.jackson.module.jsonSchema.JsonSchema schema = visitor.finalSchema();
             return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(schema);
         }catch (java.lang.StackOverflowError e){
+            e.printStackTrace()
             return e.toString()
         }
     }

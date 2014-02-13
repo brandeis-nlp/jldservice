@@ -88,6 +88,24 @@
         <!-- ~~~~~~~~~~~~ -->
 
 
+        <!-- jackson, gson, json-io. -->
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-xc</artifactId>
+            <version>1.9.13</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.cedarsoftware</groupId>
+            <artifactId>json-io</artifactId>
+            <version>2.4.5</version>
+        </dependency>
+        <!-- ~~~~~~~~~~~~ -->
+
         <!-- open nlp tools. -->
         <dependency>
             <groupId>org.apache.opennlp</groupId>

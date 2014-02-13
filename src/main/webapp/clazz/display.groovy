@@ -3,6 +3,8 @@ import org.codehaus.groovy.reflection.CachedMethod
 import org.jldservice.clazz.ClazzInterface
 import org.jldservice.json.JsonSchema
 import org.jldservice.maven.Maven
+import org.jldservice.json.Json
+import org.jldservice.html.Html
 import groovy.xml.XmlUtil
 
 // application
@@ -21,11 +23,6 @@ import java.lang.reflect.Method
 import java.lang.reflect.Modifier
 
 
-static def toJson(obj){
-    return new JsonBuilder(obj).toPrettyString()
-}
-
-
 def ci = new ClazzInterface()
 
 def paraclzname = request.getParameter("clazzname");
@@ -36,6 +33,11 @@ if (paraclzname == null || "".equals(paraclzname.trim())) {
 def parajsonldid = request.getParameter("jsonldid");
 if (parajsonldid == null) {
     parajsonldid = ""
+}
+
+def parajsonobj = request.getParameter("jsonobj");
+if (parajsonobj == null) {
+    parajsonobj = ""
 }
 
 //def paramavendep = request.getParameter("mavendep");
@@ -62,84 +64,7 @@ if (!session.counter) {
 def clz = this.class.classLoader.loadClass(paraclzname)
 def htmlclz= JsonSchema.toJsonSchema(clz)
 
-
-//
-// http://groovy.codehaus.org/api/groovy/servlet/GroovyServlet.html
-//
-
-
-int METHOD_MODIFIERS = Modifier.PUBLIC  | Modifier.PROTECTED    | Modifier.PRIVATE |
-                Modifier.ABSTRACT       | Modifier.STATIC       | Modifier.FINAL   |
-                Modifier.SYNCHRONIZED   | Modifier.NATIVE       | Modifier.STRICT;
-
-def hrefClazz(clzname){
-    return "<a href='display.groovy?clazzname="+ clzname +"' target='_blank'>" + clzname + "</a>"
-}
-
-//
-// org.codehaus.groovy.reflection.CachedMethod.toString()
-//
-
-StringBuilder htmllist = new StringBuilder();
-if (paraclzname != null) {
-htmllist.append("<ul>");
-ci.pubFuncFromClassName(paraclzname).each{method ->
-    htmllist.append("<li>");
-    int mod = method.getCachedMethod().getModifiers() & METHOD_MODIFIERS;
-    if (mod != 0) {
-        htmllist.append(Modifier.toString(mod)).append(' ');
-    }
-
-    if (method.getReturnType().isPrimitive()) {
-        htmllist.append(Field.getTypeName(method.getReturnType()));
-    } else if (method.getReturnType().isArray()) {
-        if (method.getReturnType().getComponentType().isPrimitive()) {
-            htmllist.append((Field.getTypeName(method.getReturnType().getComponentType()))).append("[]");
-        } else{
-            htmllist.append(hrefClazz(Field.getTypeName(method.getReturnType().getComponentType()))).append("[]");
-        }
-    } else {
-        htmllist.append(hrefClazz(Field.getTypeName(method.getReturnType())));
-    }
-    htmllist.append(" ");
-    htmllist.append(Field.getTypeName(method.getCachedMethod().getDeclaringClass()));
-    htmllist.append('.<b>');
-    htmllist.append(method.getName());
-    htmllist.append("</b> ( ");
-    Class<?>[] params = method.getCachedMethod().parameterTypes;
-    for (int j = 0; j < params.length; j++) {
-        if (params[j].isPrimitive()) {
-            htmllist.append(Field.getTypeName(params[j]));
-        } else if (params[j].isArray()) {
-            if (params[j].getComponentType().isPrimitive()) {
-                htmllist.append(Field.getTypeName(params[j].getComponentType()));
-            } else{
-                htmllist.append(hrefClazz(Field.getTypeName(params[j].getComponentType())));
-            }
-            htmllist.append("[]");
-        } else {
-            htmllist.append(hrefClazz(Field.getTypeName(params[j])));
-        }
-        if (j < (params.length - 1))
-            htmllist.append(', ');
-    }
-
-
-    htmllist.append(" ) ");
-    Class<?>[] exceptions = method.getCachedMethod().exceptionTypes; // avoid clone
-    if (exceptions.length > 0) {
-        htmllist.append(" throws ");
-        for (int k = 0; k < exceptions.length; k++) {
-            htmllist.append(hrefClazz(exceptions[k].getName()));
-            if (k < (exceptions.length - 1))
-                htmllist.append(',');
-        }
-    }
-//    htmllist.append(method)
-    htmllist.append("</li>");
-}
-htmllist.append("</ul>");
-}
+def htmllist = Html.listInterface(paraclzname)
 
 def head = this.class.getResource("/head.html").text
 
@@ -149,6 +74,92 @@ println """<!DOCTYPE HTML>
 <head>
     <!--TODO: title -->
     <title>Display Class</title>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript">
+    <!--
+    function escapeHTML(str) {
+      return str.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+    function loadSample(id, sn, mn, sample){
+      var span = \$("#" + id);
+      if(span.html() == "loading...")
+        span.html("<iframe src='" + document.URL + "/" + sn + "?method=" + mn + "&sample=" + sample + "'></iframe>");
+    }
+    var ppcfg = {maxArray: 1000, maxDepth: 100, maxStringLength: 1024,
+      styles: {
+        array: { th:{ backgroundColor: '#CDED9A', color: '#0', "text-align": "center" } },
+        'function': { th: { backgroundColor: '#D82525' } },
+        regexp: { th: { backgroundColor: '#E2F3FB', color: '#000' } },
+        object: { th: { backgroundColor: '#BFC6FF'/*'#1F96CF'*/, color: '#0', "text-align": "center" } },
+        jquery : { th: { backgroundColor: '#FBF315' } },
+        error: { th: { backgroundColor: 'red', color: 'yellow' } },
+        domelement: { th: { backgroundColor: '#F3801E' } },
+        date: { th: { backgroundColor: '#A725D8' } },
+        colHeader: { th: { backgroundColor: '#FFFFFF'/*'#EEE'*/, color: '#000', textTransform: 'uppercase', display: "none" } },
+      } };
+
+    function invokeMethod(fn, text, sn, mn){
+      var f = document.getElementById(fn);
+      var n = f.elements.length;
+      var s = "";
+      for(i = 0; i < n; i++){
+        var e = f.elements[i];
+        if(s.length > 0){
+          s += ",";
+        }
+        var v = e.value;
+        if(v[0] == '{' || v[0] == '['){
+          s += v;
+        } else{
+          s += '"' + e.value.replace(/\\"/g, "\\\\\\"") + '"';
+        }
+      }
+      var req = '{"method": "' + mn + '", "params": [' + s + ']}';
+      var start = new Date();
+      \$.ajax({
+        type: "POST",
+        dataType: "text",
+        url: document.URL + "/" + sn,
+        data: req,
+        success: function(data, dataType) {
+          log = \$("<div></div>");
+          t = \$("#" + text);
+          if(t.children().length > 0){
+            \$("<hr/>").insertBefore(t.children(":first"));
+            log.insertBefore(t.children(":first"));
+          } else{
+            t.append(log);
+          }
+          log.append("<b>" + start + ", " + (new Date().getTime() - start.getTime()) + "msec.</b>" +
+            ' <span class="info">[RAW]<span>request:<br/>' + req + "<br/><br/>response:<br/>" + data +
+            "</span></span><br/><b>request:</b><br/>");
+          log.append(\$(prettyPrint(jQuery.parseJSON(req), ppcfg)));
+          log.append("<b>response:</b><br/>");
+          log.append(\$(prettyPrint(jQuery.parseJSON(data), ppcfg)));
+    //      log.css("display", "none");
+    //      log.show("slide", {direction: "up"}, 1000);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+          var fb = "<font color=\\"red\\">";
+          var fe = "</font>";
+          \$("#" + text).append(
+            start + ", " + (new Date().getTime() - start.getTime()) + "msec.<br/>　request: " + escapeHTML(req) +
+            "<br/>status: " +
+            fb + escapeHTML(textStatus) + fe + "<br/>error: " + fb + escapeHTML(errorThrown) + fe + "</font><hr/>"
+            );
+        }
+        });
+    }
+
+    function clearLog(text){
+      \$("#" + text).html("");
+    }
+
+    function togglePanel(id){
+      \$("#" + id).toggle();
+    }
+    // -->
+    </script>
     ${head}
 </head>
 <body>
@@ -189,6 +200,10 @@ ${application.getServerInfo()}
 </p>
 <p>
     JSON-LD: <br/> <textarea name="jsonldid" formmethod="get" cols="40" rows="10">${parajsonldid}</textarea>
+</p>
+
+<p>
+    JSON: <br/> <textarea name="jsonobj" formmethod="get" cols="40" rows="10">${parajsonobj}</textarea>
 </p>
 
 <p>

@@ -1,4 +1,7 @@
 package org.jldservice.maven
+
+import junit.framework.Assert
+
 /**
  * @Chunqi SHI (diligence.cs@gmail.com)
  */
@@ -25,14 +28,34 @@ class TestPomXml {
 
 
     @Test
-    public void testMaven() {
+    public void testPomXml() {
         def xml = new PomXml()
         println "--------------addDependencies-----------------"
-        println xml.addDependencies("<empty/>")
+        def depadded = xml.addDependencies("""<dependency>
+            <groupId>
+                postgresql
+            </groupId>
+            <artifactId>
+                postgresql
+            </artifactId>
+            <version>
+                9.1-901.jdbc4
+            </version>
+        </dependency>""");
+
+//        println depadded.trim()
+//        println this.class.classLoader.getResource("pom_depaddedxml").text.trim()
+//        def file = new File("/Users/shi/Project/chunqishi/jldservice/src/test/resources/pom_.xml");
+//        file << depadded;
+
+        Assert.assertTrue(depadded.contains("9.1-901.jdbc4"))
+
         println "---------setDependenciesCopyDirectory---------"
-        println xml.setDependenciesCopyDirectory("mydirectory")
-        println ""
-        def mvn = new Maven()
+        depadded =  xml.setDependenciesCopyDirectory("mydirectory")
+
+        Assert.assertTrue(depadded.contains("mydirectory"))
+//        println ""
+//        def mvn = new Maven()
 //        mvn.copyDependencies(null,null)
     }
 
