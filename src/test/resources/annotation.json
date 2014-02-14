@@ -1,0 +1,2836 @@
+{
+    "@type": "edu.stanford.nlp.pipeline.Annotation",
+    "keys": [
+        {
+            "@id": 52,
+            "value": "edu.stanford.nlp.ling.CoreAnnotations$TextAnnotation"
+        },
+        {
+            "@id": 183,
+            "value": "edu.stanford.nlp.ling.CoreAnnotations$TokensAnnotation"
+        },
+        "edu.stanford.nlp.ling.CoreAnnotations$SentencesAnnotation",
+        "edu.stanford.nlp.time.TimeExpression$TimeIndexAnnotation"
+    ],
+    "values": [
+        "A powerful storm that crippled much of the South swept into New York, depositing eight inches of snow in Central Park by midmorning and disrupting travel by road, rail and air.",
+        {
+            "@type": "java.util.ArrayList",
+            "@items": [
+                {
+                    "@id": 274,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@id": 53,
+                            "value": "edu.stanford.nlp.ling.CoreAnnotations$ValueAnnotation"
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@id": 51,
+                            "value": "edu.stanford.nlp.ling.CoreAnnotations$OriginalTextAnnotation"
+                        },
+                        {
+                            "@id": 50,
+                            "value": "edu.stanford.nlp.ling.CoreAnnotations$CharacterOffsetBeginAnnotation"
+                        },
+                        {
+                            "@id": 49,
+                            "value": "edu.stanford.nlp.ling.CoreAnnotations$CharacterOffsetEndAnnotation"
+                        },
+                        {
+                            "@id": 48,
+                            "value": "edu.stanford.nlp.ling.CoreAnnotations$BeforeAnnotation"
+                        },
+                        {
+                            "@id": 47,
+                            "value": "edu.stanford.nlp.ling.CoreAnnotations$AfterAnnotation"
+                        },
+                        {
+                            "@id": 46,
+                            "value": "edu.stanford.nlp.ling.CoreAnnotations$PartOfSpeechAnnotation"
+                        },
+                        {
+                            "@id": 45,
+                            "value": "edu.stanford.nlp.ling.CoreAnnotations$LemmaAnnotation"
+                        },
+                        {
+                            "@id": 44,
+                            "value": "edu.stanford.nlp.ling.CoreAnnotations$TokenBeginAnnotation"
+                        },
+                        {
+                            "@id": 43,
+                            "value": "edu.stanford.nlp.ling.CoreAnnotations$TokenEndAnnotation"
+                        },
+                        {
+                            "@id": 42,
+                            "value": "edu.stanford.nlp.ling.CoreAnnotations$NamedEntityTagAnnotation"
+                        },
+                        null
+                    ],
+                    "values": [
+                        "A",
+                        "A",
+                        "A",
+                        {
+                            "@type": "int",
+                            "value": 0
+                        },
+                        {
+                            "@type": "int",
+                            "value": 1
+                        },
+                        "",
+                        " ",
+                        "DT",
+                        "a",
+                        {
+                            "@type": "int",
+                            "value": 0
+                        },
+                        {
+                            "@type": "int",
+                            "value": 1
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 267,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "powerful",
+                        "powerful",
+                        "powerful",
+                        {
+                            "@type": "int",
+                            "value": 2
+                        },
+                        {
+                            "@type": "int",
+                            "value": 10
+                        },
+                        " ",
+                        " ",
+                        "JJ",
+                        "powerful",
+                        {
+                            "@type": "int",
+                            "value": 1
+                        },
+                        {
+                            "@type": "int",
+                            "value": 2
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 261,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "storm",
+                        "storm",
+                        "storm",
+                        {
+                            "@type": "int",
+                            "value": 11
+                        },
+                        {
+                            "@type": "int",
+                            "value": 16
+                        },
+                        " ",
+                        " ",
+                        "NN",
+                        "storm",
+                        {
+                            "@type": "int",
+                            "value": 2
+                        },
+                        {
+                            "@type": "int",
+                            "value": 3
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 254,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "that",
+                        "that",
+                        "that",
+                        {
+                            "@type": "int",
+                            "value": 17
+                        },
+                        {
+                            "@type": "int",
+                            "value": 21
+                        },
+                        " ",
+                        " ",
+                        "WDT",
+                        "that",
+                        {
+                            "@type": "int",
+                            "value": 3
+                        },
+                        {
+                            "@type": "int",
+                            "value": 4
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 248,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "crippled",
+                        "crippled",
+                        "crippled",
+                        {
+                            "@type": "int",
+                            "value": 22
+                        },
+                        {
+                            "@type": "int",
+                            "value": 30
+                        },
+                        " ",
+                        " ",
+                        "VBD",
+                        "cripple",
+                        {
+                            "@type": "int",
+                            "value": 4
+                        },
+                        {
+                            "@type": "int",
+                            "value": 5
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 241,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "much",
+                        "much",
+                        "much",
+                        {
+                            "@type": "int",
+                            "value": 31
+                        },
+                        {
+                            "@type": "int",
+                            "value": 35
+                        },
+                        " ",
+                        " ",
+                        "RB",
+                        "much",
+                        {
+                            "@type": "int",
+                            "value": 5
+                        },
+                        {
+                            "@type": "int",
+                            "value": 6
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 235,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "of",
+                        "of",
+                        "of",
+                        {
+                            "@type": "int",
+                            "value": 36
+                        },
+                        {
+                            "@type": "int",
+                            "value": 38
+                        },
+                        " ",
+                        " ",
+                        "IN",
+                        "of",
+                        {
+                            "@type": "int",
+                            "value": 6
+                        },
+                        {
+                            "@type": "int",
+                            "value": 7
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 228,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "the",
+                        "the",
+                        "the",
+                        {
+                            "@type": "int",
+                            "value": 39
+                        },
+                        {
+                            "@type": "int",
+                            "value": 42
+                        },
+                        " ",
+                        " ",
+                        "DT",
+                        "the",
+                        {
+                            "@type": "int",
+                            "value": 7
+                        },
+                        {
+                            "@type": "int",
+                            "value": 8
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 222,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "South",
+                        "South",
+                        "South",
+                        {
+                            "@type": "int",
+                            "value": 43
+                        },
+                        {
+                            "@type": "int",
+                            "value": 48
+                        },
+                        " ",
+                        " ",
+                        "NNP",
+                        "South",
+                        {
+                            "@type": "int",
+                            "value": 8
+                        },
+                        {
+                            "@type": "int",
+                            "value": 9
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 215,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "swept",
+                        "swept",
+                        "swept",
+                        {
+                            "@type": "int",
+                            "value": 49
+                        },
+                        {
+                            "@type": "int",
+                            "value": 54
+                        },
+                        " ",
+                        " ",
+                        "VBD",
+                        "sweep",
+                        {
+                            "@type": "int",
+                            "value": 9
+                        },
+                        {
+                            "@type": "int",
+                            "value": 10
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 209,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "into",
+                        "into",
+                        "into",
+                        {
+                            "@type": "int",
+                            "value": 55
+                        },
+                        {
+                            "@type": "int",
+                            "value": 59
+                        },
+                        " ",
+                        " ",
+                        "IN",
+                        "into",
+                        {
+                            "@type": "int",
+                            "value": 10
+                        },
+                        {
+                            "@type": "int",
+                            "value": 11
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 203,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "New",
+                        "New",
+                        "New",
+                        {
+                            "@type": "int",
+                            "value": 60
+                        },
+                        {
+                            "@type": "int",
+                            "value": 63
+                        },
+                        " ",
+                        " ",
+                        "NNP",
+                        "New",
+                        {
+                            "@type": "int",
+                            "value": 11
+                        },
+                        {
+                            "@type": "int",
+                            "value": 12
+                        },
+                        "LOCATION",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 196,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "York",
+                        "York",
+                        "York",
+                        {
+                            "@type": "int",
+                            "value": 64
+                        },
+                        {
+                            "@type": "int",
+                            "value": 68
+                        },
+                        " ",
+                        "",
+                        "NNP",
+                        "York",
+                        {
+                            "@type": "int",
+                            "value": 12
+                        },
+                        {
+                            "@type": "int",
+                            "value": 13
+                        },
+                        "LOCATION",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 190,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        ",",
+                        ",",
+                        ",",
+                        {
+                            "@type": "int",
+                            "value": 68
+                        },
+                        {
+                            "@type": "int",
+                            "value": 69
+                        },
+                        "",
+                        " ",
+                        ",",
+                        ",",
+                        {
+                            "@type": "int",
+                            "value": 13
+                        },
+                        {
+                            "@type": "int",
+                            "value": 14
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 184,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "depositing",
+                        "depositing",
+                        "depositing",
+                        {
+                            "@type": "int",
+                            "value": 70
+                        },
+                        {
+                            "@type": "int",
+                            "value": 80
+                        },
+                        " ",
+                        " ",
+                        "VBG",
+                        "deposit",
+                        {
+                            "@type": "int",
+                            "value": 14
+                        },
+                        {
+                            "@type": "int",
+                            "value": 15
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 167,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        "edu.stanford.nlp.ling.CoreAnnotations$NumericValueAnnotation",
+                        "edu.stanford.nlp.ling.CoreAnnotations$NumericTypeAnnotation",
+                        {
+                            "@id": 178,
+                            "value": "edu.stanford.nlp.ling.CoreAnnotations$NumericCompositeValueAnnotation"
+                        },
+                        {
+                            "@id": 177,
+                            "value": "edu.stanford.nlp.ling.CoreAnnotations$NumericCompositeTypeAnnotation"
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        {
+                            "@id": 176,
+                            "value": "edu.stanford.nlp.ling.CoreAnnotations$NormalizedNamedEntityTagAnnotation"
+                        }
+                    ],
+                    "values": [
+                        "eight",
+                        "eight",
+                        "eight",
+                        {
+                            "@type": "int",
+                            "value": 81
+                        },
+                        {
+                            "@type": "int",
+                            "value": 86
+                        },
+                        " ",
+                        " ",
+                        "CD",
+                        "eight",
+                        {
+                            "@type": "int",
+                            "value": 8
+                        },
+                        "NUMBER",
+                        {
+                            "@type": "int",
+                            "value": 8
+                        },
+                        "NUMBER",
+                        {
+                            "@type": "int",
+                            "value": 15
+                        },
+                        {
+                            "@type": "int",
+                            "value": 16
+                        },
+                        "NUMBER",
+                        "8.0"
+                    ],
+                    "size": 17
+                },
+                {
+                    "@id": 156,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "inches",
+                        "inches",
+                        "inches",
+                        {
+                            "@type": "int",
+                            "value": 87
+                        },
+                        {
+                            "@type": "int",
+                            "value": 93
+                        },
+                        " ",
+                        " ",
+                        "NNS",
+                        "inch",
+                        {
+                            "@type": "int",
+                            "value": 16
+                        },
+                        {
+                            "@type": "int",
+                            "value": 17
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 150,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "of",
+                        "of",
+                        "of",
+                        {
+                            "@type": "int",
+                            "value": 94
+                        },
+                        {
+                            "@type": "int",
+                            "value": 96
+                        },
+                        " ",
+                        " ",
+                        "IN",
+                        "of",
+                        {
+                            "@type": "int",
+                            "value": 17
+                        },
+                        {
+                            "@type": "int",
+                            "value": 18
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 144,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "snow",
+                        "snow",
+                        "snow",
+                        {
+                            "@type": "int",
+                            "value": 97
+                        },
+                        {
+                            "@type": "int",
+                            "value": 101
+                        },
+                        " ",
+                        " ",
+                        "NN",
+                        "snow",
+                        {
+                            "@type": "int",
+                            "value": 18
+                        },
+                        {
+                            "@type": "int",
+                            "value": 19
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 138,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "in",
+                        "in",
+                        "in",
+                        {
+                            "@type": "int",
+                            "value": 102
+                        },
+                        {
+                            "@type": "int",
+                            "value": 104
+                        },
+                        " ",
+                        " ",
+                        "IN",
+                        "in",
+                        {
+                            "@type": "int",
+                            "value": 19
+                        },
+                        {
+                            "@type": "int",
+                            "value": 20
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 132,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "Central",
+                        "Central",
+                        "Central",
+                        {
+                            "@type": "int",
+                            "value": 105
+                        },
+                        {
+                            "@type": "int",
+                            "value": 112
+                        },
+                        " ",
+                        " ",
+                        "NNP",
+                        "Central",
+                        {
+                            "@type": "int",
+                            "value": 20
+                        },
+                        {
+                            "@type": "int",
+                            "value": 21
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 125,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "Park",
+                        "Park",
+                        "Park",
+                        {
+                            "@type": "int",
+                            "value": 113
+                        },
+                        {
+                            "@type": "int",
+                            "value": 117
+                        },
+                        " ",
+                        " ",
+                        "NNP",
+                        "Park",
+                        {
+                            "@type": "int",
+                            "value": 21
+                        },
+                        {
+                            "@type": "int",
+                            "value": 22
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 119,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "by",
+                        "by",
+                        "by",
+                        {
+                            "@type": "int",
+                            "value": 118
+                        },
+                        {
+                            "@type": "int",
+                            "value": 120
+                        },
+                        " ",
+                        " ",
+                        "IN",
+                        "by",
+                        {
+                            "@type": "int",
+                            "value": 22
+                        },
+                        {
+                            "@type": "int",
+                            "value": 23
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 113,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "midmorning",
+                        "midmorning",
+                        "midmorning",
+                        {
+                            "@type": "int",
+                            "value": 121
+                        },
+                        {
+                            "@type": "int",
+                            "value": 131
+                        },
+                        " ",
+                        " ",
+                        "NN",
+                        "midmorning",
+                        {
+                            "@type": "int",
+                            "value": 23
+                        },
+                        {
+                            "@type": "int",
+                            "value": 24
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 107,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "and",
+                        "and",
+                        "and",
+                        {
+                            "@type": "int",
+                            "value": 132
+                        },
+                        {
+                            "@type": "int",
+                            "value": 135
+                        },
+                        " ",
+                        " ",
+                        "CC",
+                        "and",
+                        {
+                            "@type": "int",
+                            "value": 24
+                        },
+                        {
+                            "@type": "int",
+                            "value": 25
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 100,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "disrupting",
+                        "disrupting",
+                        "disrupting",
+                        {
+                            "@type": "int",
+                            "value": 136
+                        },
+                        {
+                            "@type": "int",
+                            "value": 146
+                        },
+                        " ",
+                        " ",
+                        "VBG",
+                        "disrupt",
+                        {
+                            "@type": "int",
+                            "value": 25
+                        },
+                        {
+                            "@type": "int",
+                            "value": 26
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 94,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "travel",
+                        "travel",
+                        "travel",
+                        {
+                            "@type": "int",
+                            "value": 147
+                        },
+                        {
+                            "@type": "int",
+                            "value": 153
+                        },
+                        " ",
+                        " ",
+                        "NN",
+                        "travel",
+                        {
+                            "@type": "int",
+                            "value": 26
+                        },
+                        {
+                            "@type": "int",
+                            "value": 27
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 87,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "by",
+                        "by",
+                        "by",
+                        {
+                            "@type": "int",
+                            "value": 154
+                        },
+                        {
+                            "@type": "int",
+                            "value": 156
+                        },
+                        " ",
+                        " ",
+                        "IN",
+                        "by",
+                        {
+                            "@type": "int",
+                            "value": 27
+                        },
+                        {
+                            "@type": "int",
+                            "value": 28
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 81,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "road",
+                        "road",
+                        "road",
+                        {
+                            "@type": "int",
+                            "value": 157
+                        },
+                        {
+                            "@type": "int",
+                            "value": 161
+                        },
+                        " ",
+                        "",
+                        "NN",
+                        "road",
+                        {
+                            "@type": "int",
+                            "value": 28
+                        },
+                        {
+                            "@type": "int",
+                            "value": 29
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 74,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        ",",
+                        ",",
+                        ",",
+                        {
+                            "@type": "int",
+                            "value": 161
+                        },
+                        {
+                            "@type": "int",
+                            "value": 162
+                        },
+                        "",
+                        " ",
+                        ",",
+                        ",",
+                        {
+                            "@type": "int",
+                            "value": 29
+                        },
+                        {
+                            "@type": "int",
+                            "value": 30
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 68,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "rail",
+                        "rail",
+                        "rail",
+                        {
+                            "@type": "int",
+                            "value": 163
+                        },
+                        {
+                            "@type": "int",
+                            "value": 167
+                        },
+                        " ",
+                        " ",
+                        "NN",
+                        "rail",
+                        {
+                            "@type": "int",
+                            "value": 30
+                        },
+                        {
+                            "@type": "int",
+                            "value": 31
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 61,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "and",
+                        "and",
+                        "and",
+                        {
+                            "@type": "int",
+                            "value": 168
+                        },
+                        {
+                            "@type": "int",
+                            "value": 171
+                        },
+                        " ",
+                        " ",
+                        "CC",
+                        "and",
+                        {
+                            "@type": "int",
+                            "value": 31
+                        },
+                        {
+                            "@type": "int",
+                            "value": 32
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 54,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        "air",
+                        "air",
+                        "air",
+                        {
+                            "@type": "int",
+                            "value": 172
+                        },
+                        {
+                            "@type": "int",
+                            "value": 175
+                        },
+                        " ",
+                        "",
+                        "NN",
+                        "air",
+                        {
+                            "@type": "int",
+                            "value": 32
+                        },
+                        {
+                            "@type": "int",
+                            "value": 33
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                },
+                {
+                    "@id": 33,
+                    "@type": "edu.stanford.nlp.ling.CoreLabel",
+                    "keys": [
+                        {
+                            "@ref": 53
+                        },
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 51
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 48
+                        },
+                        {
+                            "@ref": 47
+                        },
+                        {
+                            "@ref": 46
+                        },
+                        {
+                            "@ref": 45
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        {
+                            "@ref": 42
+                        },
+                        null
+                    ],
+                    "values": [
+                        ".",
+                        ".",
+                        ".",
+                        {
+                            "@type": "int",
+                            "value": 175
+                        },
+                        {
+                            "@type": "int",
+                            "value": 176
+                        },
+                        "",
+                        "",
+                        ".",
+                        ".",
+                        {
+                            "@type": "int",
+                            "value": 33
+                        },
+                        {
+                            "@type": "int",
+                            "value": 34
+                        },
+                        "O",
+                        null
+                    ],
+                    "size": 12
+                }
+            ]
+        },
+        {
+            "@type": "java.util.ArrayList",
+            "@items": [
+                {
+                    "@type": "edu.stanford.nlp.pipeline.Annotation",
+                    "keys": [
+                        {
+                            "@ref": 52
+                        },
+                        {
+                            "@ref": 50
+                        },
+                        {
+                            "@ref": 49
+                        },
+                        {
+                            "@ref": 183
+                        },
+                        {
+                            "@ref": 44
+                        },
+                        {
+                            "@ref": 43
+                        },
+                        "edu.stanford.nlp.ling.CoreAnnotations$SentenceIndexAnnotation",
+                        "edu.stanford.nlp.ling.CoreAnnotations$NumerizedTokensAnnotation"
+                    ],
+                    "values": [
+                        "A powerful storm that crippled much of the South swept into New York, depositing eight inches of snow in Central Park by midmorning and disrupting travel by road, rail and air.",
+                        {
+                            "@type": "int",
+                            "value": 0
+                        },
+                        {
+                            "@type": "int",
+                            "value": 176
+                        },
+                        {
+                            "@type": "java.util.ArrayList",
+                            "@items": [
+                                {
+                                    "@ref": 274
+                                },
+                                {
+                                    "@ref": 267
+                                },
+                                {
+                                    "@ref": 261
+                                },
+                                {
+                                    "@ref": 254
+                                },
+                                {
+                                    "@ref": 248
+                                },
+                                {
+                                    "@ref": 241
+                                },
+                                {
+                                    "@ref": 235
+                                },
+                                {
+                                    "@ref": 228
+                                },
+                                {
+                                    "@ref": 222
+                                },
+                                {
+                                    "@ref": 215
+                                },
+                                {
+                                    "@ref": 209
+                                },
+                                {
+                                    "@ref": 203
+                                },
+                                {
+                                    "@ref": 196
+                                },
+                                {
+                                    "@ref": 190
+                                },
+                                {
+                                    "@ref": 184
+                                },
+                                {
+                                    "@ref": 167
+                                },
+                                {
+                                    "@ref": 156
+                                },
+                                {
+                                    "@ref": 150
+                                },
+                                {
+                                    "@ref": 144
+                                },
+                                {
+                                    "@ref": 138
+                                },
+                                {
+                                    "@ref": 132
+                                },
+                                {
+                                    "@ref": 125
+                                },
+                                {
+                                    "@ref": 119
+                                },
+                                {
+                                    "@ref": 113
+                                },
+                                {
+                                    "@ref": 107
+                                },
+                                {
+                                    "@ref": 100
+                                },
+                                {
+                                    "@ref": 94
+                                },
+                                {
+                                    "@ref": 87
+                                },
+                                {
+                                    "@ref": 81
+                                },
+                                {
+                                    "@ref": 74
+                                },
+                                {
+                                    "@ref": 68
+                                },
+                                {
+                                    "@ref": 61
+                                },
+                                {
+                                    "@ref": 54
+                                },
+                                {
+                                    "@ref": 33
+                                }
+                            ]
+                        },
+                        {
+                            "@type": "int",
+                            "value": 0
+                        },
+                        {
+                            "@type": "int",
+                            "value": 34
+                        },
+                        {
+                            "@type": "int",
+                            "value": 0
+                        },
+                        {
+                            "@type": "java.util.ArrayList",
+                            "@items": [
+                                {
+                                    "@ref": 274
+                                },
+                                {
+                                    "@ref": 267
+                                },
+                                {
+                                    "@ref": 261
+                                },
+                                {
+                                    "@ref": 254
+                                },
+                                {
+                                    "@ref": 248
+                                },
+                                {
+                                    "@ref": 241
+                                },
+                                {
+                                    "@ref": 235
+                                },
+                                {
+                                    "@ref": 228
+                                },
+                                {
+                                    "@ref": 222
+                                },
+                                {
+                                    "@ref": 215
+                                },
+                                {
+                                    "@ref": 209
+                                },
+                                {
+                                    "@ref": 203
+                                },
+                                {
+                                    "@ref": 196
+                                },
+                                {
+                                    "@ref": 190
+                                },
+                                {
+                                    "@ref": 184
+                                },
+                                {
+                                    "@type": "edu.stanford.nlp.pipeline.Annotation",
+                                    "keys": [
+                                        {
+                                            "@ref": 52
+                                        },
+                                        {
+                                            "@ref": 42
+                                        },
+                                        {
+                                            "@ref": 50
+                                        },
+                                        {
+                                            "@ref": 177
+                                        },
+                                        {
+                                            "@ref": 178
+                                        },
+                                        {
+                                            "@ref": 49
+                                        },
+                                        {
+                                            "@ref": 43
+                                        },
+                                        {
+                                            "@ref": 183
+                                        },
+                                        {
+                                            "@ref": 44
+                                        },
+                                        {
+                                            "@ref": 176
+                                        },
+                                        null,
+                                        null
+                                    ],
+                                    "values": [
+                                        "eight",
+                                        null,
+                                        {
+                                            "@type": "int",
+                                            "value": 81
+                                        },
+                                        "NUMBER",
+                                        {
+                                            "@type": "int",
+                                            "value": 8
+                                        },
+                                        {
+                                            "@type": "int",
+                                            "value": 86
+                                        },
+                                        {
+                                            "@type": "int",
+                                            "value": 16
+                                        },
+                                        {
+                                            "@type": "java.util.ArrayList",
+                                            "@items": [
+                                                {
+                                                    "@ref": 167
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "@type": "int",
+                                            "value": 15
+                                        },
+                                        null,
+                                        null,
+                                        null
+                                    ],
+                                    "size": 10
+                                },
+                                {
+                                    "@ref": 156
+                                },
+                                {
+                                    "@ref": 150
+                                },
+                                {
+                                    "@ref": 144
+                                },
+                                {
+                                    "@ref": 138
+                                },
+                                {
+                                    "@ref": 132
+                                },
+                                {
+                                    "@ref": 125
+                                },
+                                {
+                                    "@ref": 119
+                                },
+                                {
+                                    "@ref": 113
+                                },
+                                {
+                                    "@ref": 107
+                                },
+                                {
+                                    "@ref": 100
+                                },
+                                {
+                                    "@ref": 94
+                                },
+                                {
+                                    "@ref": 87
+                                },
+                                {
+                                    "@ref": 81
+                                },
+                                {
+                                    "@ref": 74
+                                },
+                                {
+                                    "@ref": 68
+                                },
+                                {
+                                    "@ref": 61
+                                },
+                                {
+                                    "@ref": 54
+                                },
+                                {
+                                    "@ref": 33
+                                }
+                            ]
+                        }
+                    ],
+                    "size": 8
+                }
+            ]
+        },
+        {
+            "@type": "edu.stanford.nlp.time.SUTime$TimeIndex",
+            "temporalExprIndex": {
+                "@type": "edu.stanford.nlp.util.HashIndex"
+            },
+            "temporalIndex": {
+                "@type": "edu.stanford.nlp.util.HashIndex",
+                "@items": [
+                    {
+                        "@id": 17,
+                        "@type": "edu.stanford.nlp.time.SUTime$13",
+                        "label": "REF",
+                        "mod": null,
+                        "approx": false,
+                        "standardTemporalType": null,
+                        "timeLabel": null,
+                        "uncertaintyGranularity": null
+                    }
+                ]
+            },
+            "temporalFuncIndex": {
+                "@type": "edu.stanford.nlp.util.HashIndex"
+            },
+            "docDate": null
+        }
+    ],
+    "size": 3
+}
