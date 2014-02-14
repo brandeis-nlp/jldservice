@@ -25,15 +25,15 @@ class Html{
 
 
     static def listInterface(paraclzname) {
-        def ci = new ClazzInterface()
+        def clsInf = new ClazzInterface()
+        def idx = 0;
         //
         // org.codehaus.groovy.reflection.CachedMethod.toString()
         //
         StringBuilder htmllist = new StringBuilder();
         if (paraclzname != null) {
             htmllist.append("<ul>");
-
-            ci.pubConstructorFromClassName(paraclzname).each{method ->
+            clsInf.pubConstructorFromClassName(paraclzname).eachWithIndex {Object method, int i ->
                 htmllist.append("<li>");
                 int mod = method.getModifiers() & METHOD_MODIFIERS;
                 if (mod != 0) {
@@ -59,13 +59,24 @@ class Html{
                     if (j < (params.length - 1))
                         htmllist.append(', ');
                 }
-
-    //    htmllist.append(method)
-                htmllist.append(")</li>");
+                htmllist.append(")");
+                Class<?>[] exceptions = method.exceptionTypes; // avoid clone
+                if (exceptions.length > 0) {
+                    htmllist.append(" throws ");
+                    for (int k = 0; k < exceptions.length; k++) {
+                        htmllist.append(hrefClazz(exceptions[k].getName()));
+                        if (k < (exceptions.length - 1))
+                            htmllist.append(',');
+                    }
+                }
+                htmllist.append("<span onclick=\"togglePanel('invokePanell${idx}');return false;\">+</span>")
+                htmllist.append("<span id=\"invokePanel${idx}\" class=\"invokePanel\" style=\"display: none;\"><form id=\"f${idx}\"><textarea cols=\"4\" rows=\"1\"></textarea>[<a href=\"#\" onclick=\"invokeMethod('f${idx}','res${idx}', 'JsonSplitter', 'sentPosDetect');return false;\">invoke</a>][<a href=\"#\" onclick=\"clearLog('res${idx}');return false;\">clear</a>]</form><div id=\"res${idx}\" class=\"resPanel\"></div></span>");
+                htmllist.append("</li>");
+                idx ++;
             }
 
 
-            ci.pubFuncFromClassName(paraclzname).each{method ->
+            clsInf.pubFuncFromClassName(paraclzname).eachWithIndex{Object method, int i ->
                 htmllist.append("<li>");
                 int mod = method.getCachedMethod().getModifiers() & METHOD_MODIFIERS;
                 if (mod != 0) {
@@ -118,7 +129,10 @@ class Html{
                     }
                 }
     //    htmllist.append(method)
+                htmllist.append("<span onclick=\"togglePanel('invokePanell${idx}');return false;\">+</span>")
+                htmllist.append("<span id=\"invokePanel${idx}\" class=\"invokePanel\" style=\"display: none;\"><form id=\"f${idx}\"><textarea cols=\"4\" rows=\"1\"></textarea>[<a href=\"#\" onclick=\"invokeMethod('f${idx}','res${idx}', 'JsonSplitter', 'sentPosDetect');return false;\">invoke</a>][<a href=\"#\" onclick=\"clearLog('res${idx}');return false;\">clear</a>]</form><div id=\"res${idx}\" class=\"resPanel\"></div></span>");
                 htmllist.append("</li>");
+                idx ++;
             }
             htmllist.append("</ul>");
         }

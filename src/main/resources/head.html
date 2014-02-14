@@ -1,7 +1,12 @@
 
 <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js" >  </script>
+<script src="http://code.jquery.com/jquery-1.10.2.js" >  </script>
+<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js" >  </script>
+<script src="https://raw.github.com/padolsey/prettyprint.js/master/prettyprint.js" >  </script>
+<link rel="stylesheet"  type="text/css" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" />
+
 <style>
-body, p, td, pre, input, textarea {
+body, p, td, pre, input, textarea, button {
 font-size: 14pt; }
 
 body {
@@ -208,4 +213,248 @@ position: absolute;
 font-weight:bold;
 line-height: 1em;  }
 
+
+.button-green, .button-red, .button-orange, .button-blue, button-grey {
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); }
+
+.button-green {
+    background: rgb(28, 184, 65); }
+
+.button-red {
+    background: rgb(202, 60, 60); }
+
+.button-orange {
+    background: rgb(223, 117, 20); }
+
+.button-blue {
+    background: rgb(66, 184, 221); }
+
+.button-grey {
+    background: rgba(255, 255, 255, 0.69); }
+
 </style>
+
+<style>
+    /* Pure CSS Tooltips */
+    span.info{
+    position:relative; /*this is the key*/
+    z-index:24;
+    }
+    span.info:hover{
+    z-index:25;
+    background-color:#ff0
+    }
+    span.info span{
+    display:none
+    }
+    span.info:hover span{ /*the span will display just on :hover state*/
+    display:block;
+    position:absolute;
+    top:1em;
+    left:1em;
+    border:1px solid #ccc;
+    background-color: #666;
+    color:#eee;
+    text-align:left;
+    padding:6px;
+    }
+    span.info2{
+    position:relative; /*this is the key*/
+    z-index:24;
+    }
+    span.info2:hover{
+    z-index:25;
+    background-color:#ff0
+    }
+    span.info2 span{
+    display:none
+    }
+    span.info2:hover span{ /*the span will display just on :hover state*/
+    display:block;
+    position:absolute;
+    top:1em;
+    left:1em;
+    border:1px solid #ddd;
+    background-color: #bcc;
+    color:#eee;
+    text-align:left;
+    padding:6px;
+    }
+
+    span.paramInfo{
+    position:relative; /*this is the key*/
+    z-index:24;
+    }
+    span.paramInfo:hover{
+    z-index:25;
+    background-color:#ff0
+    }
+    span.paramInfo span{
+    display:none
+    }
+    span.paramInfo:hover span{ /*the span will display just on :hover state*/
+    display:block;
+    position:absolute;
+    top:1em;
+    left:1em;
+    width: 10em;
+    border:1px solid #ccc;
+    background-color: #666;
+    color:#eee;
+    text-align:left;
+    padding:6px;
+    }
+
+
+    form{
+    margin: 0px;
+    }
+
+    textarea{
+    vertical-align: bottom;
+    }
+
+    .invokePanel{
+    display: none;
+    }
+
+    .resPanel{
+    border: thin solid;
+    overflow: scroll;
+    }
+
+</style>
+
+<!--
+<script type="text/javascript">
+
+function escapeHTML(str) {
+  return str.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+function loadSample(id, sn, mn, sample){
+  var span = $("#" + id);
+  if(span.html() == "loading...")
+    span.html("<iframe src='" + document.URL + "/" + sn + "?method=" + mn + "&sample=" + sample + "'></iframe>");
+}
+var ppcfg = {maxArray: 1000, maxDepth: 100, maxStringLength: 1024,
+  styles: {
+    array: { th:{ backgroundColor: '#CDED9A', color: '#0', "text-align": "center" } },
+    'function': { th: { backgroundColor: '#D82525' } },
+    regexp: { th: { backgroundColor: '#E2F3FB', color: '#000' } },
+    object: { th: { backgroundColor: '#BFC6FF'/*'#1F96CF'*/, color: '#0', "text-align": "center" } },
+    jquery : { th: { backgroundColor: '#FBF315' } },
+    error: { th: { backgroundColor: 'red', color: 'yellow' } },
+    domelement: { th: { backgroundColor: '#F3801E' } },
+    date: { th: { backgroundColor: '#A725D8' } },
+    colHeader: { th: { backgroundColor: '#FFFFFF'/*'#EEE'*/, color: '#000', textTransform: 'uppercase', display: "none" } },
+  } };
+//*
+function invokeMethod(fn, text, sn, mn){
+  var f = document.getElementById(fn);
+  var n = f.elements.length;
+  var s = "";
+  for(i = 0; i < n; i++){
+    var e = f.elements[i];
+    if(s.length > 0){
+      s += ",";
+    }
+    var v = e.value;
+    if(v[0] == '{' || v[0] == '['){
+      s += v;
+    } else{
+      s += '"' + e.value.replace(/\"/g, "\\\"") + '"';
+    }
+  }
+  var req = '{"method": "' + mn + '", "params": [' + s + ']}';
+  var start = new Date();
+  $.ajax({
+    type: "POST",
+    dataType: "text",
+    url: document.URL + "/" + sn,
+    data: req,
+    success: function(data, dataType) {
+      log = $("<div></div>");
+      t = $("#" + text);
+      if(t.children().length > 0){
+        $("<hr/>").insertBefore(t.children(":first"));
+        log.insertBefore(t.children(":first"));
+      } else{
+        t.append(log);
+      }
+      log.append("<b>" + start + ", " + (new Date().getTime() - start.getTime()) + "msec.</b>" +
+        ' <span class="info">[RAW]<span>request:<br/>' + req + "<br/><br/>response:<br/>" + data +
+        "</span></span><br/><b>request:</b><br/>");
+      log.append($(prettyPrint(jQuery.parseJSON(req), ppcfg)));
+      log.append("<b>response:</b><br/>");
+      log.append($(prettyPrint(jQuery.parseJSON(data), ppcfg)));
+//      log.css("display", "none");
+//      log.show("slide", {direction: "up"}, 1000);
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown){
+      var fb = "<font color=\"red\">";
+      var fe = "</font>";
+      $("#" + text).append(
+        start + ", " + (new Date().getTime() - start.getTime()) + "msec.<br/>　request: " + escapeHTML(req) +
+        "<br/>status: " +
+        fb + escapeHTML(textStatus) + fe + "<br/>error: " + fb + escapeHTML(errorThrown) + fe + "</font><hr/>"
+        );
+    }
+    });
+}
+/*/
+function invokeMethod(fn, text, sn, mn){
+  var f = document.getElementById(fn);
+  var n = f.elements.length;
+  var s = "";
+  for(i = 0; i < n; i++){
+    var e = f.elements[i];
+    if(s.length > 0){
+      s += ",";
+    }
+    var v = e.value;
+    if(v[0] == '{' || v[0] == '['){
+      s += v;
+    } else{
+      s += '"' + e.value.replace(/\"/g, "\\\"") + '"';
+    }
+  }
+  var req = '{"method": "' + mn + '", "params": [' + s + ']}';
+  var start = new Date();
+  $.ajax({
+    type: "POST",
+    dataType: "text",
+    url: document.URL + "/" + sn,
+    data: req,
+    success: function(data, dataType) {
+      var e = data.indexOf('{"error":{"detail":"') == 0;
+      var fb = e ? "<font color=\"red\">" : "";
+      var fe = e ? "</font>" : "";
+      $("#" + text).append(
+        start + ", " + (new Date().getTime() - start.getTime()) + "msec.<br/>req: " + escapeHTML(req) +
+        "<br/>res: " + fb + escapeHTML(data) + fe + "<hr/>"
+        );
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown){
+      var fb = "<font color=\"red\">";
+      var fe = "</font>";
+      $("#" + text).append(
+        start + ", " + (new Date().getTime() - start.getTime()) + "msec.<br/>req: " + escapeHTML(req) +
+        "<br/>status: " +
+        fb + escapeHTML(textStatus) + fe + "<br/>error: " + fb + escapeHTML(errorThrown) + fe + "</font><hr/>"
+        );
+    }
+    });
+}
+//*/
+function clearLog(text){
+  $("#" + text).html("");
+}
+
+function togglePanel(id){
+  $("#" + id).toggle();
+}
+</script>
+-->
+

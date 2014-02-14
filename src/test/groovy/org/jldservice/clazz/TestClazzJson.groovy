@@ -54,7 +54,8 @@ class TestClazzJson{
         def annotation = new Annotation(docs);
         Assert.assertEquals(annotation, initAnn);
         def props = new Properties();
-        props.put("annotators", "tokenize, ssplit, pos, lemma, ner");
+//        props.put("annotators", "tokenize, ssplit, pos, lemma, ner");
+        props.put("annotators", "tokenize");
         def snlp = new StanfordCoreNLP(props);
         snlp.annotate(annotation);
         def annotationjson = js.toJsonbyIO(annotation);
