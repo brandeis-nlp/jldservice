@@ -54,6 +54,7 @@ class Json {
         return JsonReader.jsonToJava(json)
     }
 
+
     // default using Json-IO
     static def toJsonPretty(obj){
         return JsonOutput.prettyPrint(toJsonbyIO(obj));

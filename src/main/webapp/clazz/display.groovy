@@ -22,6 +22,7 @@ import java.lang.reflect.Field
 import java.lang.reflect.Method
 import java.lang.reflect.Modifier
 
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -135,10 +136,12 @@ def listInterface(paraclzname) {
             htmllist.append('.<b>');
             htmllist.append(method.getName());
             invokebox.append("""
-                    <div class="blue box"><span class="h">this</span><p><textarea cols="16" rows="3"></textarea></p></div>
+                    <div class="blue box"><span class="h">this</span><p><textarea id="obj" cols="16" rows="3"></textarea></p></div>
             """);
             htmllist.append("</b> ( ");
-            invokebox.append(".${method.getName()}(");
+            invokebox.append("""
+                .<input type="text" value="${method.getName()}" disabled="disabled"/>(
+            """);
             Class<?>[] params = method.getCachedMethod().parameterTypes;
             for (int j = 0; j < params.length; j++) {
                 if (params[j].isPrimitive()) {
@@ -211,42 +214,46 @@ function loadSample(id, sn, mn, sample){
 }
 var ppcfg = {maxArray: 1000, maxDepth: 100, maxStringLength: 1024,
   styles: {
-    array: { th:{ backgroundColor: '#CDED9A', color: '#0', "text-align": "center" } },
+    array: { th:{ backgroundColor: 'lightyellow', color: '#0', "text-align": "center" } },
     'function': { th: { backgroundColor: '#D82525' } },
     regexp: { th: { backgroundColor: '#E2F3FB', color: '#000' } },
-    object: { th: { backgroundColor: '#BFC6FF'/*'#1F96CF'*/, color: '#0', "text-align": "center" } },
+    object: { th: { backgroundColor: '#A7C942', color: '#0', "text-align": "center" } },
     jquery : { th: { backgroundColor: '#FBF315' } },
     error: { th: { backgroundColor: 'red', color: 'yellow' } },
     domelement: { th: { backgroundColor: '#F3801E' } },
     date: { th: { backgroundColor: '#A725D8' } },
-    colHeader: { th: { backgroundColor: '#FFFFFF'/*'#EEE'*/, color: '#000', textTransform: 'uppercase', display: "none" } },
+    colHeader: { th: { backgroundColor: '#FFFFFF', color: '#000', textTransform: 'uppercase', display: "none" } },
   } };
-//*
+
 function invokeMethod(fn, text, sn, mn){
   var f = document.getElementById(fn);
   var n = f.elements.length;
-  var s = "";
+  var io = {}
+  io.Parameters = []
   for(i = 0; i < n; i++){
     var e = f.elements[i];
+    var v = e.value;
+    var jsonobj = v;
+    if (v[0] == '{' || v[0] == '[') {
+        jsonobj = JSON.parse(v);
+    }
     if (e.nodeName == 'TEXTAREA') {
-        if(s.length > 0){
-          s += ";";
+        if (e.id == 'obj') {
+            io.Object = v;
+        } else {
+            io.Parameters.push(v);
         }
-        var v = e.value;
-        if(v[0] == '{' || v[0] == '['){
-          s += v;
-        } else{
-          s += '"' + e.value.replace(/\\"/g, "\\\\\\"") + '"';
-        }
+    } else if (e.nodeName == 'INPUT') {
+        io.Method = v;
     }
   }
-  alert(s);
-  var req = '{"method": "' + mn + '", "params": [' + s + ']}';
+  var req = {};
+  req.io = JSON.stringify(io);
   var start = new Date();
   \$.ajax({
     type: "POST",
     dataType: "text",
-    url: document.URL + "/" + sn,
+    url: "ajaxjson.groovy",
     data: req,
     success: function(data, dataType) {
       log = \$("<div></div>");
@@ -257,14 +264,12 @@ function invokeMethod(fn, text, sn, mn){
       } else{
         t.append(log);
       }
-      log.append("<b>" + start + ", " + (new Date().getTime() - start.getTime()) + "msec.</b>" +
-        ' <span class="info">[RAW]<span>request:<br/>' + req + "<br/><br/>response:<br/>" + data +
-        "</span></span><br/><b>request:</b><br/>");
-      log.append(\$(prettyPrint(jQuery.parseJSON(req), ppcfg)));
-      log.append("<b>response:</b><br/>");
+      log.append("<b>" + start.toLocaleString() + "</b> (" + (new Date().getTime() - start.getTime()) + " millisecond used)" +
+        ' <span class="info">[:Raw Text]<span>Request:<br/>' + JSON.stringify(req) + "<br/><br/>Response:<br/>" + data +
+        "</span></span><br/><b>Request:</b><br/>");
+      log.append(\$(prettyPrint(io, ppcfg)));
+      log.append("<b>Response:</b><br/>");
       log.append(\$(prettyPrint(jQuery.parseJSON(data), ppcfg)));
-//      log.css("display", "none");
-//      log.show("slide", {direction: "up"}, 1000);
     },
     error: function(XMLHttpRequest, textStatus, errorThrown){
       var fb = "<font color=\\"red\\">";
@@ -277,51 +282,7 @@ function invokeMethod(fn, text, sn, mn){
     }
     });
 }
-/*/
-function invokeMethod(fn, text, sn, mn){
-  var f = document.getElementById(fn);
-  var n = f.elements.length;
-  var s = "";
-  for(i = 0; i < n; i++){
-    var e = f.elements[i];
-    if(s.length > 0){
-      s += ",";
-    }
-    var v = e.value;
-    if(v[0] == '{' || v[0] == '['){
-      s += v;
-    } else{
-      s += '"' + e.value.replace(/\\"/g, "\\\\\\"") + '"';
-    }
-  }
-  var req = '{"method": "' + mn + '", "params": [' + s + ']}';
-  var start = new Date();
-  \$.ajax({
-    type: "POST",
-    dataType: "text",
-    url: document.URL + "/" + sn,
-    data: req,
-    success: function(data, dataType) {
-      var e = data.indexOf('{"error":{"detail":"') == 0;
-      var fb = e ? "<font color=\\"red\\">" : "";
-      var fe = e ? "</font>" : "";
-      \$("#" + text).append(
-        start + ", " + (new Date().getTime() - start.getTime()) + "msec.<br/>req: " + escapeHTML(req) +
-        "<br/>res: " + fb + escapeHTML(data) + fe + "<hr/>"
-        );
-    },
-    error: function(XMLHttpRequest, textStatus, errorThrown){
-      var fb = "<font color=\\"red\\">";
-      var fe = "</font>";
-      \$("#" + text).append(
-        start + ", " + (new Date().getTime() - start.getTime()) + "msec.<br/>req: " + escapeHTML(req) +
-        "<br/>status: " +
-        fb + escapeHTML(textStatus) + fe + "<br/>error: " + fb + escapeHTML(errorThrown) + fe + "</font><hr/>"
-        );
-    }
-    });
-}
-//*/
+
 function clearLog(text){
   \$("#" + text).html("");
 }
@@ -350,7 +311,9 @@ if (parajsonldid == null) {
 
 def parajsonobj = request.getParameter("jsonobj");
 if (parajsonobj == null) {
-    parajsonobj = ""
+    if (paraclzname != null) {
+        parajsonobj = Json.toJsonPretty(this.class.classLoader.loadClass(paraclzname).newInstance());
+    }
 }
 
 //def paramavendep = request.getParameter("mavendep");

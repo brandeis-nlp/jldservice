@@ -28,6 +28,11 @@ class TestClazzJson{
     @Test
     public void test() {
 
+
+
+        def c = ClazzJson.invork("{ \"@type\": \"java.lang.String\", \"value\": \"1234\" }", "charAt", ["{ \"@type\": \"int\", \"value\": \"0\" }"]);
+        Assert.assertEquals(c , '1' as char);
+
         def fil = "/Users/shi/Project/chunqishi/lapps/edu.brandeis.cs.opennlp-web-service/src/main/resources/en-sent.bin";
         def docs = "A powerful storm that crippled much of the South swept into New York, depositing eight inches of snow in Central Park by midmorning and disrupting travel by road, rail and air.";
         def ann = new Annotation(docs);
@@ -55,7 +60,7 @@ class TestClazzJson{
         Assert.assertEquals(annotation, initAnn);
         def props = new Properties();
 //        props.put("annotators", "tokenize, ssplit, pos, lemma, ner");
-        props.put("annotators", "tokenize");
+        props.put("annotators", "tokenize, ssplit");
         def snlp = new StanfordCoreNLP(props);
         snlp.annotate(annotation);
         def annotationjson = js.toJsonbyIO(annotation);
@@ -65,7 +70,7 @@ class TestClazzJson{
 
         List<CoreMap> targetSentences = annotation.get(SentencesAnnotation.class);
 
-        Assert.assertEquals(sentences, targetSentences);
+        Assert.assertEquals(sentences.toString(), targetSentences.toString());
         println sentences;
 
     }
