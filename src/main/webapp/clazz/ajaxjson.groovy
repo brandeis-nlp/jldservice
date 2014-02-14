@@ -57,9 +57,10 @@ import java.util.logging.SimpleFormatter
 
 Logger log = Logger.getLogger("ajaxjson");
 log.setLevel(Level.ALL);
-Handler handler = new FileHandler("ajaxjson.log");
-handler.setFormatter(new SimpleFormatter());
-log.addHandler(handler);
+
+//Handler handler = new FileHandler("ajaxjson.log");
+//handler.setFormatter(new SimpleFormatter());
+//log.addHandler(handler);
 
 def jsonIoObj, retJsonObj = [:], retJson;
 def parameters = [];
@@ -75,7 +76,7 @@ log.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 log.info(jsonIoObj.toString());
 
 try{
-    if (jsonIoObj != null){
+    if (jsonIoObj.Object != null){
         log.info(jsonIoObj.Parameters.toString());
         //ClazzJson.invork("{ \"@type\": \"java.lang.String\", \"value\": \"1234\" }", "charAt", ["{ \"@type\": \"int\", \"value\": \"0\" }"]);
         log.info("-----------------------------");
@@ -83,6 +84,12 @@ try{
         log.info("result:"+retJsonObj.toString());
 
 
+        retJson = Json.toJsonbyIO(retJsonObj);
+        log.info("result:"+retJson.toString());
+    } else {
+        log.info("..............................");
+        retJsonObj = ClazzJson.init(jsonIoObj.Method as String, jsonIoObj.Parameters as ArrayList);
+        log.info("result:"+retJsonObj.toString());
         retJson = Json.toJsonbyIO(retJsonObj);
         log.info("result:"+retJson.toString());
     }

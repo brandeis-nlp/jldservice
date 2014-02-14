@@ -58,7 +58,10 @@ def listInterface(paraclzname) {
             htmllist.append(" <b>");
             htmllist.append(Field.getTypeName(method.getDeclaringClass()));
             htmllist.append("</b> ( ");
-            invokebox.append("<b>${Field.getTypeName(method.getDeclaringClass())}</b> (");
+            invokebox.append("""
+                <input type="text" value="${Field.getTypeName(method.getDeclaringClass())}" size="${Field.getTypeName(method.getDeclaringClass()).length()* 1.2 + 2}" disabled="disabled"/>
+            """);
+            invokebox.append("(");
             Class<?>[] params = method.parameterTypes;
             for (int j = 0; j < params.length; j++) {
                 if (params[j].isPrimitive()) {
@@ -74,7 +77,8 @@ def listInterface(paraclzname) {
                     htmllist.append(hrefClazz(Field.getTypeName(params[j])));
                 }
                 invokebox.append("""
-                    <div class="green box"><span class="h">${Field.getTypeName(params[j])}</span><p><textarea cols="16" rows="3"></textarea></p></div>
+                    <div class="green box"><span class="h">${Field.getTypeName(params[j])}</span><p>
+                    <textarea cols="16" rows="3"></textarea></p></div>
                 """);
                 if (j < (params.length - 1)) {
                     htmllist.append(', ');
@@ -99,7 +103,7 @@ def listInterface(paraclzname) {
                 <form id="f${idx}">
                     ${invokebox.toString()}
                     <button class="button-red"
-                        onclick="invokeMethod('f${idx}','res${idx}', 'JsonSplitter', 'sentPosDetect');return false;">invoke</button>
+                        onclick="invokeMethod('f${idx}','res${idx}');return false;">invoke</button>
 
                     <button class="button-grey"
                         onclick="clearLog('res${idx}');return false;">clear</button>
@@ -136,11 +140,12 @@ def listInterface(paraclzname) {
             htmllist.append('.<b>');
             htmllist.append(method.getName());
             invokebox.append("""
-                    <div class="blue box"><span class="h">this</span><p><textarea id="obj" cols="16" rows="3"></textarea></p></div>
+                    <div class="blue box"><span class="h">this</span><p>
+                    <textarea id="obj" cols="16" rows="3"></textarea></p></div>
             """);
             htmllist.append("</b> ( ");
             invokebox.append("""
-                .<input type="text" value="${method.getName()}" disabled="disabled"/>(
+                .<input type="text" value="${method.getName()}" size="${method.getName().length() * 1.2 + 2}" disabled="disabled"/>(
             """);
             Class<?>[] params = method.getCachedMethod().parameterTypes;
             for (int j = 0; j < params.length; j++) {
@@ -157,7 +162,8 @@ def listInterface(paraclzname) {
                     htmllist.append(hrefClazz(Field.getTypeName(params[j])));
                 }
                 invokebox.append("""
-                    <div class="green box"><span class="h">${Field.getTypeName(params[j])}</span><p><textarea cols="16" rows="3"></textarea></p></div>
+                    <div class="green box"><span class="h">${Field.getTypeName(params[j])}</span><p>
+                    <textarea cols="16" rows="3"></textarea></p></div>
                 """);
                 if (j < (params.length - 1)) {
                     htmllist.append(', ');
@@ -185,7 +191,7 @@ def listInterface(paraclzname) {
                 <form id="f${idx}">
                     ${invokebox.toString()}
                     <button class="button-red"
-                        onclick="invokeMethod('f${idx}','res${idx}', 'ClassName', 'FunctionName');return false;">invoke</button>
+                        onclick="invokeMethod('f${idx}','res${idx}');return false;">invoke</button>
 
                     <button class="button-grey"
                         onclick="clearLog('res${idx}');return false;">clear</button>
@@ -212,20 +218,20 @@ function loadSample(id, sn, mn, sample){
   if(span.html() == "loading...")
     span.html("<iframe src='" + document.URL + "/" + sn + "?method=" + mn + "&sample=" + sample + "'></iframe>");
 }
-var ppcfg = {maxArray: 1000, maxDepth: 100, maxStringLength: 1024,
-  styles: {
-    array: { th:{ backgroundColor: 'lightyellow', color: '#0', "text-align": "center" } },
-    'function': { th: { backgroundColor: '#D82525' } },
-    regexp: { th: { backgroundColor: '#E2F3FB', color: '#000' } },
-    object: { th: { backgroundColor: '#A7C942', color: '#0', "text-align": "center" } },
-    jquery : { th: { backgroundColor: '#FBF315' } },
-    error: { th: { backgroundColor: 'red', color: 'yellow' } },
-    domelement: { th: { backgroundColor: '#F3801E' } },
-    date: { th: { backgroundColor: '#A725D8' } },
-    colHeader: { th: { backgroundColor: '#FFFFFF', color: '#000', textTransform: 'uppercase', display: "none" } },
-  } };
+//var config = {maxArray: 1000, maxDepth: 100,
+//  styles: {
+//    array: { th:{ backgroundColor: 'lightyellow', color: '#0', "text-align": "center" } },
+//    'function': { th: { backgroundColor: '#D82525' } },
+//    regexp: { th: { backgroundColor: '#E2F3FB', color: '#000' } },
+//    object: { th: { backgroundColor: '#A7C942', color: '#0', "text-align": "center" } },
+//    jquery : { th: { backgroundColor: '#FBF315' } },
+//    error: { th: { backgroundColor: 'red', color: 'yellow' } },
+//    domelement: { th: { backgroundColor: '#F3801E' } },
+//    date: { th: { backgroundColor: '#A725D8' } },
+//    colHeader: { th: { backgroundColor: '#FFFFFF', color: '#000', textTransform: 'uppercase', display: "none" } },
+//  } };
 
-function invokeMethod(fn, text, sn, mn){
+function invokeMethod(fn, text){
   var f = document.getElementById(fn);
   var n = f.elements.length;
   var io = {}
@@ -266,10 +272,14 @@ function invokeMethod(fn, text, sn, mn){
       }
       log.append("<b>" + start.toLocaleString() + "</b> (" + (new Date().getTime() - start.getTime()) + " millisecond used)" +
         ' <span class="info">[:Raw Text]<span>Request:<br/>' + JSON.stringify(req) + "<br/><br/>Response:<br/>" + data +
-        "</span></span><br/><b>Request:</b><br/>");
-      log.append(\$(prettyPrint(io, ppcfg)));
+        "</span></span><br/>");
+      //log.append("<b>Request:</b><br/>");
+      //log.append(\$(prettyPrint(io)));
       log.append("<b>Response:</b><br/>");
-      log.append(\$(prettyPrint(jQuery.parseJSON(data), ppcfg)));
+      //log.append("<code class='code prettyprint'>");
+      log.append(data);
+      //log.append("</code>");
+      log.append(\$(prettyPrint(jQuery.parseJSON(data))));
     },
     error: function(XMLHttpRequest, textStatus, errorThrown){
       var fb = "<font color=\\"red\\">";

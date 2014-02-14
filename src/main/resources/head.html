@@ -6,8 +6,11 @@
 <link rel="stylesheet"  type="text/css" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" />
 
 <style>
-body, p, td, pre, input, textarea, button {
+body, p, td, pre,  button {
 font-size: 14pt; }
+
+input, textarea {
+font-size: 12pt; }
 
 body {
 background-color:lightyellow;
@@ -456,5 +459,20 @@ function togglePanel(id){
   $("#" + id).toggle();
 }
 </script>
--->
 
+
+<script type="text/javascript">
+window.onload = function() {
+    $('input').each(function(){
+    var value = $(this).val();
+    var size  = value.length;
+    // playing with the size attribute
+    //$(this).attr('size',size);
+
+    // playing css width
+    size = size * 2; // average width of a char
+    $(this).css('width',size * 3);
+    })​;
+ }
+</script>
+-->
