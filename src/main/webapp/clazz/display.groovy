@@ -249,8 +249,8 @@ function invoke(formId, displayId){
         t.append(display);
       }
       display.append("<p>");
-      display.append("<b>" + start.toLocaleString() + "</b> (" + (new Date().getTime() - start.getTime()) + " millisecond used)");
-      display.append("<span class='info'> [ ... ] <span>" + JSON.stringify(io,null,4) + "</span></span></p>");
+      display.append("<b>" + start.toLocaleString() + "</b> (" + (new Date().getTime() - start.getTime()) + " millisecond used) ");
+      display.append("<span class='dropt'>...<span style='width:500px;'>Request:<br />" + JSON.stringify(io,null,4) + "</span></span></p>");
       display.append("</p>")
       display.append("<hr />");
       display.append("<p><span id='response" + start.getTime() + "'> </span></p>");
