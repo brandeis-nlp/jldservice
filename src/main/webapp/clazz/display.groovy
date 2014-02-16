@@ -97,19 +97,19 @@ def listInterface(paraclzname) {
                 }
             }
             htmllist.append("""
-                <span onclick="togglePanel('invokePanel${idx}');return false;"> +</span>
+                <span onclick="\$('#div${idx}').toggle();return false;"> +</span>
                 <br />
-                <span id="invokePanel${idx}" class="invokePanel" style="display: none;">
-                <form id="f${idx}">
+                <div id="div${idx}" style="display: none;">
+                <form id="form${idx}">
                     ${invokebox.toString()}
                     <button class="button-red"
-                        onclick="invokeMethod('f${idx}','res${idx}');return false;">invoke</button>
+                        onclick="invoke('form${idx}','display${idx}');return false;">invoke</button>
 
                     <button class="button-grey"
-                        onclick="clearLog('res${idx}');return false;">clear</button>
+                        onclick="\$('#display${idx}').html('');return false;">clear</button>
                 </form>
-                <div id="res${idx}" class="code prettyprint">
-                </div></span>
+                <div id="display${idx}" class="block"></div>
+                </div>
             """);
             htmllist.append("</li>");
             idx ++;
@@ -185,19 +185,19 @@ def listInterface(paraclzname) {
             }
             //    htmllist.append(method)
             htmllist.append("""
-                <span onclick="togglePanel('invokePanel${idx}');return false;"> +</span>
+                <span onclick="\$('#div${idx}').toggle();return false;"> +</span>
                 <br />
-                <span id="invokePanel${idx}" class="invokePanel" style="display: none;">
-                <form id="f${idx}">
+                <div id="div${idx}" style="display: none;">
+                <form id="form${idx}">
                     ${invokebox.toString()}
                     <button class="button-red"
-                        onclick="invokeMethod('f${idx}','res${idx}');return false;">invoke</button>
+                        onclick="invoke('form${idx}','display${idx}');return false;">invoke</button>
 
                     <button class="button-grey"
-                        onclick="clearLog('res${idx}');return false;">clear</button>
+                        onclick="\$('#display${idx}').html('');return false;">clear</button>
                 </form>
-                <div id="res${idx}" class="code prettyprint">
-                </div></span>
+                <div id="display${idx}" class="block"></div>
+                </div>
             """);
             htmllist.append(" </li>");
             idx ++;
@@ -210,34 +210,12 @@ def listInterface(paraclzname) {
 def script = """
 <script type="text/javascript">
 <!--
-function escapeHTML(str) {
-  return str.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-}
-function loadSample(id, sn, mn, sample){
-  var span = \$("#" + id);
-  if(span.html() == "loading...")
-    span.html("<iframe src='" + document.URL + "/" + sn + "?method=" + mn + "&sample=" + sample + "'></iframe>");
-}
-//var config = {maxArray: 1000, maxDepth: 100,
-//  styles: {
-//    array: { th:{ backgroundColor: 'lightyellow', color: '#0', "text-align": "center" } },
-//    'function': { th: { backgroundColor: '#D82525' } },
-//    regexp: { th: { backgroundColor: '#E2F3FB', color: '#000' } },
-//    object: { th: { backgroundColor: '#A7C942', color: '#0', "text-align": "center" } },
-//    jquery : { th: { backgroundColor: '#FBF315' } },
-//    error: { th: { backgroundColor: 'red', color: 'yellow' } },
-//    domelement: { th: { backgroundColor: '#F3801E' } },
-//    date: { th: { backgroundColor: '#A725D8' } },
-//    colHeader: { th: { backgroundColor: '#FFFFFF', color: '#000', textTransform: 'uppercase', display: "none" } },
-//  } };
-
-function invokeMethod(fn, text){
-  var f = document.getElementById(fn);
-  var n = f.elements.length;
+function invoke(formId, displayId){
+  var form = document.getElementById(formId);
   var io = {}
   io.Parameters = []
-  for(i = 0; i < n; i++){
-    var e = f.elements[i];
+  for(i = 0; i < form.elements.length; i++){
+    var e = form.elements[i];
     var v = e.value;
     var jsonobj = v;
     if (v[0] == '{' || v[0] == '[') {
@@ -262,44 +240,54 @@ function invokeMethod(fn, text){
     url: "ajaxjson.groovy",
     data: req,
     success: function(data, dataType) {
-      log = \$("<div></div>");
-      t = \$("#" + text);
+      var display = \$("<div></div>");
+      t = \$("#" + displayId);
       if(t.children().length > 0){
         \$("<hr/>").insertBefore(t.children(":first"));
-        log.insertBefore(t.children(":first"));
+        display.insertBefore(t.children(":first"));
       } else{
-        t.append(log);
+        t.append(display);
       }
-      log.append("<b>" + start.toLocaleString() + "</b> (" + (new Date().getTime() - start.getTime()) + " millisecond used)" +
-        ' <span class="info">[:Raw Text]<span>Request:<br/>' + JSON.stringify(req) + "<br/><br/>Response:<br/>" + data +
-        "</span></span><br/>");
-      //log.append("<b>Request:</b><br/>");
-      //log.append(\$(prettyPrint(io)));
-      log.append("<b>Response:</b><br/>");
-      //log.append("<code class='code prettyprint'>");
-      log.append(data);
-      //log.append("</code>");
-      log.append(\$(prettyPrint(jQuery.parseJSON(data))));
+      display.append("<p>");
+      display.append("<b>" + start.toLocaleString() + "</b> (" + (new Date().getTime() - start.getTime()) + " millisecond used)");
+      display.append("<span class='info'> [ ... ] <span>" + JSON.stringify(io,null,4) + "</span></span></p>");
+      display.append("</p>")
+      display.append("<hr />");
+      display.append("<p><span id='response" + start.getTime() + "'> </span></p>");
+      var node = new PrettyJSON.view.Node({
+                el:\$('#response' + start.getTime()),
+                data:jQuery.parseJSON(data)
+      });
+      display.append("<p>");
+      display.append(\$(prettyPrint(jQuery.parseJSON(data))));
+      display.append("</p>")
     },
     error: function(XMLHttpRequest, textStatus, errorThrown){
-      var fb = "<font color=\\"red\\">";
-      var fe = "</font>";
-      \$("#" + text).append(
-        start + ", " + (new Date().getTime() - start.getTime()) + "msec.<br/>　request: " + escapeHTML(req) +
-        "<br/>status: " +
-        fb + escapeHTML(textStatus) + fe + "<br/>error: " + fb + escapeHTML(errorThrown) + fe + "</font><hr/>"
-        );
+      var display = \$("<div></div>");
+      t = \$("#" + displayId);
+      if(t.children().length > 0){
+        \$("<hr/>").insertBefore(t.children(":first"));
+        display.insertBefore(t.children(":first"));
+      } else{
+        t.append(display);
+      }
+      display.append("<p>");
+      display.append("<b>" + start.toLocaleString() + "</b> (" + (new Date().getTime() - start.getTime()) + " millisecond used)");
+      display.append("<span class='info'> [ ... ] <span>" + JSON.stringify(io,null,4) + "</span></span></p>");
+      display.append("</p>")
+      display.append("<hr />");
+      display.append("<p>Status:<font color='red'>")
+      display.append(_.unescape(textStatus))
+      display.append("</font></p>")
+
+      display.append("<p>Error:<font color='red'>")
+      display.append(_.unescape(errorThrown))
+      display.append("</font></p>")
+
     }
-    });
+  });
 }
 
-function clearLog(text){
-  \$("#" + text).html("");
-}
-
-function togglePanel(id){
-  \$("#" + id).toggle();
-}
 // -->
 </script>
 """;
@@ -361,7 +349,6 @@ println """<!DOCTYPE HTML>
 <head>
     <!--TODO: title -->
     <title>Display Class</title>
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     ${head}
     ${script}
 </head>
@@ -375,7 +362,7 @@ println """<!DOCTYPE HTML>
 
 <p>
 </p>
-<p>
+<!--p>
 ${request}
 </p>
 <p>
@@ -391,7 +378,7 @@ this Groovlet is fairly simple.
 <p>
 This course is being run on the following servlet container: </br>
 ${application.getServerInfo()}
-</p>
+</p-->
 
 <a name="jsonld-description" />
 <h2>JSON-LD Descirption  <a href="#_top_" style="text-decoration: none;">^</a></h2>

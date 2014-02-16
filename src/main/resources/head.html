@@ -1,9 +1,23 @@
 
 <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js" >  </script>
 <script src="http://code.jquery.com/jquery-1.10.2.js" >  </script>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js" >  </script>
 <script src="https://rawgithub.com/padolsey/prettyprint.js/master/prettyprint.js" >  </script>
+
+<script src="https://rawgithub.com/epeli/underscore.string/master/lib/underscore.string.js" >  </script>
+<script src="http://warfares.github.io/pretty-json/libs/underscore-min.js" >  </script>
+<script src="http://warfares.github.io/pretty-json/libs/backbone-min.js" >  </script>
+<script src="http://warfares.github.io/pretty-json/pretty-json-min.js" >  </script>
+
+
+
 <link rel="stylesheet"  type="text/css" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" />
+<link rel="stylesheet"  type="text/css" href="http://fonts.googleapis.com/css?family=Quicksand" />
+<link rel="stylesheet"  type="text/css" href="http://warfares.github.io/pretty-json/css/pretty-json.css" />
+
+
+
 
 <style>
 body, p, td, pre,  button {
@@ -60,14 +74,19 @@ display: block;
 white-space: pre-line;}
 
 .code {
+white-space: pre-line;}
+
+.block {
+overflow:scroll; }
+
+.code, .block {
 padding: 4pt;
 font-size: 12pt;
 background-color: whitesmoke;
 border: thin dotted gray;
 margin-left: 10pt;
 margin-right: 30pt;
-display: block;
-white-space: pre-line;}
+display: block;}
 
 .author {
 font-size: 16pt;
@@ -311,16 +330,11 @@ line-height: 1em;  }
     }
 
 
-    form{
-    margin: 0px;
-    }
+    form {
+    margin: 0px; }
 
     textarea{
     vertical-align: bottom;
-    }
-
-    .invokePanel{
-    display: none;
     }
 
     .resPanel{
