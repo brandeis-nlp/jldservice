@@ -23,6 +23,7 @@ class TestJsonSchema {
     public void testMaven() {
         def js = new JsonSchema()
         println js.toJsonSchema(String.class)
+        println js.toJsonSchema(java.io.UnsupportedEncodingException.class)
     }
 
 }

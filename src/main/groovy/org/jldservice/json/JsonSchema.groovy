@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.ObjectWriter
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.jsonSchema.factories.SchemaFactoryWrapper
+import com.sun.codemodel.JCodeModel
+import org.jsonschema2pojo.SchemaMapper
 
 //
 // http://stackoverflow.com/questions/17783909/create-json-schema-from-java-class
@@ -18,7 +20,14 @@ class JsonSchema{
             return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(schema);
         }catch (java.lang.StackOverflowError e){
             e.printStackTrace()
-            return e.toString()
+            return clz.toString()
         }
     }
+
+//    static def toJsonSchema2Pojo(clz) {
+//        JCodeModel codeModel = new JCodeModel();
+//        URL source = new URL("file:///path/to/my/schema.json");
+//        new SchemaMapper().generate(codeModel, "ClassName", "com.example", source);
+//        codeModel.build(new File("output"));
+//    }
 }

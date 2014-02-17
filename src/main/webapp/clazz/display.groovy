@@ -103,10 +103,10 @@ def listInterface(paraclzname) {
                 <form id="form${idx}">
                     ${invokebox.toString()}
                     <button class="button-red"
-                        onclick="invoke('form${idx}','display${idx}');return false;">invoke</button>
+                        onclick="invoke('form${idx}','display${idx}');return false;">Invoke</button>
 
                     <button class="button-grey"
-                        onclick="\$('#display${idx}').html('');return false;">clear</button>
+                        onclick="\$('#display${idx}').html('');return false;">Clear</button>
                 </form>
                 <div id="display${idx}" class="block"></div>
                 </div>
@@ -191,10 +191,10 @@ def listInterface(paraclzname) {
                 <form id="form${idx}">
                     ${invokebox.toString()}
                     <button class="button-red"
-                        onclick="invoke('form${idx}','display${idx}');return false;">invoke</button>
+                        onclick="invoke('form${idx}','display${idx}');return false;">Invoke</button>
 
                     <button class="button-grey"
-                        onclick="\$('#display${idx}').html('');return false;">clear</button>
+                        onclick="\$('#display${idx}').html('');return false;">Clear</button>
                 </form>
                 <div id="display${idx}" class="block"></div>
                 </div>
@@ -300,6 +300,8 @@ function invoke(formId, displayId){
 def paraclzname = request.getParameter("clazzname");
 if (paraclzname == null || "".equals(paraclzname.trim())) {
     paraclzname = ClazzInterface.getName()
+} else {
+    paraclzname = paraclzname.trim();
 }
 
 def parajsonldid = request.getParameter("jsonldid");
@@ -386,7 +388,9 @@ ${application.getServerInfo()}
 <h3>Input of Class:</h3>
 <form method="get">
 <p>
-    Class Name: <br/> <input name="clazzname" formmethod="get" value="${paraclzname}" size="40" style="text-align:right"/>
+    Class Name: <br/>
+    <input name="clazzname" formmethod="get" value="${paraclzname}" size="${paraclzname.length() * 1.5}" style="text-align:right;"/>
+    <!--textarea name="clazzname" formmethod="get" cols="40" rows="1" style="text-align:right"> ${paraclzname} &nbsp;</textarea-->
 </p>
 <p>
     JSON-LD: <br/> <textarea name="jsonldid" formmethod="get" cols="40" rows="10">${parajsonldid}</textarea>
@@ -405,7 +409,7 @@ ${application.getServerInfo()}
 <hr/>
 <h3>JSON-Schema</h3>
 <p>
-<a href="http://json-schema.org/latest/json-schema-core.html" target="_blank">Json schma</a> of Class ${paraclzname}:
+<a href="http://json-schema.org/latest/json-schema-core.html" target="_blank">Json schema</a> of Class ${paraclzname}:
 <pre class="prettyprint linenums">
 ${htmlclz}
 </pre>
@@ -423,9 +427,9 @@ ${htmllist}
 
 
 <footer><hr/>
-<p>
+<!--p>
     Progress:
-    <progress value="100" max="100"></progress></p>
+    <progress value="100" max="100"></progress></p-->
 <p>
     Contacts:
     <nonsense>diligenc</nonsense>s.cs@<nonsense>gma</nonsense>il.<nonsense></nonsense>com
