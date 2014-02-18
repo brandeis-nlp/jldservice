@@ -24,6 +24,10 @@
             <url>http://repository.codehaus.org/org/codehaus/jackson/</url>
         </repository>
 
+        <repository>
+            <id>lapps</id>
+            <url>http://eldrad.cs-i.brandeis.edu:6061/nexus/content/repositories/releases/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -170,7 +174,19 @@
             <artifactId>groovy-common-extensions</artifactId>
             <version>0.5.8</version>
         </dependency-->
+
+
         <!-- BEGIN LappsGrid -->
+        <dependency>
+            <groupId>edu.brandeis.cs.lapps</groupId>
+            <artifactId>stanfordnlp-web-service</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.brandeis.cs.lapps</groupId>
+            <artifactId>opennlp-web-service</artifactId>
+            <version>0.0.2</version>
+        </dependency>
         <!-- END LappsGrid -->
 
     </dependencies>
