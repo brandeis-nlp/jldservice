@@ -50,28 +50,25 @@ class TestClazzJson{
         def para = "{\"@type\":\"class\",\"value\":\"edu.stanford.nlp.ling.CoreAnnotations\$SentencesAnnotation\"}";
         Assert.assertEquals(senjson, para);
 
-        def clsName = "edu.stanford.nlp.pipeline.Annotation";
-        def methodName = "edu.stanford.nlp.util.ArrayCoreMap.get";
-        def jsonParaObjs = [para];
-        def sentences = ClazzJson.invork(jsonobj, methodName, jsonParaObjs);
-
-        def initAnn = ClazzJson.init(clsName, [js.toJsonbyIO(docs)]);
-        def annotation = new Annotation(docs);
-        Assert.assertEquals(annotation, initAnn);
-        def props = new Properties();
-//        props.put("annotators", "tokenize, ssplit, pos, lemma, ner");
-        props.put("annotators", "tokenize, ssplit");
-        def snlp = new StanfordCoreNLP(props);
-        snlp.annotate(annotation);
-        def annotationjson = js.toJsonbyIO(annotation);
-
-//        def file = new File("/Users/shi/Project/chunqishi/jldservice/src/test/resources/annotation.json");
-//        file << groovy.json.JsonOutput.prettyPrint(annotationjson);
-
-        List<CoreMap> targetSentences = annotation.get(SentencesAnnotation.class);
-
-        Assert.assertEquals(sentences.toString(), targetSentences.toString());
-        println sentences;
+//        def clsName = "edu.stanford.nlp.pipeline.Annotation";
+//        def methodName = "edu.stanford.nlp.util.ArrayCoreMap.get";
+//        def jsonParaObjs = [para];
+//        def sentences = ClazzJson.invork(jsonobj, methodName, jsonParaObjs);
+//
+//        def initAnn = ClazzJson.init(clsName, [js.toJsonbyIO(docs)]);
+//        def annotation = new Annotation(docs);
+//        Assert.assertEquals(annotation, initAnn);
+//        def props = new Properties();
+//        props.put("annotators", "tokenize, ssplit");
+//        def snlp = new StanfordCoreNLP(props);
+//        snlp.annotate(annotation);
+//        def annotationjson = js.toJsonbyIO(annotation);
+//
+//
+//        List<CoreMap> targetSentences = annotation.get(SentencesAnnotation.class);
+//
+//        Assert.assertEquals(sentences.toString(), targetSentences.toString());
+//        println sentences;
 
     }
 
