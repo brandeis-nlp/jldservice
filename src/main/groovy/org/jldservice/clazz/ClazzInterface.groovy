@@ -17,12 +17,9 @@ class NullClazz {
 
 
 class ClazzInterface {
-    static {
-        ClazzJar.load();
-    }
 
     def pubFuncFromClassName(clzname) {
-        def clz = this.class.classLoader.loadClass(clzname)
+        def clz = ClazzJar.load(clzname);
         if (clz != null) {
             return pubFuncFromClass(clz)
         }
@@ -53,8 +50,9 @@ class ClazzInterface {
         return funcs
     }
 
+
     def pubConstructorFromClassName(clzname) {
-        def clz = this.class.classLoader.loadClass(clzname)
+        def clz = ClazzJar.load(clzname);
         if (clz != null) {
             return pubConstructorFromClass(clz)
         }

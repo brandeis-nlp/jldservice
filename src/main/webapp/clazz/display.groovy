@@ -1,6 +1,7 @@
 import groovy.json.JsonBuilder
 import org.codehaus.groovy.reflection.CachedMethod
 import org.jldservice.clazz.ClazzInterface
+import org.jldservice.clazz.ClazzJar
 import org.jldservice.json.JsonSchema
 import org.jldservice.maven.Maven
 import org.jldservice.json.Json
@@ -310,9 +311,13 @@ if (parajsonldid == null) {
 }
 
 def parajsonobj = request.getParameter("jsonobj");
-if (parajsonobj == null) {
+if (parajsonobj == null || "".equals(parajsonobj.trim())) {
     if (paraclzname != null) {
-        parajsonobj = Json.toJsonPretty(this.class.classLoader.loadClass(paraclzname).newInstance());
+        try{
+            parajsonobj = Json.toJsonPretty(ClazzJar.load(paraclzname).newInstance());
+        } catch(Throwable th) {
+            parajsonobj = th.toString();
+        }
     }
 }
 
@@ -337,7 +342,7 @@ if (!session.counter) {
 
 
 
-def clz = this.class.classLoader.loadClass(paraclzname)
+def clz = ClazzJar.load(paraclzname)
 def htmlclz= JsonSchema.toJsonSchema(clz)
 
 //def htmllist = Html.listInterface(paraclzname)
@@ -401,7 +406,8 @@ ${application.getServerInfo()}
 </p>
 
 <p>
-    <input type="reset" / ><input name="clazzname" type="submit"/>
+    <input type="reset" value="Reset"/>
+    <input type="submit" value="Submit"/>
 </p>
 </form>
 

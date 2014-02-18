@@ -9,6 +9,7 @@ import java.lang.reflect.AnnotatedElement
 import java.lang.reflect.Constructor
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
+import org.jldservice.clazz.ClazzJar
 
 
 import org.jldservice.json.Json
@@ -50,7 +51,7 @@ class ClazzJson {
             def paraObj = Json.fromJsonbyIO(entry);
             paraObjs.add(paraObj);
         }
-        return  ClazzJson.classLoader.loadClass(clsName).newInstance(*paraObjs);
+        return  ClazzJar.load(clsName).newInstance(*paraObjs);
     }
 }
 

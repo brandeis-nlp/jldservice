@@ -180,6 +180,11 @@
         <finalName>javalinkdata-service</finalName>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.groovy</groupId>
                 <artifactId>groovy-eclipse-compiler</artifactId>
                 <version>2.8.0-01</version>
@@ -263,7 +268,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.16</version>
                 <configuration>
-                    <argLine>-Xms512m -Xmx1024m -XX:MaxPermSize=512m</argLine>
+                    <argLine>-Xms512m -Xmx2048m -XX:MaxPermSize=512m</argLine>
                     <!-- mvn test: java.lang.OutOfMemoryError: Java heap space -->
                 </configuration>
             </plugin>
