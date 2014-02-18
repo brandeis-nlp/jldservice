@@ -252,14 +252,16 @@ function invoke(formId, displayId){
       display.append("<p>");
       display.append("<b>" + start.toLocaleString() + "</b> (" + (new Date().getTime() - start.getTime()) + " millisecond used) ");
       display.append("<span class='dropt'>...<span style='width:500px;'>Request:<br />" + JSON.stringify(io,null,4) + "</span></span></p>");
-      display.append("</p>")
       display.append("<hr />");
-      display.append("<p><span id='response" + start.getTime() + "'> </span></p>");
+      display.append("<p>");
+      display.append("<div class='red box'><span class='h'>Result</span><p><textarea cols='16' rows='3'>" + data + "</textarea></p></div>");
+      display.append("</p><p>")
+      display.append("<div style='inline-block;'><span id='response" + start.getTime() + "'> </span></div>");
       var node = new PrettyJSON.view.Node({
                 el:\$('#response' + start.getTime()),
                 data:jQuery.parseJSON(data)
       });
-      display.append("<p>");
+      display.append("</p><p>");
       display.append(\$(prettyPrint(jQuery.parseJSON(data))));
       display.append("</p>")
     },
