@@ -29,7 +29,6 @@ class TestClazzJar{
     @Test
     public void test() {
         println ClazzJar.load("java.lang.String");
-        println ClazzJar.load("edu.brandeis.cs.lappsgrid.stanford.corenlp.Coreference");
 
     }
 

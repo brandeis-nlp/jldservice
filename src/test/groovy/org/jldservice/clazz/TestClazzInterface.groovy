@@ -28,7 +28,7 @@ class TestClazzInterface {
 //        println ci.pubFuncFromClassName("org.jldservice.clazz.ClazzInterface")
         println ci.pubFuncFromClassName("org.apache.maven.cli.MavenCli")
         println ""
-        println ci.pubConstructorFromClassName("opennlp.tools.sentdetect.SentenceModel")
+//        println ci.pubConstructorFromClassName("opennlp.tools.sentdetect.SentenceModel")
     }
 
 }

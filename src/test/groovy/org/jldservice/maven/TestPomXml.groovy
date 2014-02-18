@@ -47,13 +47,13 @@ class TestPomXml {
 //        println this.class.classLoader.getResource("pom_depaddedxml").text.trim()
 //        def file = new File("/Users/shi/Project/chunqishi/jldservice/src/test/resources/pom_.xml");
 //        file << depadded;
-
-        Assert.assertTrue(depadded.contains("9.1-901.jdbc4"))
-
-        println "---------setDependenciesCopyDirectory---------"
-        depadded =  xml.setDependenciesCopyDirectory("mydirectory")
-
-        Assert.assertTrue(depadded.contains("mydirectory"))
+//
+//        Assert.assertTrue(depadded.contains("9.1-901.jdbc4"))
+//
+//        println "---------setDependenciesCopyDirectory---------"
+//        depadded =  xml.setDependenciesCopyDirectory("mydirectory")
+//
+//        Assert.assertTrue(depadded.contains("mydirectory"))
 //        println ""
 //        def mvn = new Maven()
 //        mvn.copyDependencies(null,null)
