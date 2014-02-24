@@ -312,7 +312,8 @@ if (parajsonldid == null) {
     parajsonldid = ""
 }
 
-def parajsonobj = request.getParameter("jsonobj");
+//def parajsonobj = request.getParameter("jsonobj");
+def parajsonobj = null;
 if (parajsonobj == null || "".equals(parajsonobj.trim())) {
     if (paraclzname != null) {
         try{
@@ -390,27 +391,26 @@ ${application.getServerInfo()}
 </p-->
 
 <a name="jsonld-description" />
-<h2>JSON-LD Descirption  <a href="#_top_" style="text-decoration: none;">^</a></h2>
+<h2>JSON-LD Description  <a href="#_top_" style="text-decoration: none;"></a></h2>
 <hr/>
 <h3>Input of Class:</h3>
 <form method="get">
 <p>
     Class Name: <br/>
-    <input name="clazzname" formmethod="get" value="${paraclzname}" size="${paraclzname.length() * 1.5}" style="text-align:right;"/>
+    <input name="clazzname" formmethod="get" value="${paraclzname}" size="${paraclzname.length() * 1.5}"/>
     <!--textarea name="clazzname" formmethod="get" cols="40" rows="1" style="text-align:right"> ${paraclzname} &nbsp;</textarea-->
-</p>
-<p>
-    JSON-LD: <br/> <textarea name="jsonldid" formmethod="get" cols="40" rows="10">${parajsonldid}</textarea>
-</p>
-
-<p>
-    JSON: <br/> <textarea name="jsonobj" formmethod="get" cols="40" rows="10">${parajsonobj}</textarea>
-</p>
-
-<p>
-    <input type="reset" value="Reset"/>
     <input type="submit" value="Submit"/>
+    <input type="reset" value="Reset"/>
 </p>
+
+<!--p>
+    JSON-LD: <br/> <textarea name="jsonldid" formmethod="get" cols="80" rows="10">${parajsonldid}</textarea>
+</p-->
+
+<p>
+    JSON: <br/> <textarea readonly name="jsonobj" formmethod="get" cols="80" rows="10">${parajsonobj}</textarea>
+</p>
+
 </form>
 
 
@@ -437,11 +437,11 @@ ${htmllist}
 <footer><hr/>
 <!--p>
     Progress:
-    <progress value="100" max="100"></progress></p-->
+    <progress value="100" max="100"></progress></p>
 <p>
     Contacts:
     <nonsense>diligenc</nonsense>s.cs@<nonsense>gma</nonsense>il.<nonsense></nonsense>com
-</p></footer>
+</p--></footer>
 </body>
 </html>
 """
