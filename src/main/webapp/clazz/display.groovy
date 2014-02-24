@@ -33,9 +33,14 @@ def hrefClazz(clzname){
 }
 
 
+def lastNameOf(paraclzname) {
+    if (paraclzname == null)
+        return "null";
+    return paraclzname.split("\\.")[-1];
+}
 
 
-def listInterface(paraclzname) {
+def listInterface(paraclzname, jsonobj="") {
     int METHOD_MODIFIERS = Modifier.PUBLIC  | Modifier.PROTECTED    | Modifier.PRIVATE |
             Modifier.ABSTRACT       | Modifier.STATIC       | Modifier.FINAL   |
             Modifier.SYNCHRONIZED   | Modifier.NATIVE       | Modifier.STRICT;
@@ -79,7 +84,8 @@ def listInterface(paraclzname) {
                 }
                 invokebox.append("""
                     <div class="green box"><span class="h">${Field.getTypeName(params[j])}</span><p>
-                    <textarea cols="16" rows="3"></textarea></p></div>
+                    <input id="ptype" type="text" style="display:none" value="${Field.getTypeName(params[j])}" />
+                    <textarea cols="32" rows="6"></textarea></p></div>
                 """);
                 if (j < (params.length - 1)) {
                     htmllist.append(', ');
@@ -88,15 +94,15 @@ def listInterface(paraclzname) {
             }
             htmllist.append(" )");
             invokebox.append(")");
-            Class<?>[] exceptions = method.exceptionTypes; // avoid clone
-            if (exceptions.length > 0) {
-                htmllist.append(" throws ");
-                for (int k = 0; k < exceptions.length; k++) {
-                    htmllist.append(hrefClazz(exceptions[k].getName()));
-                    if (k < (exceptions.length - 1))
-                        htmllist.append(', ');
-                }
-            }
+//            Class<?>[] exceptions = method.exceptionTypes; // avoid clone
+//            if (exceptions.length > 0) {
+//                htmllist.append(" throws ");
+//                for (int k = 0; k < exceptions.length; k++) {
+//                    htmllist.append(hrefClazz(exceptions[k].getName()));
+//                    if (k < (exceptions.length - 1))
+//                        htmllist.append(', ');
+//                }
+//            }
             htmllist.append("""
                 <span onclick="\$('#div${idx}').toggle();return false;"> +</span>
                 <br />
@@ -141,8 +147,8 @@ def listInterface(paraclzname) {
             htmllist.append('.<b>');
             htmllist.append(method.getName());
             invokebox.append("""
-                    <div class="blue box"><span class="h">this</span><p>
-                    <textarea id="obj" cols="16" rows="3"></textarea></p></div>
+                    <div class="blue box"><span class="h">${lastNameOf(Field.getTypeName(method.getCachedMethod().getDeclaringClass()))}</span><p>
+                    <textarea id="obj" cols="32" rows="6">${jsonobj}</textarea></p></div>
             """);
             htmllist.append("</b> ( ");
             invokebox.append("""
@@ -164,7 +170,9 @@ def listInterface(paraclzname) {
                 }
                 invokebox.append("""
                     <div class="green box"><span class="h">${Field.getTypeName(params[j])}</span><p>
-                    <textarea cols="16" rows="3"></textarea></p></div>
+                    <input id="ptype" type="text" style="display:none" value="${Field.getTypeName(params[j])}" />
+                    <textarea cols="32" rows="6"></textarea></p></div>
+
                 """);
                 if (j < (params.length - 1)) {
                     htmllist.append(', ');
@@ -175,15 +183,15 @@ def listInterface(paraclzname) {
             htmllist.append(" ) ");
             invokebox.append(") ");
 
-            Class<?>[] exceptions = method.getCachedMethod().exceptionTypes; // avoid clone
-            if (exceptions.length > 0) {
-                htmllist.append(" throws ");
-                for (int k = 0; k < exceptions.length; k++) {
-                    htmllist.append(hrefClazz(exceptions[k].getName()));
-                    if (k < (exceptions.length - 1))
-                        htmllist.append(', ');
-                }
-            }
+//            Class<?>[] exceptions = method.getCachedMethod().exceptionTypes; // avoid clone
+//            if (exceptions.length > 0) {
+//                htmllist.append(" throws ");
+//                for (int k = 0; k < exceptions.length; k++) {
+//                    htmllist.append(hrefClazz(exceptions[k].getName()));
+//                    if (k < (exceptions.length - 1))
+//                        htmllist.append(', ');
+//                }
+//            }
             //    htmllist.append(method)
             htmllist.append("""
                 <span onclick="\$('#div${idx}').toggle();return false;"> +</span>
@@ -215,6 +223,7 @@ function invoke(formId, displayId){
   var form = document.getElementById(formId);
   var io = {}
   io.Parameters = []
+  io.ParameterTypes = []
   for(i = 0; i < form.elements.length; i++){
     var e = form.elements[i];
     var v = e.value;
@@ -229,7 +238,11 @@ function invoke(formId, displayId){
             io.Parameters.push(v);
         }
     } else if (e.nodeName == 'INPUT') {
-        io.Method = v;
+        if (e.id == 'ptype') {
+            io.ParameterTypes.push(v);
+        } else {
+            io.Method = v;
+        }
     }
   }
   var req = {};
@@ -254,7 +267,7 @@ function invoke(formId, displayId){
       display.append("<span class='dropt'>...<span style='width:500px;'>Request:<br />" + JSON.stringify(io,null,4) + "</span></span></p>");
       display.append("<hr />");
       display.append("<p>");
-      display.append("<div class='red box'><span class='h'>Result</span><p><textarea cols='16' rows='3'>" + data + "</textarea></p></div>");
+      display.append("<div class='red box'><span class='h'>Result</span><p><textarea cols='32' rows='6'>" + data + "</textarea></p></div>");
       display.append("</p><p>")
       display.append("<div style='inline-block;'><span id='response" + start.getTime() + "'> </span></div>");
       var node = new PrettyJSON.view.Node({
@@ -314,12 +327,19 @@ if (parajsonldid == null) {
 
 //def parajsonobj = request.getParameter("jsonobj");
 def parajsonobj = null;
+def parajsonexp = null;
 if (parajsonobj == null || "".equals(parajsonobj.trim())) {
     if (paraclzname != null) {
         try{
             parajsonobj = Json.toJsonPretty(ClazzJar.load(paraclzname).newInstance());
+            parajsonexp = "Success.";
         } catch(Throwable th) {
-            parajsonobj = th.toString();
+            parajsonexp = th.toString() + ":";
+            StringWriter sw = new StringWriter();
+            th.printStackTrace(new PrintWriter(sw));
+            String stackTrace = sw.toString();
+            parajsonexp += stackTrace;
+            parajsonobj = "";
         }
     }
 }
@@ -349,7 +369,7 @@ def clz = ClazzJar.load(paraclzname)
 def htmlclz= JsonSchema.toJsonSchema(clz)
 
 //def htmllist = Html.listInterface(paraclzname)
-def htmllist = listInterface(paraclzname)
+def htmllist = listInterface(paraclzname, parajsonobj)
 
 def head = this.class.getResource("/head.html").text
 
@@ -409,6 +429,7 @@ ${application.getServerInfo()}
 
 <p>
     JSON: <br/> <textarea readonly name="jsonobj" formmethod="get" cols="80" rows="10">${parajsonobj}</textarea>
+    <span class='dropt'>.<span style='width:600px; font-size:11px;'>Exception:<br />${parajsonexp}</span></span><br/>
 </p>
 
 </form>

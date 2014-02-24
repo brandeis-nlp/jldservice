@@ -10,6 +10,7 @@ import java.lang.reflect.Constructor
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
 import org.jldservice.clazz.ClazzJar
+import org.apache.commons.lang3.StringEscapeUtils
 
 
 import org.jldservice.json.Json
@@ -19,7 +20,7 @@ import org.jldservice.json.Json
  */
 
 class ClazzJson {
-    static def call (obj, methodName, parameters) {
+    static def call (obj, methodName, parameters, parameterTypes=[]) {
         def lastMethodName = methodName;
         if (methodName.contains(".")) {
             lastMethodName = methodName.split("\\.").last();
@@ -31,11 +32,16 @@ class ClazzJson {
         }
     }
 
-    static def invork(jsonobj, methodName, jsonParaObjs) {
+    static def invork(jsonobj, methodName, jsonParaObjs, jsonParaTypes=[]) {
         def obj = Json.fromJsonbyIO(jsonobj);
         def paraObjs = [];
         jsonParaObjs.eachWithIndex { CharSequence entry, int i ->
-            def paraObj = Json.fromJsonbyIO(entry);
+            def fixedEntry = entry;
+            if (!entry.contains("@type")) {
+                fixedEntry = "{\"@type\":\"" +jsonParaTypes.get(i) + "\",\"value\":\"" +
+                        StringEscapeUtils.escapeJson(entry.replaceAll("^\\s*\"","").replaceAll("\"\\s*\$",""))  +"\"}";
+            }
+            def paraObj = Json.fromJsonbyIO(fixedEntry);
             paraObjs.add(paraObj);
         }
         println "----invoke-----"
