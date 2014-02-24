@@ -8,8 +8,16 @@ import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility
 import org.codehaus.jackson.map.ObjectMapper
 import groovy.json.JsonOutput
 
+import java.util.logging.Level
+import java.util.logging.Logger
+
 
 class Json {
+    static Logger log = Logger.getLogger("display");
+    static {
+        log.setLevel(Level.ALL);
+    }
+
     //
     //  https://code.google.com/p/google-gson/
     //
@@ -57,7 +65,9 @@ class Json {
 
     // default using Json-IO
     static def toJsonPretty(obj){
-        return JsonOutput.prettyPrint(toJsonbyIO(obj));
+        def json = toJsonbyIO(obj);
+        log.info(json);
+        return JsonOutput.prettyPrint(json);
     }
 
 }

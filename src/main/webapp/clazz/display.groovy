@@ -22,11 +22,19 @@ import java.io.PrintWriter
 import java.lang.reflect.Field
 import java.lang.reflect.Method
 import java.lang.reflect.Modifier
+import java.util.logging.Level
+import java.util.logging.Logger
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+Logger log = Logger.getLogger("display");
+log.setLevel(Level.ALL);
+
+//Handler handler = new FileHandler("ajaxjson.log");
+//handler.setFormatter(new SimpleFormatter());
+//log.addHandler(handler);
 
 def hrefClazz(clzname){
     return "<a href='display.groovy?clazzname="+ clzname +"' target='_blank'>" + clzname + "</a>"
@@ -40,13 +48,16 @@ def lastNameOf(paraclzname) {
 }
 
 
-def listInterface(paraclzname, jsonobj="") {
+def listInterface(paraclzname, jsonobj="", log=null) {
     int METHOD_MODIFIERS = Modifier.PUBLIC  | Modifier.PROTECTED    | Modifier.PRIVATE |
             Modifier.ABSTRACT       | Modifier.STATIC       | Modifier.FINAL   |
             Modifier.SYNCHRONIZED   | Modifier.NATIVE       | Modifier.STRICT;
 
     def clsInf = new ClazzInterface()
     def idx = 0;
+
+    if (log != null)
+        log.info("Begin...");
     //
     // org.codehaus.groovy.reflection.CachedMethod.toString()
     //
@@ -122,14 +133,22 @@ def listInterface(paraclzname, jsonobj="") {
             idx ++;
         }
 
+//        if (log != null)
+//            log.info("Methods...");
+
 
         clsInf.pubFuncFromClassName(paraclzname).eachWithIndex{Object method, int i ->
+//            if (log != null)
+//                log.info("Method:" + method);
             invokebox.setLength(0);
             htmllist.append("<li>");
             int mod = method.getCachedMethod().getModifiers() & METHOD_MODIFIERS;
             if (mod != 0) {
                 htmllist.append(Modifier.toString(mod)).append(' ');
             }
+
+//            if (log != null)
+//                log.info("Return type...");
 
             if (method.getReturnType().isPrimitive()) {
                 htmllist.append(Field.getTypeName(method.getReturnType()));
@@ -142,19 +161,42 @@ def listInterface(paraclzname, jsonobj="") {
             } else {
                 htmllist.append(hrefClazz(Field.getTypeName(method.getReturnType())));
             }
+
+//            if (log != null)
+//                log.info("Method name...");
+
             htmllist.append(" ");
             htmllist.append(Field.getTypeName(method.getCachedMethod().getDeclaringClass()));
             htmllist.append('.<b>');
             htmllist.append(method.getName());
+
+//            if (log != null)
+//                log.info("Box");
+
+            invokebox.append("""<div class="blue box"><span class="h">""");
+            invokebox.append(Field.getTypeName(method.getCachedMethod().getDeclaringClass()));
             invokebox.append("""
-                    <div class="blue box"><span class="h">${lastNameOf(Field.getTypeName(method.getCachedMethod().getDeclaringClass()))}</span><p>
-                    <textarea id="obj" cols="32" rows="6">${jsonobj}</textarea></p></div>
-            """);
+                </span><p><textarea id="obj" cols="32" rows="6"
+                    onclick="if(this.value == '') {this.value=document.getElementById('jsonobj').value;}; return false;"></textarea></p></div>
+                    """);
+
+//            if (log != null)
+//                log.info("Input");
+
             htmllist.append("</b> ( ");
             invokebox.append("""
                 .<input type="text" value="${method.getName()}" size="${method.getName().length() * 1.2 + 2}" disabled="disabled"/>(
             """);
+
+//            if (log != null)
+//                log.info("Parameters...");
+
+
             Class<?>[] params = method.getCachedMethod().parameterTypes;
+//            if (log != null)
+//                log.info("Parameters:" + params);
+
+
             for (int j = 0; j < params.length; j++) {
                 if (params[j].isPrimitive()) {
                     htmllist.append(Field.getTypeName(params[j]));
@@ -213,6 +255,9 @@ def listInterface(paraclzname, jsonobj="") {
         }
         htmllist.append("</ul>");
     }
+//    if (log != null)
+//        log.info("End.");
+
     return htmllist.toString()
 }
 
@@ -304,6 +349,14 @@ function invoke(formId, displayId){
   });
 }
 
+\$(document).ready(function(){
+  var jsonString = document.getElementById("jsonobj").value;
+  var jsonPretty = JSON.stringify(JSON.parse(jsonString),null,2);
+  document.getElementById("jsonobj").value = jsonPretty;
+
+
+});
+
 // -->
 </script>
 """;
@@ -328,10 +381,16 @@ if (parajsonldid == null) {
 //def parajsonobj = request.getParameter("jsonobj");
 def parajsonobj = null;
 def parajsonexp = null;
+def clz = null;
+def ins = null;
 if (parajsonobj == null || "".equals(parajsonobj.trim())) {
     if (paraclzname != null) {
         try{
-            parajsonobj = Json.toJsonPretty(ClazzJar.load(paraclzname).newInstance());
+            clz = ClazzJar.load(paraclzname);
+            ins = clz.newInstance();
+//            log.info("Initialized: " + ins)
+            parajsonobj = Json.toJsonbyIO(ins);
+//            log.info("Json ready: " + ins)
             parajsonexp = "Success.";
         } catch(Throwable th) {
             parajsonexp = th.toString() + ":";
@@ -363,15 +422,15 @@ if (!session.counter) {
     session.counter = 1
 }
 
-
-
-def clz = ClazzJar.load(paraclzname)
-def htmlclz= JsonSchema.toJsonSchema(clz)
+def htmlclz= JsonSchema.toJsonSchema(clz);
+//log.info("JsonSchema ready: " + htmlclz);
 
 //def htmllist = Html.listInterface(paraclzname)
-def htmllist = listInterface(paraclzname, parajsonobj)
+def htmllist = listInterface(paraclzname, parajsonobj, log);
+//log.info("listInterface: " + htmllist);
 
-def head = this.class.getResource("/head.html").text
+def head = this.class.getResource("/head.html").text;
+log.info("Output page ...");
 
 println """<!DOCTYPE HTML>
 <html>
@@ -428,7 +487,7 @@ ${application.getServerInfo()}
 </p-->
 
 <p>
-    JSON: <br/> <textarea readonly name="jsonobj" formmethod="get" cols="80" rows="10">${parajsonobj}</textarea>
+    JSON: <br/> <textarea id="jsonobj" readonly name="jsonobj" formmethod="get" cols="80" rows="10">${parajsonobj}</textarea>
     <span class='dropt'>.<span style='width:600px; font-size:11px;'>Exception:<br />${parajsonexp}</span></span><br/>
 </p>
 
