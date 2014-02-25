@@ -13,6 +13,7 @@ import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility
 import org.codehaus.jackson.map.ObjectMapper
 import groovy.json.JsonOutput
 
+import java.util.concurrent.ConcurrentHashMap
 import java.util.logging.Level
 import java.util.logging.Logger
 import org.jldservice.clazz.ClazzJar
@@ -22,6 +23,8 @@ class Json {
     static {
         log.setLevel(Level.ALL);
     }
+
+
 
     //
     //  https://code.google.com/p/google-gson/
@@ -70,6 +73,22 @@ class Json {
         return true;
     }
 
+    static def sizeOfSerializable(obj){
+        try{
+            output.clear();
+            kryo.writeObject(output, obj);
+            byte[] bytes = output.getBuffer();
+            output.close();
+            Input input = new Input(bytes);
+            kryo.readObject(input, obj.class);
+            input.close();
+            log.info("Size:" + output.total())
+            return output.total();
+        }catch (Exception e) {
+            return Integer.MAX_VALUE;
+        }
+    }
+
     //
     // https://code.google.com/p/json-io/
     //
@@ -77,21 +96,36 @@ class Json {
         if (obj instanceof String) {
             return "{\"@type\":\"java.lang.String\",\"value\": \"${obj}\"}"
         } else {
-            if(isSerializable(obj)) {
-                return JsonWriter.objectToJson(obj);
-            }
+            return JsonWriter.objectToJson(obj);
+        }
+    }
+
+    static def sizeLimit = 1024;
+
+    static def toJsonbyIOEx(obj) {
+        if(sizeOfSerializable(obj) < sizeLimit) {
+            return toJsonbyIO(obj);
         }
         return "{\"@type\":\"" + obj.class.getName() + "\",\"@except\": \"${obj}\"}"
     }
 
     static def slurper = new JsonSlurper()
 
-    static def fromJsonbyIO(json) {
+    static def fromJsonbyIOEx(json) {
         if(json.contains("\"@except\":")) {
             def clsName = slurper.parseText(json).get("@type").trim();
             return ClazzJar.load(clsName).newInstance();
         }
-        return JsonReader.jsonToJava(json)
+        return fromJsonbyIO(json)
+    }
+
+    static def fromJsonbyIO(json) {
+        try{
+            return JsonReader.jsonToJava(json)
+        }catch(Exception e) {
+            def clsName = slurper.parseText(json).get("@type").trim();
+            return ClazzJar.load(clsName).newInstance();
+        }
     }
 
 

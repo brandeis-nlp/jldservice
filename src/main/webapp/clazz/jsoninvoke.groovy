@@ -55,10 +55,10 @@ import java.util.logging.SimpleFormatter
 //
 
 
-Logger log = Logger.getLogger("ajaxjson");
+Logger log = Logger.getLogger("jsoninvoke");
 log.setLevel(Level.ALL);
 
-//Handler handler = new FileHandler("ajaxjson.log");
+//Handler handler = new FileHandler("jsoninvoke.log");
 //handler.setFormatter(new SimpleFormatter());
 //log.addHandler(handler);
 

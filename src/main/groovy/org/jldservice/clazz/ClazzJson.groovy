@@ -33,7 +33,7 @@ class ClazzJson {
     }
 
     static def invork(jsonobj, methodName, jsonParaObjs, jsonParaTypes=[]) {
-        def obj = Json.fromJsonbyIO(jsonobj);
+        def obj = Json.fromJsonbyIOEx(jsonobj);
         def paraObjs = [];
         jsonParaObjs.eachWithIndex { CharSequence entry, int i ->
             def fixedEntry = entry;
@@ -41,7 +41,7 @@ class ClazzJson {
                 fixedEntry = "{\"@type\":\"" +jsonParaTypes.get(i) + "\",\"value\":\"" +
                         StringEscapeUtils.escapeJson(entry.replaceAll("^\\s*\"","").replaceAll("\"\\s*\$",""))  +"\"}";
             }
-            def paraObj = Json.fromJsonbyIO(fixedEntry);
+            def paraObj = Json.fromJsonbyIOEx(fixedEntry);
             paraObjs.add(paraObj);
         }
         println "----invoke-----"
@@ -59,7 +59,7 @@ class ClazzJson {
                 fixedEntry = "{\"@type\":\"" +jsonParaTypes.get(i) + "\",\"value\":\"" +
                         StringEscapeUtils.escapeJson(entry.replaceAll("^\\s*\"","").replaceAll("\"\\s*\$",""))  +"\"}";
             }
-            def paraObj = Json.fromJsonbyIO(fixedEntry);
+            def paraObj = Json.fromJsonbyIOEx(fixedEntry);
             paraObjs.add(paraObj);
         }
         return  ClazzJar.load(clsName).newInstance(*paraObjs);
