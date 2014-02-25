@@ -51,10 +51,15 @@ class ClazzJson {
     }
 
 
-    static def init(clsName, jsonParaObjs) {
+    static def init(clsName, jsonParaObjs, jsonParaTypes=[]) {
         def paraObjs = [];
         jsonParaObjs.eachWithIndex { CharSequence entry, int i ->
-            def paraObj = Json.fromJsonbyIO(entry);
+            def fixedEntry = entry;
+            if (!entry.contains("@type")) {
+                fixedEntry = "{\"@type\":\"" +jsonParaTypes.get(i) + "\",\"value\":\"" +
+                        StringEscapeUtils.escapeJson(entry.replaceAll("^\\s*\"","").replaceAll("\"\\s*\$",""))  +"\"}";
+            }
+            def paraObj = Json.fromJsonbyIO(fixedEntry);
             paraObjs.add(paraObj);
         }
         return  ClazzJar.load(clsName).newInstance(*paraObjs);

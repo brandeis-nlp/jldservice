@@ -2,7 +2,12 @@ package org.jldservice.json
 
 import com.cedarsoftware.util.io.JsonReader
 import com.cedarsoftware.util.io.JsonWriter
+import com.esotericsoftware.kryo.Kryo
+import com.esotericsoftware.kryo.io.Input
+import com.esotericsoftware.kryo.io.Output
 import com.google.gson.Gson
+import groovy.json.JsonBuilder
+import groovy.json.JsonSlurper
 import org.codehaus.jackson.annotate.JsonMethod
 import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility
 import org.codehaus.jackson.map.ObjectMapper
@@ -10,7 +15,7 @@ import groovy.json.JsonOutput
 
 import java.util.logging.Level
 import java.util.logging.Logger
-
+import org.jldservice.clazz.ClazzJar
 
 class Json {
     static Logger log = Logger.getLogger("display");
@@ -47,6 +52,24 @@ class Json {
         return obj;
     }
 
+    static Kryo kryo = new Kryo();
+    static Output output = new Output(1024*1024*256);
+
+    static def isSerializable(obj){
+        try{
+            output.clear();
+            kryo.writeObject(output, obj);
+            byte[] bytes = output.getBuffer();
+            output.close();
+            Input input = new Input(bytes);
+            kryo.readObject(input, obj.class);
+            input.close();
+        }catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
     //
     // https://code.google.com/p/json-io/
     //
@@ -54,11 +77,20 @@ class Json {
         if (obj instanceof String) {
             return "{\"@type\":\"java.lang.String\",\"value\": \"${obj}\"}"
         } else {
-            return JsonWriter.objectToJson(obj);
+            if(isSerializable(obj)) {
+                return JsonWriter.objectToJson(obj);
+            }
         }
+        return "{\"@type\":\"" + obj.class.getName() + "\",\"@except\": \"${obj}\"}"
     }
 
+    static def slurper = new JsonSlurper()
+
     static def fromJsonbyIO(json) {
+        if(json.contains("\"@except\":")) {
+            def clsName = slurper.parseText(json).get("@type").trim();
+            return ClazzJar.load(clsName).newInstance();
+        }
         return JsonReader.jsonToJava(json)
     }
 
