@@ -1,6 +1,7 @@
 package org.jldservice.clazz
 
 
+import org.jldservice.cache.Cache
 
 import org.codehaus.groovy.reflection.CachedMethod
 import org.codehaus.groovy.runtime.ScriptBytecodeAdapter
@@ -40,6 +41,16 @@ class ClazzJar {
 
 
     static urls = new ArrayList<URL>();
+
+
+    static def load2obj(clazzName) {
+        def obj = Cache.get(clazzName);
+        if ( obj == null) {
+            obj = load(clazzName).newInstance();
+            Cache.put(clazzName, obj);
+        }
+        return obj;
+    }
 
     static def load(clazzName) {
         try{

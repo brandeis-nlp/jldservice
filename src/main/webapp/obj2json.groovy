@@ -55,11 +55,8 @@ if ( retJson == null) {
     try{
         log.info("-----------------------------");
         log.info(paraclzname);
-        def clz = null;
-        def ins = null;
         if (paraclzname != null) {
-            clz = ClazzJar.load(paraclzname);
-            ins = clz.newInstance();
+            def ins = ClazzJar.load2obj(paraclzname);
             if (jsonIoObj.Item == "Obj") {
                 retJsonObj["Obj"] = Json.toJsonbyIO(ins);
             } else if (jsonIoObj.Item == "ObjEx") {

@@ -82,18 +82,15 @@ try{
         log.info("-----------------------------");
         retJsonObj = ClazzJson.invork(jsonIoObj.Object as String, jsonIoObj.Method as String,
                 jsonIoObj.Parameters as ArrayList, jsonIoObj.ParameterTypes as ArrayList);
-        log.info("result:"+retJsonObj.toString());
-
-
         retJson = Json.toJsonbyIO(retJsonObj);
-        log.info("result:"+retJson.toString());
+        log.info("result:"+retJson.toString().length());
     } else {
         log.info("..............................");
         retJsonObj = ClazzJson.init(jsonIoObj.Method as String,
                 jsonIoObj.Parameters as ArrayList, jsonIoObj.ParameterTypes as ArrayList);
         log.info("result:"+retJsonObj.toString());
         retJson = Json.toJsonbyIO(retJsonObj);
-        log.info("result:"+retJson.toString());
+        log.info("result:"+retJson.toString().length());
     }
 } catch (Exception e) {
     log.info("=============================");

@@ -114,7 +114,7 @@ class Json {
     static def fromJsonbyIOEx(json) {
         if(json.contains("\"@except\":")) {
             def clsName = slurper.parseText(json).get("@type").trim();
-            return ClazzJar.load(clsName).newInstance();
+            return ClazzJar.load2obj(clsName);
         }
         return fromJsonbyIO(json)
     }
@@ -124,7 +124,7 @@ class Json {
             return JsonReader.jsonToJava(json)
         }catch(Exception e) {
             def clsName = slurper.parseText(json).get("@type").trim();
-            return ClazzJar.load(clsName).newInstance();
+            return ClazzJar.load2obj(clsName);
         }
     }
 

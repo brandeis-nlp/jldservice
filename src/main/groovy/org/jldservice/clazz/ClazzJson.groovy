@@ -44,9 +44,9 @@ class ClazzJson {
             def paraObj = Json.fromJsonbyIOEx(fixedEntry);
             paraObjs.add(paraObj);
         }
-        println "----invoke-----"
-        println paraObjs
-        println paraObjs.size()
+//        println "----invoke-----"
+//        println paraObjs
+//        println paraObjs.size()
         return call(obj, methodName, paraObjs)
     }
 
@@ -62,7 +62,11 @@ class ClazzJson {
             def paraObj = Json.fromJsonbyIOEx(fixedEntry);
             paraObjs.add(paraObj);
         }
-        return  ClazzJar.load(clsName).newInstance(*paraObjs);
+        if ( paraObjs.size() == 0 ) {
+            return ClazzJar.load2obj(clsName);
+        } else {
+            return  ClazzJar.load(clsName).newInstance(*paraObjs);
+        }
     }
 }
 
