@@ -28,8 +28,8 @@ class TestJson{
         def js = new Json();
         def json = null;
         def obj = null;
-        edu.brandeis.cs.lappsgrid.opennlp.POSTagger tag = new edu.brandeis.cs.lappsgrid.opennlp.POSTagger();
-        edu.brandeis.cs.lappsgrid.opennlp.OpenNLP op = new edu.brandeis.cs.lappsgrid.opennlp.OpenNLP();
+//        edu.brandeis.cs.lappsgrid.opennlp.POSTagger tag = new edu.brandeis.cs.lappsgrid.opennlp.POSTagger();
+//        edu.brandeis.cs.lappsgrid.opennlp.OpenNLP op = new edu.brandeis.cs.lappsgrid.opennlp.OpenNLP();
 //        Kryo kryo = new Kryo();
 //        Output output = new Output(1024*1024*256);
 //        kryo.writeObject(output, tag);
@@ -40,8 +40,8 @@ class TestJson{
 //        input.close();
 //        json = js.toJsonbyGson(tag);
 //        obj = js.fromJsonbyGson(fromJsonbyJackson, edu.brandeis.cs.lappsgrid.opennlp.POSTagger.class);
-        Assert.assertEquals(false, js.isSerializable(tag));
-        Assert.assertEquals(true, js.isSerializable(op));
+//        Assert.assertEquals(false, js.isSerializable(tag));
+//        Assert.assertEquals(true, js.isSerializable(op));
 
 
 

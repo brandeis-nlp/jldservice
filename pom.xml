@@ -148,24 +148,6 @@
         </dependency>
         <!-- ~~~~~~~~~~~~~~~ -->
 
-        <!-- open nlp tools. -->
-        <dependency>
-            <groupId>org.apache.opennlp</groupId>
-            <artifactId>opennlp-tools</artifactId>
-            <version>1.5.3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.opennlp</groupId>
-            <artifactId>opennlp-uima</artifactId>
-            <version>1.5.3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.opennlp</groupId>
-            <artifactId>opennlp-maxent</artifactId>
-            <version>3.0.3</version>
-        </dependency>
-        <!-- ~~~~~~~~~~~~~~~ -->
-
         <!-- stanford nlp tools. -->
         <dependency>
             <groupId>edu.stanford.nlp</groupId>
@@ -193,6 +175,14 @@
         </dependency>
         <!-- ~~~~~~~~~~~~~~~ -->
 
+        <!-- jcl. -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>1.7.6</version>
+        </dependency>
+        <!-- ~~~~~~~~~~~~~~~ -->
+
         <!--dependency>
             <groupId>com.bloidonia</groupId>
             <artifactId>groovy-common-extensions</artifactId>
@@ -200,7 +190,7 @@
         </dependency-->
 
 
-        <!-- BEGIN LappsGrid -->
+        <!-- BEGIN LappsGrid>
         <dependency>
             <groupId>edu.brandeis.cs.lapps</groupId>
             <artifactId>stanfordnlp-web-service</artifactId>
@@ -211,7 +201,7 @@
             <artifactId>opennlp-web-service</artifactId>
             <version>0.0.2</version>
         </dependency>
-        <!-- END LappsGrid -->
+        <END LappsGrid -->
 
     </dependencies>
 

@@ -32,6 +32,11 @@ class ClazzJar {
 
     static void loadJar(jar) {
         File jarFile = new File(jar);
+        try {
+            ClazzJar.classLoader.rootLoader.addURL(jarFile.toURL());
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
         if (jarFile.exists()){
             urls.add(jarFile.toURI().toURL());
         }
@@ -55,7 +60,7 @@ class ClazzJar {
     static def load(clazzName) {
         try{
             return ClazzJar.class.classLoader.loadClass(clazzName);
-        } catch(java.lang.ClassNotFoundException e) {
+        } catch(Exception e) {
             return getJarLoader().loadClass(clazzName);
         }
     }

@@ -26,8 +26,8 @@ class TestDataService {
 
     @Test
     public void testService() {
-        def serv = new DataService();
-        serv.service();
+//        def serv = new DataService();
+//        serv.service();
     }
 
 }
