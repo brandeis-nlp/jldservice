@@ -43,7 +43,7 @@ class Maven {
         FileUtils.copyFile(fil, filbak);
         FileUtils.fileWrite(fil.absolutePath,pomStr);
         MavenCli cli = new MavenCli();
-        def cmds = ["assembly:single"] as String[];
+        def cmds = ["compile", "assembly:single"] as String[];
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         PrintStream err = new PrintStream(os);
         cli.doMain(cmds, pomDir, System.out, err);

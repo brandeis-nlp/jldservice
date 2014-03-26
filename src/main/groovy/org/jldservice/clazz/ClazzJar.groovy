@@ -2,6 +2,7 @@ package org.jldservice.clazz
 
 
 import org.jldservice.cache.Cache
+import org.jldservice.config.Config
 
 import org.codehaus.groovy.reflection.CachedMethod
 import org.codehaus.groovy.runtime.ScriptBytecodeAdapter
@@ -16,27 +17,9 @@ import java.lang.reflect.Modifier
  */
 
 class ClazzJar {
-    static String text = ClazzJar.class.getResource( '/jar.config' ).text
-    static config = new ConfigSlurper().parse(text)
 
-    static Object getConfig(String keyEx) {
-        def target = config
-        keyEx.split("\\.").eachWithIndex {
-            key, i ->
-                if (target != null)
-                    target = target.get(key)
-        }
-        return target
-    }
-
-
-    static void loadJar(jar) {
+    static void addJar2Urls(jar) {
         File jarFile = new File(jar);
-        try {
-            ClazzJar.classLoader.rootLoader.addURL(jarFile.toURL());
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
         if (jarFile.exists()){
             urls.add(jarFile.toURI().toURL());
         }
@@ -60,27 +43,53 @@ class ClazzJar {
     static def load(clazzName) {
         try{
             return ClazzJar.class.classLoader.loadClass(clazzName);
-        } catch(Exception e) {
+        } catch(Throwable e) {
             return getJarLoader().loadClass(clazzName);
+        }
+    }
+
+    static void loadJarDir(File dir) {
+        dir.eachFile { fil ->
+            if (fil.name.toLowerCase().endsWith('.jar')) {
+                addJar2Urls(fil.getAbsolutePath());
+            }
+        }
+        dir.eachDir { subDir ->
+            loadJarDir(subDir)
         }
     }
 
     static ClassLoader getJarLoader () {
         if (jarLoader == null) {
-            def jars = getConfig("path.jars").toString().split(File.pathSeparator);
+            def jars = Config.getDef("path.jars").toString().split(File.pathSeparator);
             jars.eachWithIndex { Comparable<String> entry, int i ->
-                loadJar(entry.toString().trim());
+                addJar2Urls(entry.toString().trim());
             }
 
-            def libs = getConfig("path.libs").toString().split(File.pathSeparator);
+            def libs = Config.getDef("path.libs").toString().split(File.pathSeparator);
             libs.eachWithIndex {entry, i ->
-                File jardir = new File(entry.toString().trim());
-                def jarpaths   = jardir.listFiles().findAll { it.name.endsWith('.jar') }
-                jarpaths.eachWithIndex { Comparable<File> file, int j ->
-                    loadJar(file.toString());
-                }
+                loadJarDir(new File(entry.toString().trim()))
             }
-            jarLoader = new URLClassLoader(urls.toArray(new URL[urls.size()]));
+//            libs.eachWithIndex {entry, i ->
+//                File jardir = new File(entry.toString().trim());
+//                def jarpaths   = jardir.listFiles().findAll { it.name.endsWith('.jar') }
+//                jarpaths.eachWithIndex { Comparable<File> file, int j ->
+//                    loadJar(file.toString());
+//                }
+//            }
+//            jarLoader = new URLClassLoader(urls.toArray(new URL[urls.size()]));
+
+            //http://stackoverflow.com/questions/252893/how-do-you-change-the-classpath-within-java
+            ClassLoader currentThreadClassLoader = Thread.currentThread().getContextClassLoader();
+
+            // Add the conf dir to the classpath
+            // Chain the current thread classloader
+            println urls
+            jarLoader = new URLClassLoader(urls.toArray(new URL[urls.size()]), currentThreadClassLoader);
+
+            // Replace the thread classloader - assumes
+            // you have permissions to do so
+            Thread.currentThread().setContextClassLoader(jarLoader);
         }
         return jarLoader;
     }

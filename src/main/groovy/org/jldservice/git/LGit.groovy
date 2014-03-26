@@ -2,6 +2,7 @@ package org.jldservice.git;
 
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.internal.storage.file.FileRepository;
+import org.jldservice.config.Config
 
 /**
  * Created by shicq on 3/7/14.
@@ -15,8 +16,8 @@ import org.eclipse.jgit.internal.storage.file.FileRepository;
 
 class LGit {
 
-    static def localPath = "git_local";
-
+//    static def localPath = "git_local";
+    static def localPath = Config.getDef("git.local");
 
     static def git_clone (remotePath){
         def fil = new File(localPath);
