@@ -80,12 +80,14 @@ class ClazzJar {
 //            jarLoader = new URLClassLoader(urls.toArray(new URL[urls.size()]));
 
             //http://stackoverflow.com/questions/252893/how-do-you-change-the-classpath-within-java
-            ClassLoader currentThreadClassLoader = Thread.currentThread().getContextClassLoader();
+//            ClassLoader currentThreadClassLoader = Thread.currentThread().getContextClassLoader();
 
             // Add the conf dir to the classpath
             // Chain the current thread classloader
-            println urls
-            jarLoader = new URLClassLoader(urls.toArray(new URL[urls.size()]), currentThreadClassLoader);
+//            println urls
+
+//            jarLoader = new URLClassLoader(urls.toArray(new URL[urls.size()]), currentThreadClassLoader);
+            jarLoader = new URLClassLoader(urls.toArray(new URL[urls.size()]), this.classLoader);
 
             // Replace the thread classloader - assumes
             // you have permissions to do so
