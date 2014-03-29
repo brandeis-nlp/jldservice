@@ -84,7 +84,9 @@ class ClazzJar {
 
             // Add the conf dir to the classpath
             // Chain the current thread classloader
-//            println urls
+            println "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+            println urls
+            println "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 
 //            jarLoader = new URLClassLoader(urls.toArray(new URL[urls.size()]), currentThreadClassLoader);
             jarLoader = new URLClassLoader(urls.toArray(new URL[urls.size()]), this.classLoader);
