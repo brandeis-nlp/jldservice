@@ -215,7 +215,7 @@
 
 
     <build>
-        <finalName>javalinkdata-service</finalName>
+        <finalName>jld</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
