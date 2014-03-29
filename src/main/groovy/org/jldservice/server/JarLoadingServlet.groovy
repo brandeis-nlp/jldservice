@@ -22,7 +22,7 @@ public class JarLoadingServlet extends GroovyServlet {
         // load jar library.
 
         println "Hello, JarLoadingServlet."
-//        loadJar();
+        loadJar();
     }
 
 
