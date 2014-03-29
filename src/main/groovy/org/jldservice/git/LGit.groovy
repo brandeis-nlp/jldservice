@@ -25,10 +25,13 @@ class LGit {
             fil.mkdirs();
         }
         def localRep = get_local_dir(remotePath);
-        Git.cloneRepository()
-                .setURI(remotePath)
-                .setDirectory(localRep)
-                .call();
+        // before git clone, remove local directory.
+        if (!localRep.exists()) {
+            Git.cloneRepository()
+                    .setURI(remotePath)
+                    .setDirectory(localRep)
+                    .call();
+        }
         return localRep.absolutePath;
     }
 

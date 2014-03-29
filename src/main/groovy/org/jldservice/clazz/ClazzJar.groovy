@@ -59,8 +59,8 @@ class ClazzJar {
         }
     }
 
-    static ClassLoader getJarLoader () {
-        if (jarLoader == null) {
+    static ClassLoader getJarLoader (reload=false) {
+        if (jarLoader == null || reload) {
             def jars = Config.getDef("path.jars").toString().split(File.pathSeparator);
             jars.eachWithIndex { Comparable<String> entry, int i ->
                 addJar2Urls(entry.toString().trim());

@@ -19,10 +19,9 @@ public class JarLoadingServlet extends GroovyServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        // load jar library.
 
         println "Hello, JarLoadingServlet."
-        loadJar();
+//        loadJar();
     }
 
 
