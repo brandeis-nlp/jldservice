@@ -88,12 +88,11 @@ class ClazzJar {
             println urls
             println "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 
-            ClassLoader currentThreadClassLoader = Thread.currentThread().getContextClassLoader();
-            jarLoader = new URLClassLoader(urls.toArray(new URL[urls.size()]), currentThreadClassLoader);
-//            jarLoader = new URLClassLoader(urls.toArray(new URL[urls.size()]), this.classLoader);
-            // Replace the thread classloader - assumes
-            // you have permissions to do so
-            Thread.currentThread().setContextClassLoader(jarLoader);
+//            ClassLoader currentThreadClassLoader = Thread.currentThread().getContextClassLoader();
+//            jarLoader = new URLClassLoader(urls.toArray(new URL[urls.size()]), currentThreadClassLoader);
+//            Thread.currentThread().setContextClassLoader(jarLoader);
+
+            jarLoader = new URLClassLoader(urls.toArray(new URL[urls.size()]), this.classLoader);
         }
         return jarLoader;
     }
