@@ -120,7 +120,13 @@
         </dependency>
 
         <!-- ~~~~~~~~~~~~ -->
-
+        <!-- json2json. -->
+        <dependency>
+            <groupId>org.lappsgrid</groupId>
+            <artifactId>json2json</artifactId>
+            <version>0.1.1</version>
+        </dependency>
+        <!-- ~~~~~~~~~~~~ -->
 
         <!-- commons-lang 4 escape. -->
         <dependency>
