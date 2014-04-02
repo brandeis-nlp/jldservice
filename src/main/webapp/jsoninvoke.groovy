@@ -1,6 +1,6 @@
 import groovy.json.JsonBuilder
+import groovy.json.JsonSlurper
 import org.codehaus.groovy.reflection.CachedMethod
-import org.codehaus.jettison.json.JSONObject
 import org.jldservice.clazz.ClazzInterface
 import org.jldservice.clazz.ClazzJson
 import org.jldservice.json.JsonSchema
@@ -8,7 +8,6 @@ import org.jldservice.maven.Maven
 import org.jldservice.json.Json
 import org.jldservice.html.Html
 import groovy.xml.XmlUtil
-import org.mortbay.util.ajax.JSON
 import groovy.util.logging.Log
 
 // application
@@ -69,7 +68,7 @@ def jsonIo = request.getParameter("io");
 if (jsonIo == null || "".equals(jsonIo.trim())) {
     //
 } else {
-    jsonIoObj = JSON.parse(jsonIo);
+    jsonIoObj = new JsonSlurper().parseText(jsonIo);
 }
 
 log.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -99,7 +98,7 @@ try{
     String stackTrace = sw.toString();
     log.info(e.toString());
     retJsonObj = ["Exception":e.toString(), "StackTrace":stackTrace];
-    retJson = JSON.toString(retJsonObj);
+    retJson = new JsonBuilder(retJsonObj).toString();
 }
 
 println """

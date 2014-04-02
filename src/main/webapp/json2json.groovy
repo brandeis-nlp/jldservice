@@ -1,8 +1,7 @@
 import groovy.json.JsonBuilder
+import groovy.json.JsonSlurper
 import org.codehaus.groovy.reflection.CachedMethod
-import org.codehaus.jettison.json.JSONObject
 import groovy.xml.XmlUtil
-import org.mortbay.util.ajax.JSON
 import edu.brandeis.cs.json2json.Template
 import org.jldservice.cache.Cache
 import groovy.util.logging.Log
@@ -43,7 +42,7 @@ if (jsonIo == null || "".equals(jsonIo.trim())) {
 
     // report NULL input.
 } else {
-    jsonIoObj = JSON.parse(jsonIo);
+    jsonIoObj = new JsonSlurper().parseText(jsonIo);
 }
 
 log.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -74,7 +73,7 @@ if ( retJson == null) {
         retJsonObj["Except"] = exp;
         retJsonObj["Transform"] = "";
     }
-    retJson = JSON.toString(retJsonObj);
+    retJson = new JsonBuilder(retJsonObj).toString();
     Cache.put(jsonIo, retJson);
 } else {
     log.info("Using cache result.");

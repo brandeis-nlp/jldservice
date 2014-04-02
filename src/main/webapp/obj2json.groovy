@@ -1,6 +1,6 @@
 import groovy.json.JsonBuilder
+import groovy.json.JsonSlurper
 import org.codehaus.groovy.reflection.CachedMethod
-import org.codehaus.jettison.json.JSONObject
 import org.jldservice.clazz.ClazzInterface
 import org.jldservice.clazz.ClazzJar
 import org.jldservice.json.JsonSchema
@@ -9,7 +9,7 @@ import org.jldservice.json.Json
 import org.jldservice.html.Html
 import org.jldservice.cache.Cache
 import groovy.xml.XmlUtil
-import org.mortbay.util.ajax.JSON
+//import org.mortbay.util.ajax.JSON
 import groovy.util.logging.Log
 
 // application
@@ -43,7 +43,7 @@ def jsonIo = request.getParameter("io");
 if (jsonIo == null || "".equals(jsonIo.trim())) {
     //
 } else {
-    jsonIoObj = JSON.parse(jsonIo);
+    jsonIoObj = new JsonSlurper().parseText(jsonIo);
 }
 
 log.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -79,7 +79,7 @@ if ( retJson == null) {
         retJsonObj["Obj"]  = "";
         retJsonObj["ObjEx"]  = "";
     }
-    retJson = JSON.toString(retJsonObj);
+    retJson = new JsonBuilder(retJsonObj).toString()
     Cache.put(jsonIo, retJson);
 } else {
     log.info("Using cache result.");
