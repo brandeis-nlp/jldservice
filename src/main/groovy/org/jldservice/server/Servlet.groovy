@@ -2,7 +2,7 @@ package org.jldservice.server
 
 
 
-import groovyx.net.ws.WSServer
+//import groovyx.net.ws.WSServer
 
 //
 // http://www.rolandfg.net/2014/01/06/web-apps-using-groovlets/
