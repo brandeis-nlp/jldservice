@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
     <title>JsonValid</title>
 
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.js" >  </script>
@@ -18,7 +20,7 @@
 
     <script type="text/javascript" src="https://rawgithub.com/digitalbazaar/jsonld.js/master/js/jsonld.js" >  </script>
     <script type="text/javascript" src="https://rawgithub.com/digitalbazaar/jsonld.js/master/js/rdfa.js" >  </script>
-    <script type="text/javascript" src="https://rawgithub.com/digitalbazaar/jsonld.js/master/js/request.js" >  </script>
+    <!--<script type="text/javascript" src="https://rawgithub.com/digitalbazaar/jsonld.js/master/js/request.js" >  </script>-->
     <script type="text/javascript" src="https://rawgithub.com/blatyo/jsonpath.js/master/jsonpath.js" >  </script>
     <!--<script type="text/javascript" src="https://rawgithub.com/douglascrockford/JSON-js/master/json.js" >  </script>-->
 
@@ -131,6 +133,35 @@ function path() {
     }
 }
 
+
+
+function transform() {
+    var template = $("#json_template").val();
+    var json = $("#json_obj").val();
+    $("#json_transform").val("");
+    var io = {};
+    io.Template = template;
+    io.Json = json;
+    var req = {};
+    req.io = JSON.stringify(io);
+    $.ajax({
+        type: "POST",
+        dataType: "text",
+        url: "json2json.groovy",
+        data: req,
+        success: function(data, dataType) {
+          var resJson = jQuery.parseJSON(data);
+          if (resJson.Transform) {
+            $("#json_transform").val(JSON.stringify(jQuery.parseJSON(resJson.Transform),null,4));
+          } else {
+            $("#json_transform").attr("placeholder",  resJson.Except);
+          }
+          display("json_template");
+          display("json_obj");
+          display("json_transform");
+        }
+    });
+}
 
 
 
@@ -355,7 +386,10 @@ function path() {
     |
     <a href="#jsonld">jsonld</a>
     |
-    <a href="#jsonpath">jsonpath</a></nav>
+    <a href="#jsonpath">jsonpath</a>
+    |
+    <a href="#json2json">json2json</a>
+</nav>
 
     <h1  align="center">JSON Validate</h1>
 
@@ -467,6 +501,55 @@ $.@context.homepage.*
 
 <!------------------------------------------------------------------------------------>
 
+
+
+<!------------------------------------------------------------------------------------>
+
+<a name="json2json" />
+<h2>Please Try the JSON to JSON Transformation<a href="#_top_" style="text-decoration: none;">^</a></h2>
+
+<p>
+<table>
+    <tr>
+        <th><a href="https://rawgithub.com/chunqishi/edu.brandeis.cs.json2json/master/docs/design-2014-03-30.html" target="_blank">Template</a>:</th>
+        <th>JSON:</th><th> </th><th>Transformation:</th>
+    </tr><tr><td>
+    <textarea id="json_template" cols="50" rows="20">{
+"@context": {
+    "homepage": "&$.@context.homepage.* "
+    },
+"homepage": "%*(%|(&$.homepage,\"\\\\.\"), \"-\")"
+}</textarea></td><td>
+    <textarea id="json_obj" cols="50" rows="20">{
+        "@context": {
+        "name": "http://schema.org/name",
+        "homepage": {
+        "@id": "http://schema.org/url",
+        "@type": "@id"
+        },
+        "image": {
+        "@id": "http://schema.org/image",
+        "@type": "@id"
+        }
+        },
+        "image": "http://manu.sporny.org/images/manu.png",
+        "name": "Manu Sporny",
+        "homepage": "http://manu.sporny.org/"
+        }
+    </textarea></td><td>
+    <input type="button" value="Transform" onclick="transform()" />
+</td><td>
+    <textarea  id="json_transform"  cols="50" rows="20">
+
+    </textarea>
+</td></tr><tr><td>
+    <div id="display_json_template"></div></td><td><div id="display_json_obj"></div></td><td></td>
+    <td><span id="display_json_transform"></span>
+    </td></tr>
+</table>
+
+
+<!------------------------------------------------------------------------------------>
     <footer><hr/>
         <!--<p>-->
             <!--Progress:-->
