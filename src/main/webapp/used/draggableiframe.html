@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>title</title>
+
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.0.2.js" >  </script>
+    <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js" >  </script>
+
+    <script>
+        $("#framewrap").contents().find(".draggable").resizable({
+            iframeFix: true
+        });
+    </script>
+    <style>
+        #framewrap {
+        padding:10px;
+        background-color:#dedede;
+        }
+        #frame {
+        width:100%;
+        height:100%;
+        background-color:#fff;
+        }
+    </style>
+</head>
+<body>
+<div id="framewrap">
+    <iframe id="frame" src="http://pro.jsonlint.com/" scrolling="yes" >
+    </iframe>
+</div>
+</body>
+</html>
