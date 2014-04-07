@@ -525,8 +525,8 @@ $.@context.homepage.*
 "@context": {
     "homepage": "&$.@context.homepage.* "
     },
-"homepage": "%*(%|(&$.homepage,\"\\\\.\"), \"-\")",
-"name": "%|(%-([\"hello\", \".world\"]){ %r += %e;},\"\\\\.\")"
+"homepage": "%*( %|(  &$.homepage, \".\"),     \"-\")",
+"name": "%-(  [\"hello\", \".world\"]  ){  %r += %e; }"
 }</textarea></td><td>
     <textarea id="json_obj" cols="50" rows="20">{
         "@context": {
