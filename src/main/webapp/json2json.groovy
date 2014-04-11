@@ -1,3 +1,4 @@
+import edu.brandeis.cs.json2json.Json2Json
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 import org.codehaus.groovy.reflection.CachedMethod
@@ -30,7 +31,7 @@ log.setLevel(Level.ALL);
 //handler.setFormatter(new SimpleFormatter());
 //log.addHandler(handler);
 
-def json2json = new Template();
+def json2json = new Json2Json();
 
 
 def jsonIoObj, retJsonObj = [:], retJson;
