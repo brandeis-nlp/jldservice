@@ -128,7 +128,7 @@ function path() {
 
         var json_result = "";
         for(var i = 0; i < json_paths.length; i++){
-            json_result += JSON.stringify(jsonPath(json_source, json_paths[i]), null, 2) + "\n\n\n";
+            json_result += JSON.stringify(jsonPath(json_source, json_paths[i])[0], null, 2) + "\n\n\n";
         }
         $("#json_result").val(json_result);
         display("json_source");
