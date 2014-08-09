@@ -1,10 +1,7 @@
-import org.lappsgrid.json2json.Json2Json
+import org.jldservice.server.Lapps
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
-import org.codehaus.groovy.reflection.CachedMethod
-import groovy.xml.XmlUtil
 import org.jldservice.cache.Cache
-import groovy.util.logging.Log
 
 // application
 import javax.servlet.ServletContext
@@ -26,11 +23,9 @@ import java.util.logging.SimpleFormatter
 Logger log = Logger.getLogger("json2json");
 log.setLevel(Level.ALL);
 
-//Handler handler = new FileHandler("json2json.log");
+//Handler handler = new FileHandler("service.log");
 //handler.setFormatter(new SimpleFormatter());
 //log.addHandler(handler);
-
-def json2json = new Json2Json();
 
 
 def jsonIoObj, retJsonObj = [:], retJson;
@@ -55,15 +50,14 @@ if ( retJson == null) {
     try{
         log.info("-----------------------------");
 
-        def template = jsonIoObj.Template;
-        def json = jsonIoObj.Json;
-        def trans = json2json.transform(template, json);
-        log.info(trans);
-        retJsonObj["Transform"] = trans;
+        def wsdl = jsonIoObj.Wsdl;
+        def input = jsonIoObj.Input;
+        def output = Lapps.call(wsdl, input);
+        log.info(output);
+        retJsonObj["Output"] = output;
         retJsonObj["Except"] = "Sucess";
     } catch (Throwable th) {
         log.info("=============================");
-
         def exp = th.toString() + ":";
         StringWriter sw = new StringWriter();
         th.printStackTrace(new PrintWriter(sw));
@@ -71,16 +65,14 @@ if ( retJson == null) {
         exp += stackTrace;
         log.info(exp);
         retJsonObj["Except"] = exp;
-        retJsonObj["Transform"] = "";
+        retJsonObj["Output"] = "";
     }
     retJson = new JsonBuilder(retJsonObj).toString();
     Cache.put(jsonIo, retJson);
 } else {
     log.info("Using cache result.");
 }
-
 log.info("Json Length:" + retJson.length());
-
 println """
 ${retJson}
 """

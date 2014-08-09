@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <!-- Menu Bar -->
+    <style>
+        body {
+        background-color: white;
+        margin-left:10%;
+        margin-right:10%;
+        border: 1px solid;
+        border-radius:5px;
+        min-height: 100%;
+        /*height:900pt;*/
+        width: 80%;
+        padding-top: 5pt;
+        padding-left: 20pt;
+        padding-right: 20pt;
+        }
+
+        h1, h2 {
+        text-align:center;
+        }
+
+
+        hr.double {
+        padding: 0;
+        border: none;
+        border-top: medium double MidnightBlue;
+        color: MidnightBlue;
+        text-align: center; }
+
+
+        .frame {
+        position: relative !important;
+        /*border: 1px solid lightgray;*/
+        margin: auto;
+        width: 80%;
+        }
+
+        .ace_editor {
+        position: relative !important;
+        border: 1px solid lightgray;
+        margin: auto;
+        height: 400px;
+        width: 80%;
+        }
+
+        .ace_editor.fullScreen {
+        height: auto;
+        width: auto;
+        border: 0;
+        margin: 0;
+        position: fixed !important;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        }
+
+        .fullScreen {
+        overflow: hidden
+        }
+
+        .scrollmargin {
+        height: 500px;
+        text-align: center;
+        }
+
+        .large-button {
+        color: lightblue;
+        cursor: pointer;
+        font: 30px arial;
+        padding: 20px;
+        text-align: center;
+        border: medium solid transparent;
+        display: inline-block;
+        }
+        .large-button:hover {
+        border: medium solid lightgray;
+        border-radius: 10px 10px 10px 10px;
+        box-shadow: 0 0 12px 0 lightblue;
+        }
+    </style>
+
+
+    <!-- Brat Visualisation ( http://brat.nlplab.org/embed.html#live) -->
+    <link rel="stylesheet" type="text/css" href="http://brat.nlplab.org/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="http://brat.nlplab.org/css/jquery-theme/jquery-ui-redmond.css"/>
+    <link rel="stylesheet" type="text/css" href="http://weaver.nlplab.org/~brat/demo/v1.3/style-vis.css"/>
+
+
+    <script type="text/javascript" src="http://weaver.nlplab.org/~brat/demo/v1.3/client/lib/head.load.min.js"></script>
+
+
+    <script type="text/javascript">
+    var bratLocation = 'http://weaver.nlplab.org/~brat/demo/v1.3';
+    head.js(
+            // External libraries
+                    bratLocation + '/client/lib/jquery.min.js',
+                    bratLocation + '/client/lib/jquery.svg.min.js',
+                    bratLocation + '/client/lib/jquery.svgdom.min.js',
+            // brat helper modules
+                    bratLocation + '/client/src/configuration.js',
+                    bratLocation + '/client/src/util.js',
+                    bratLocation + '/client/src/annotation_log.js',
+                    bratLocation + '/client/lib/webfont.js',
+            // brat modules
+                    bratLocation + '/client/src/dispatcher.js',
+                    bratLocation + '/client/src/url_monitor.js',
+                    bratLocation + '/client/src/visualizer.js',
+
+            // Editor (http://ace.c9.io/#nav=about)
+            //  load ace
+            'http://ace.c9.io/build/src/ace.js',
+            'http://ace.c9.io/build/src/ext-static_highlight.js',
+            //  load ace themelist extension
+            'http://ace.c9.io/build/src/ext-themelist.js',
+
+            // json2
+            'http://brat.nlplab.org/js/lib/json2.js'
+    );
+
+    var webFontURLs = [
+                bratLocation + '/static/fonts/Astloch-Bold.ttf',
+                bratLocation + '/static/fonts/PT_Sans-Caption-Web-Regular.ttf',
+                bratLocation + '/static/fonts/Liberation_Sans-Regular.ttf'
+    ];
+
+    var collData = {
+        entity_types: [ {
+        type   : 'Person',
+        /* The labels are used when displaying the annotion, in this case
+        we also provide a short-hand "Per" for cases where
+        abbreviations are preferable */
+        labels : ['Person', 'Per'],
+        // Blue is a nice colour for a person?
+        bgColor: '#7fa2ff',
+        // Use a slightly darker version of the bgColor for the border
+        borderColor: 'darken'
+        } ]
+        };
+
+    var docData = {
+        // Our text of choice
+        text     : "Ed O'Kelley was the man who shot the man who shot Jesse James.",
+        // The entities entry holds all entity annotations
+        entities : [
+        /* Format: [${ID}, ${TYPE}, [[${START}, ${END}]]]
+        note that range of the offsets are [${START},${END}) */
+        ['T1', 'Person', [[0, 11]]],
+        ['T2', 'Person', [[20, 23]]],
+        ['T3', 'Person', [[37, 40]]],
+        ['T4', 'Person', [[50, 61]]],
+        ],
+        };
+
+
+
+    var transform = function() {
+        var template = $("#visualization-template").val();
+        var json = $("#last-annotation").val();
+        $("#doc-input").val("");
+        var io = {};
+        io.Template = template;
+        io.Json = json;
+        var req = {};
+        req.io = JSON.stringify(io);
+        $.ajax({
+            type: "POST",
+            dataType: "text",
+            url: "json2json.groovy",
+            data: req,
+            success: function(data, dataType) {
+              var resJson = jQuery.parseJSON(data);
+              if (resJson.Transform) {
+                $("#doc-input").val(JSON.stringify(jQuery.parseJSON(resJson.Transform),null,4));
+                $(function() {
+                    $('#doc-input').keydown();
+                    $('#doc-input').keypress();
+                    $('#doc-input').keyup();
+                    $('#doc-input').blur();
+                });
+              } else {
+                $("#doc-input").attr("placeholder",  resJson.Except);
+              }
+            }
+        });
+    }
+
+     var service = function(wsdlID, inputID, outputID) {
+        var wsdl = $("#" + wsdlID);
+        var input = $("#" + inputID);
+        var output = $("#" + outputID);
+        output.text("");
+        var io = {};
+        io.Wsdl = wsdl.val();
+        io.Input = input.val();
+        var req = {};
+        req.io = JSON.stringify(io);
+        $.ajax({
+            type: "POST",
+            dataType: "text",
+            url: "service.groovy",
+            data: req,
+            success: function(data, dataType) {
+              var resJson = jQuery.parseJSON(data);
+              if (resJson.Output) {
+                output.text(JSON.stringify(jQuery.parseJSON(resJson.Output),null,4));
+              } else {
+                output.attr("placeholder",  resJson.Except);
+              }
+            }
+        });
+    }
+
+    head.ready(function() {
+
+     ///////////////////////////////////////////////////////////////////////////
+     //          Editor                                                       //
+     ///////////////////////////////////////////////////////////////////////////
+        // create first editor
+        var textarea = $('#input1');
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/twilight");
+        editor.getSession().setMode("ace/mode/text");
+        editor.renderer.setScrollMargin(10, 10);
+        editor.getSession().on('change', function () {
+           textarea.val(editor.getSession().getValue());
+        });
+
+        textarea.val(editor.getSession().getValue());
+        editor.setOptions({
+            // "scrollPastEnd": 0.8,
+            autoScrollEditorIntoView: true
+        });
+
+        ///////////////////////////////////////////////////////////////////////////////////
+        //        Header.                                                                //
+        ///////////////////////////////////////////////////////////////////////////////////
+        // Evaluate the code from the examples and show it to the user
+        /* Make damn sure to copy the objects before handing them to brat
+         since we will modify them later on */
+
+        // Fuck it! We'll do it live!
+        var collInput = $('#coll-input');
+        var docInput = $('#doc-input');
+        var liveDiv = $('#embedding-live-example');
+
+        var templateInput = $('#visualization-template');
+        var annotationInput = $('#last-annotation');
+
+        // Time for some "real" brat coding, let's hook into the dispatcher
+        var liveDispatcher = Util.embed('embedding-live-example',
+                $.extend({'collection': null}, collData),
+                $.extend({}, docData), webFontURLs);
+
+        var renderError = function() {
+            liveDiv.css({'border': '2px solid red'}); // setting this blows the layout
+            collInput.css({'border': '2px solid red'});
+            docInput.css({'border': '2px solid red'});
+        };
+
+        liveDispatcher.on('renderError: Fatal', renderError);
+
+        var annotationInputHandler = function() {
+            var template = templateInput.val();
+            var json = annotationInput.val();
+            docInput.text("");
+            var io = {};
+            io.Template = template;
+            io.Json = json;
+            var req = {};
+            req.io = JSON.stringify(io);
+            $.ajax({
+                type: "POST",
+                dataType: "text",
+                url: "json2json.groovy",
+                data: req,
+                success: function(data, dataType) {
+                  var resJson = jQuery.parseJSON(data);
+                  if (resJson.Transform) {
+                    docInput.text(JSON.stringify(jQuery.parseJSON(resJson.Transform),null,4));
+                    docInputHandler();
+                  } else {
+                    docInput.attr("placeholder",  resJson.Except);
+                  }
+                }
+            });
+        };
+
+        var collInputHandler = function() {
+            var collJSON;
+            try {
+                collJSON = JSON.parse(collInput.val());
+                collInput.css({'border': '2px inset'});
+            } catch (e) {
+                // Not properly formatted JSON...
+                collInput.css({'border': '2px solid red'});
+                return;
+            }
+
+            try {
+                liveDispatcher.post('collectionLoaded',
+                        [$.extend({'collection': null}, collJSON)]);
+                //liveDiv.css({'border': '2px inset'});  // setting this blows the layout
+                docInput.css({'border': '2px inset'});
+            } catch(e) {
+                console.error('collectionLoaded went down with:', e);
+                //liveDiv.css({'border': '2px solid red'});
+                collInput.css({'border': '2px solid red'});
+            }
+        };
+
+        var docInputHandler = function() {
+            var docJSON;
+            try {
+                docJSON = JSON.parse(docInput.val());
+                docInput.css({'border': '2px inset'});
+            } catch (e) {
+                docInput.css({'border': '2px solid red'});
+                return;
+            }
+
+            try {
+                liveDispatcher.post('requestRenderData', [$.extend({}, docJSON)]);
+                // liveDiv.css({'border': '2px inset'});  // setting this blows the layout
+                collInput.css({'border': '2px inset'});
+            } catch(e) {
+                console.error('requestRenderData went down with:', e);
+                // liveDiv.css({'border': '2px solid red'});
+                collInput.css({'border': '2px solid red'});
+            }
+        };
+
+
+        // Inject our current example as a start
+        var collJSON = JSON.stringify(collData, undefined, '    ');
+        docJSON = JSON.stringify(docData, undefined, '    ')
+        // pack those just a bit
+        var packJSON = function(s) {
+            // replace any space with ' ' in non-nested curly brackets
+            s = s.replace(/(\{[^\{\}\[\]]*\})/g,
+                          function(a, b) { return b.replace(/\s+/g, ' '); });
+            // replace any space with ' ' in [] up to nesting depth 1
+            s = s.replace(/(\[(?:[^\[\]\{\}]|\[[^\[\]\{\}]*\])*\])/g,
+                          function(a, b) { return b.replace(/\s+/g, ' '); });
+            return s
+        }
+        collInput.text(packJSON(collJSON));
+        docInput.text(packJSON(docJSON));
+
+        var listenTo = 'propertychange keyup input paste change';
+
+        annotationInput.bind(listenTo, annotationInputHandler);
+        collInput.bind(listenTo, collInputHandler);
+        docInput.bind(listenTo, docInputHandler);
+    });
+</script>
+
+</head>
+<body>
+
+<h1>Online Environment of Multi-Purpose Annotation</h1>
+<h2>Brandeis University</h2>
+
+
+<hr style="height: 12px; border: 0; box-shadow: inset 0 12px 12px -12px MidnightBlue  " />
+
+
+<hr style=" border: 0; border-bottom: 1px dashed white; background: MidnightBlue;"/>
+
+<div> <!-- Begin of DIV. -->
+
+
+    <!------------------------------------  Editor ------------------------------------------------------->
+    <h2 align="center"> TEXT </h2>
+    <div id="editor">
+    JABBERWOCKY
+By Lewis Carroll
+
+'Twas brillig, and the slithy toves
+Did gyre and gimble in the wabe;
+All mimsy were the borogoves,
+And the mome raths outgrabe.
+
+'Beware the Jabberwock, my son!
+The jaws that bite, the claws that catch!
+Beware the Jubjub bird, and shun
+The frumious Bandersnatch!'
+
+He took his vorpal sword in hand:
+Long time the manxome foe he sought--
+So rested he by the Tumtum tree,
+And stood awhile in thought.
+
+And as in uffish thought he stood,
+The Jabberwock, with eyes of flame,
+Came whiffling through the tulgey wood,
+And burbled as it came!
+
+One, two! One, two! And through and through
+The vorpal blade went snicker-snack!
+He left it dead, and with its head
+He went galumphing back.
+
+'And hast thou slain the Jabberwock?
+Come to my arms, my beamish boy!
+O frabjous day! Callooh! Callay!'
+He chortled in his joy.
+
+'Twas brillig, and the slithy toves
+Did gyre and gimble in the wabe;
+All mimsy were the borogoves,
+And the mome raths outgrabe.
+
+    </div>
+    <textarea id="input1" style="width:66%; height:100px; display:none"></textarea>
+
+    <hr style=" border: 0; height: 1px; background: #333; background-image: -webkit-linear-gradient(left, #ccc, #333, #ccc); background-image: -moz-linear-gradient(left, #ccc, #333, #ccc); background-image: -ms-linear-gradient(left, #ccc, #333, #ccc); background-image: -o-linear-gradient(left, #ccc, #333, #ccc); "/>
+    <!------------------------------------  Table  ------------------------------------------------------->
+
+    <h2 align="center">Annotation</h2>
+
+    <p>Token Service (WSDL): </p>
+    <input id="wsdl1" type="text" size="120" value="http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/0.0.4-SNAPSHOT/services/Tokenizer?wsdl">
+    <input type="button" value="Run" onclick="service('wsdl1','input1','output1')">
+    <textarea id="output1" style="width:66%;height:400px;font-size:11px;border:2px inset">
+    </textarea>
+
+    <p>Service (WSDL): </p>
+    <input id="wsdl2" type="text" size="120" value="http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/0.0.4-SNAPSHOT/services/NamedEntityRecognizer?wsdl">
+    <input type="button" value="Run" onclick="service('wsdl2','output1','last-annotation')">
+    <textarea id="last-annotation" style="width:66%;height:400px;font-size:11px;border:2px inset"></textarea>
+    <textarea id="visualization-template" style="width:66%;height:400px;font-size:11px;border:2px inset; display:none;"
+              placeholder="Enter JSON to JSON template for visualization here...">
+        {
+        "text": "&$.text.@value",
+        "entities":{ "%!FOR": {
+        "%$"      :  {   "%!arr": [] },
+        "%[]"     :  [ {"%]$":["&$..annotations",1]}, "%i", "%e"],
+        "%EACH"   :  {"%arr": {"%]+": ["%arr", [{"%&":["%e","$.id"]},"Person",[[{"%&":["%e","$.start"]},{"%&":["%e","$.end"]}]]]]} },
+        "%#"      :  "%arr"    }
+        }
+        }
+    </textarea>
+    <input type="button" value="Display" onclick="transform()" >
+    <h2 align="center">Visualization</h2>
+    <div id="embedding-live-example"></div>
+    <hr>
+    <p></p>
+
+
+    <p>
+    <textarea id="doc-input" style="width:66%;height:400px;font-size:11px;border:2px inset"
+                      placeholder="Enter JSON for the document object here..."></textarea>
+    </p>
+
+    <p> Visualization Configuration:</p>
+    <p>
+        <textarea id="coll-input" style="width:66%;height:1px;font-size:11px;border:1px inset"
+                  placeholder="Enter JSON for the collection object here..."></textarea>
+    </p>
+
+
+
+</div> <!-- End of DIV. -->
+
+<footer>
+    <hr class="double"/>
+    <p style="text-align:center">
+        Contacts:
+        <br/>&nbsp; &nbsp; <a target="_blank" class="nolink" href="http://www.cs.brandeis.edu/~jamesp/"> James Pustejovsky</a>
+        (<nonsense>jame</nonsense>sp@<nonsense>cs.</nonsense>brandeis.<nonsense></nonsense>edu)
+    </p>
+</footer>
+<p style="text-align:center">Copyright &copy; 2014 Brandeis University - All Rights Reserved</p>
+
+</body>
+</html>
