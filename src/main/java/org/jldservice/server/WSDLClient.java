@@ -31,14 +31,9 @@ import org.apache.axis.client.Service;
 import org.apache.axis.encoding.ser.BeanDeserializerFactory;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.map.ser.BeanSerializerFactory;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
+import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-import com.sun.org.apache.xml.internal.dtm.ref.DTMNodeList;
 
 /**
  *
@@ -285,7 +280,7 @@ public class WSDLClient {
             }
             try {
                 XPathExpression xPathExpression = xpath(xpath);
-                final DTMNodeList nodes = (DTMNodeList) xPathExpression
+                final NodeList nodes = (NodeList) xPathExpression
                         .evaluate(node, XPathConstants.NODESET);
 
                 if (nodes == null) {
