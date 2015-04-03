@@ -1,6 +1,6 @@
 package org.jldservice.server
 
-/**
+
 import org.jldservice.config.Config
 import org.jldservice.git.LGit
 import org.jldservice.maven.Maven
@@ -34,5 +34,3 @@ public class JarLoadingServlet extends GroovyServlet {
         }
     }
 }
-
-**/

@@ -4,10 +4,23 @@ package org.jldservice.server
  * Created by lapps on 8/8/2014.
  */
 
-import org.jldservice.server.WSDLClient;
+import org.lappsgrid.wsdlclient.WSDLClient;
 import org.lappsgrid.api.Data
-
 import javax.xml.namespace.QName;
+class Lapps2 {
+    public static String call(String wsdl, String text) {
+        return call(wsdl, text, null, null);
+    }
+    public static String call(String wsdl, String text, String username, String password) {
+        WSDLClient ws = new WSDLClient();
+        ws.init(wsdl);
+        if(username != null) {
+            ws.authorize(username, password);
+        }
+        String output = ws.callService("","execute", text).toString();
+        return output;
+    }
+}
 
 class Lapps {
     //
@@ -37,6 +50,4 @@ class Lapps {
         Data output = (Data) ws.callService("execute", input);
         return output.getPayload();
     }
-
-
 }

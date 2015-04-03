@@ -1,12 +1,27 @@
-package org.jldservice.server;
+/**********************************************************************************************************************
+ Copyright [2014] [Chunqi SHI (chunqi.shi@hotmail.com)]
 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ **********************************************************************************************************************/
+package org.lappsgrid.wsdlclient;
+
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.rmi.RemoteException;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.rpc.ServiceException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
@@ -14,23 +29,15 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.util.Map;
 import java.util.HashMap;
-import java.io.IOException;
 import java.net.URL;
 import java.net.Proxy;
 import java.net.URLConnection;
-import java.io.StringWriter;
-import java.io.FileInputStream;
-import java.io.File;
 import java.util.AbstractList;
 import java.util.List;
-import java.io.StringReader;
 import java.net.MalformedURLException;
-
 import org.apache.axis.client.Call;
 import org.apache.axis.client.Service;
-import org.apache.axis.encoding.ser.BeanDeserializerFactory;
-import org.apache.commons.io.IOUtils;
-import org.codehaus.jackson.map.ser.BeanSerializerFactory;
+import org.apache.axis.message.SOAPHeaderElement;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -47,12 +54,24 @@ public class WSDLClient {
     public static final void main(String[] args) throws Exception {
         WSDLClient ws = new WSDLClient();
         ws.init(new URL(
-                "http://129.64.55.184:8080/service_manager/wsdl/AnotherLappLandGrid:AnotherExclamationService"));
-        ws.authorize("marc", "marc");
-        String s = ws.callService("addExclamation", "xxx").toString();
+                "http://eldrad.cs-i.brandeis.edu:8080/service_manager/wsdl/brandeis_eldrad_grid_1:opennlp.splitter"));
+        ws.authorize("tester", "tester");
+        String s = ws.callService("", "execute", "How are you today.").toString();
         System.out.println(s);
     }
 
+
+
+
+    public static void copy(InputStream is, Writer writer) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        String line;
+        while ( (line = br.readLine()) != null)
+            writer.write(line);
+        br.close();
+        is.close();
+        writer.close();
+    }
 
     Service service = null;
     Call call = null;
@@ -66,63 +85,75 @@ public class WSDLClient {
     String wsdl = null;
     XPathUtils xpath = null;
 
-    public void init(String url) throws ServiceException {
+    public void init(String url) throws WSDLClientException {
         try {
             init(new URL(url));
         }catch(MalformedURLException e){
-            throw new ServiceException(e);
+            throw new WSDLClientException(e);
         }
     }
 
-    public void init(URL url) throws ServiceException {
+    public void init(URL url) throws WSDLClientException {
         Service service = new Service();
-        call = (Call) service.createCall();
+        try {
+            call = (Call) service.createCall();
+        }catch(Exception e){
+            throw new WSDLClientException(e);
+        }
         conf = new ServiceConf();
         try {
             StringWriter writer = new StringWriter();
-            IOUtils.copy(url.openStream(), writer);
+            copy(url.openStream(), writer);
             conf.setWsdlAddress(url.toString());
             wsdl = writer.toString();
             xpath = XPathUtils.newInstance(wsdl);
             conf.setSoapAddress(xpath
                     .getText("definitions/service/port/address/@location"));
         } catch (Exception e) {
-            throw new ServiceException(e);
+            throw new WSDLClientException(e);
         }
     }
 
-    public void init(File file) throws ServiceException {
+    public void init(File file) throws WSDLClientException {
         Service service = new Service();
-        call = (Call) service.createCall();
+        try {
+            call = (Call) service.createCall();
+        }catch(Exception e){
+            throw new WSDLClientException(e);
+        }
         conf = new ServiceConf();
         try {
             StringWriter writer = new StringWriter();
-            IOUtils.copy(new FileInputStream(file), writer);
+            copy(new FileInputStream(file), writer);
             conf.setWsdlAddress(file.getAbsolutePath());
             wsdl = writer.toString();
             xpath = XPathUtils.newInstance(wsdl);
             conf.setSoapAddress(xpath
                     .getText("definitions/service/port/address/@location"));
         } catch (Exception e) {
-            throw new ServiceException(e);
+            throw new WSDLClientException(e);
         }
     }
 
-    public void init(URL url, Proxy proxy) throws ServiceException {
+    public void init(URL url, Proxy proxy) throws WSDLClientException {
         Service service = new Service();
-        call = (Call) service.createCall();
+        try {
+            call = (Call) service.createCall();
+        }catch(Exception e){
+            throw new WSDLClientException(e);
+        }
         conf = new ServiceConf();
         try {
             StringWriter writer = new StringWriter();
             URLConnection con = url.openConnection(proxy);
-            IOUtils.copy(con.getInputStream(), writer);
+            copy(con.getInputStream(), writer);
             conf.setWsdlAddress(url.toString());
             wsdl = writer.toString();
             xpath = XPathUtils.newInstance(wsdl);
             conf.setSoapAddress(xpath
                     .getText("definitions/service/port/address/@location"));
         } catch (Exception e) {
-            throw new ServiceException(e);
+            throw new WSDLClientException(e);
         }
     }
 
@@ -142,13 +173,33 @@ public class WSDLClient {
         conf.setPassword(password);
     }
 
-    public Object callService(String operationName, Object... params)
+    public Object callService(String namespace, String operationName, Object... params)
             throws MalformedURLException, RemoteException {
-        call.setTargetEndpointAddress(new java.net.URL(conf.getSoapAddress()));
+        call.setTargetEndpointAddress(new URL(conf.getSoapAddress()));
+        if(namespace.toLowerCase().startsWith("http")) {
+            String uri = new URL(new URL(namespace), operationName).toString();
+//            System.out.println(uri);
+            call.setSOAPActionURI (uri);
+        }
+//        SOAPHeaderElement header = new SOAPHeaderElement (" "," SystemInital ");
+//        header.setNamespaceURI (" ");
+//        header.addChildElement (_requestXml);
+//        call.addHeader (header);
+        return call.invoke(namespace, operationName, params);
+    }
+
+
+    public Object callService(QName operationName, Object... params)
+            throws MalformedURLException, RemoteException {
+        call.setTargetEndpointAddress(new URL(conf.getSoapAddress()));
         // prepare operator & parameters.
         // method.
-        call.setOperationName(new QName(null, operationName));
-        // parameters.
+        if (operationName.getNamespaceURI().toLowerCase().startsWith("http")) {
+            String uri = new URL(new URL(operationName.getNamespaceURI()), operationName.getLocalPart()).toString();
+            call.setSOAPActionURI(uri);
+        }
+        call.setOperationName(operationName);
+        // parameters
         return call.invoke(params);
     }
 
@@ -161,7 +212,7 @@ public class WSDLClient {
         } else {
             list = xpath
                     .getText("definitions/portType/operation[@name='"
-                    + operation + "']/@parameterOrder");
+                            + operation + "']/@parameterOrder");
         }
         if (list == null || list.length() == 0) {
             return new String []{};
@@ -397,4 +448,27 @@ public class WSDLClient {
             return result.toString();
         }
     }
+
+
+
+    public static class WSDLClientException extends java.lang.Exception {
+
+        public WSDLClientException() {
+            super();
+        }
+
+        public WSDLClientException(java.lang.String message) {
+            super(message);
+        }
+
+        public WSDLClientException(java.lang.String message, java.lang.Throwable cause) {
+            super(message,cause);
+        }
+
+        public WSDLClientException(java.lang.Throwable cause) {
+            super(cause);
+        }
+
+    }
+
 }

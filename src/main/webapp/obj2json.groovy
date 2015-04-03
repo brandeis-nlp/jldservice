@@ -6,7 +6,7 @@ import org.jldservice.clazz.ClazzJar
 import org.jldservice.json.JsonSchema
 import org.jldservice.maven.Maven
 import org.jldservice.json.Json
-import org.jldservice.html.Html
+import org.jldservice.clazz.Html
 import org.jldservice.cache.Cache
 import groovy.xml.XmlUtil
 //import org.mortbay.util.ajax.JSON

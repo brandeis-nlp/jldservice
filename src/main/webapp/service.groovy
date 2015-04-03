@@ -1,4 +1,4 @@
-import org.jldservice.server.Lapps
+import org.jldservice.server.Lapps2
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 import org.jldservice.cache.Cache
@@ -20,7 +20,7 @@ import java.util.logging.Level
 import java.util.logging.Logger
 import java.util.logging.SimpleFormatter
 
-Logger log = Logger.getLogger("json2json");
+Logger log = Logger.getLogger("service.groovy");
 log.setLevel(Level.ALL);
 
 //Handler handler = new FileHandler("service.log");
@@ -28,51 +28,48 @@ log.setLevel(Level.ALL);
 //log.addHandler(handler);
 
 
-def jsonIoObj, retJsonObj = [:], retJson;
-def parameters = [];
+def txtIn, jsonObjIn, jsonObjRet = [:], txtRet;
 
-// read template, jsons from io
-def jsonIo = request.getParameter("io");
-if (jsonIo == null || "".equals(jsonIo.trim())) {
+// read io parameter from request
+txtIn = request.getParameter("io");
+log.info("~~~~~~~~~~~~~BEGIN~~~~~~~~~~~~~~~~");
+log.info("txtIn: " + txtIn);
 
-    // report NULL input.
-} else {
-    jsonIoObj = new JsonSlurper().parseText(jsonIo);
-}
-
-log.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-log.info(jsonIoObj.toString());
-
-// check cache.
-retJson = Cache.get(jsonIo);
-// not find.
-if ( retJson == null) {
-    try{
-        log.info("-----------------------------");
-
-        def wsdl = jsonIoObj.Wsdl;
-        def input = jsonIoObj.Input;
-        def output = Lapps.call(wsdl, input);
-        log.info(output);
-        retJsonObj["Output"] = output;
-        retJsonObj["Except"] = "Sucess";
-    } catch (Throwable th) {
-        log.info("=============================");
-        def exp = th.toString() + ":";
-        StringWriter sw = new StringWriter();
-        th.printStackTrace(new PrintWriter(sw));
-        String stackTrace = sw.toString();
-        exp += stackTrace;
-        log.info(exp);
-        retJsonObj["Except"] = exp;
-        retJsonObj["Output"] = "";
+// if only it  is json text format
+if (txtIn != null && txtIn.trim().startWith('{')) {
+    // check cache
+    txtRet = Cache.get(txtIn);
+    if(tetRet != null)
+        log.info("Cached: " + txtRet);
+    else {
+        // text to json object
+        jsonObjIn = new JsonSlurper().parseText(txtIn);
+        try{
+            log.info("-----------Call------------------");
+            def output = Lapps2.call(jsonObjIn.Wsdl, jsonObjIn.Input, jsonObjIn.Username, jsonObjIn,Password);
+            log.info("Return:" + output);
+            jsonObjRet["Output"] = output;
+            jsonObjRet["Except"] = "Sucess";
+        } catch (Throwable th) {
+            log.info("============Error=================");
+            StringWriter sw = new StringWriter();
+            th.printStackTrace(new PrintWriter(sw));
+            String stackTrace = sw.toString();
+            def exp = th.toString() + " : " + stackTrace;
+            log.info("Error:" + exp);
+            jsonObjRet["Except"] = exp;
+            jsonObjRet["Output"] = "";
+        }
+        // json object to text
+        txtRet = new JsonBuilder(jsonObjRet).toString();
+        // put into chache
+        Cache.put(txtIn, txtRet);
     }
-    retJson = new JsonBuilder(retJsonObj).toString();
-    Cache.put(jsonIo, retJson);
-} else {
-    log.info("Using cache result.");
 }
-log.info("Json Length:" + retJson.length());
+log.info("txtRet.length() : " + txtRet.length());
+
+// response by print text
 println """
-${retJson}
+    ${txtRet}
 """
+log.info(".............End...................");
