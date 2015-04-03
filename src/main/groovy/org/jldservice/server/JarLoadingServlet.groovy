@@ -1,6 +1,6 @@
 package org.jldservice.server
 
-
+/**
 import org.jldservice.config.Config
 import org.jldservice.git.LGit
 import org.jldservice.maven.Maven
@@ -8,10 +8,6 @@ import groovy.servlet.GroovyServlet
 
 import javax.servlet.ServletConfig
 import javax.servlet.ServletException
-
-/**
- * Created by shi on 3/25/14.
- */
 
 
 public class JarLoadingServlet extends GroovyServlet {
@@ -38,3 +34,5 @@ public class JarLoadingServlet extends GroovyServlet {
         }
     }
 }
+
+**/
