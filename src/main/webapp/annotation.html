@@ -4,6 +4,21 @@
     <meta charset="UTF-8">
     <title>Annotations</title>
     <style type="text/css">
+        .bbcode_container div.bbcode_code,
+        .bbcode_container pre.bbcode_code {
+            margin:0;
+            padding:6px;
+            border:1px inset;
+            text-align:left;
+            overflow:auto;
+            direction:ltr;
+            background:#f2f6f8  repeat-x;
+            /*height:;*/
+            font-size:12px;
+        }
+
+
+
         body {
             background-color: white;
             font-family: Arial, Verdana, sans-serif;
@@ -17,7 +32,8 @@
             counter-increment: section; }
 
         h4 {
-            counter-increment: subsection; }
+            counter-increment: subsection;
+            text-transform: uppercase; }
 
         h5 {
             counter-increment: figure; }
@@ -25,11 +41,11 @@
         h3:before {
             content:counter(section) ". "; }
 
-        h4:before {
-            content:counter(section) "." counter(subsection) " "; }
+        <!--h4:before {-->
+            <!--content:counter(section) "." counter(subsection) " "; }-->
 
         h5:before{
-            content:"Fig. " counter(section) "." counter(figure) " - ";}
+            content: counter(figure)  ". " ;}
 
         .reset {
             counter-reset:subsection figure;}
@@ -238,7 +254,7 @@
     <link rel="stylesheet" type="text/css" href="http://brat.nlplab.org/css/jquery-theme/jquery-ui-redmond.css"/>
     <link rel="stylesheet" type="text/css" href="http://weaver.nlplab.org/~brat/demo/v1.3/style-vis.css"/>
 
-
+    <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
     <script type="text/javascript" src="http://weaver.nlplab.org/~brat/demo/v1.3/client/lib/head.load.min.js"></script>
 
 
@@ -276,88 +292,85 @@
                 bratLocation + '/static/fonts/Liberation_Sans-Regular.ttf'
     ];
 
-    var collData = {
-        entity_types: [ {
-        type   : 'Person',
-        /* The labels are used when displaying the annotion, in this case
-        we also provide a short-hand "Per" for cases where
-        abbreviations are preferable */
-        labels : ['Person', 'Per'],
-        // Blue is a nice colour for a person?
-        bgColor: '#7fa2ff',
-        // Use a slightly darker version of the bgColor for the border
-        borderColor: 'darken'
-        } ]
-        };
 
-    var docData = {
-        // Our text of choice
-        text     : "Ed O'Kelley was the man who shot the man who shot Jesse James.",
-        // The entities entry holds all entity annotations
-        entities : [
-        /* Format: [${ID}, ${TYPE}, [[${START}, ${END}]]]
-        note that range of the offsets are [${START},${END}) */
-        ['T1', 'Person', [[0, 11]]],
-        ['T2', 'Person', [[20, 23]]],
-        ['T3', 'Person', [[37, 40]]],
-        ['T4', 'Person', [[50, 61]]],
-        ],
-        };
+     var wsdlMap = {
+          gateannie: 'http://eldrad.cs-i.brandeis.edu:8282/concept-mapping/0.0.1/services/GateAnnie?wsdl',
+          gateopennlp: 'http://eldrad.cs-i.brandeis.edu:8282/concept-mapping/0.0.1/services/UimaOpenNLP?wsdl',
+          uimaopennlp: 'http://eldrad.cs-i.brandeis.edu:8282/concept-mapping/0.0.1/services/UimaDkproOpenNLP?wsdl',
+          uimadkprostanford: 'http://eldrad.cs-i.brandeis.edu:8282/concept-mapping/0.0.1/services/UimaDkproStanford?wsdl',
+          uimadkproopennlp: 'http://eldrad.cs-i.brandeis.edu:8282/concept-mapping/0.0.1/services/UimaDkproOpenNLP?wsdl',
+          stanfordcorenlp: 'http://eldrad.cs-i.brandeis.edu:8282/concept-mapping/0.0.1/services/StanfordCoreNLP?wsdl',
+     }
 
+    var formatXml = function(xml) {
+        var formatted = '';
+        var reg = /(>)(<)(\/*)/g;
+        xml = xml.replace(reg, '$1\r\n$2$3');
+        var pad = 0;
+        jQuery.each(xml.split('\r\n'), function(index, node) {
+        var indent = 0;
+        if (node.match( /.+<\/\w[^>]*>$/ )) {
+        indent = 0;
+        } else if (node.match( /^<\/\w/ )) {
+        if (pad != 0) {
+        pad -= 1;
+        }
+        } else if (node.match( /^<\w[^>]*[^\/]>.*$/ )) {
+        indent = 1;
+        } else {
+        indent = 0;
+        }
 
+        var padding = '';
+        for (var i = 0; i < pad; i++) {
+        padding += ' ';
+        }
 
-    var transform = function() {
-        var template = $("#visualization-template").val();
-        var json = $("#last-annotation").val();
-        $("#doc-input").val("");
-        var io = {};
-        io.Template = template;
-        io.Json = json;
-        var req = {};
-        req.io = JSON.stringify(io);
-        $.ajax({
-            type: "POST",
-            dataType: "text",
-            url: "json2json.groovy",
-            data: req,
-            success: function(data, dataType) {
-              var resJson = jQuery.parseJSON(data);
-              if (resJson.Transform) {
-                $("#doc-input").val(JSON.stringify(jQuery.parseJSON(resJson.Transform),null,4));
-                $(function() {
-                    $('#doc-input').keydown();
-                    $('#doc-input').keypress();
-                    $('#doc-input').keyup();
-                    $('#doc-input').blur();
-                });
-              } else {
-                $("#doc-input").attr("placeholder",  resJson.Except);
-              }
+        formatted += padding + node + '\r\n';
+        pad += indent;
+        });
+
+        return formatted;
+    }
+
+    var escapeXml = function(unsafe) {
+        return unsafe.replace(/[<>&'"]/g, function (c) {
+            switch (c) {
+                case '<': return '&lt;';
+                case '>': return '&gt;';
+                case '&': return '&amp;';
+                case '\'': return '&apos;';
+                case '"': return '&quot;';
             }
         });
     }
-
-     var service = function(wsdlID, inputID, outputID) {
-        var wsdl = $("#" + wsdlID);
-        var input = $("#" + inputID);
-        var output = $("#" + outputID);
-        output.text("");
+     var service = function() {
+        var ann = $("input[type='radio']:checked").val();
+        var input = $("#input1").val();
+        var display = $('#display');
         var io = {};
-        io.Wsdl = wsdl.val();
-        io.Input = input.val();
+        io.Wsdl = wsdlMap[ann];
+        io.Input = input;
         var req = {};
         req.io = JSON.stringify(io);
         $.ajax({
             type: "POST",
             dataType: "text",
-            url: "service.groovy",
+            timeout:60000,
+            url: "annotationservice.groovy",
             data: req,
             success: function(data, dataType) {
               var resJson = jQuery.parseJSON(data);
-              if (resJson.Output) {
-                output.text(JSON.stringify(jQuery.parseJSON(resJson.Output),null,4));
+              if (resJson.Xml) {
+                 var html = '<div class="tips"><h4>' + ann + '</h4>'+
+                 '<h5><a href="http://codebeautify.org/xmlviewer#" target="_blank">XML Online Viewer:</a></h5>'+
+                 '<textarea class="prettyprint" rows="16" cols="100"><code class="language-xml">'+ escapeXml(formatXml(resJson.Xml)) +'</code></textarea>'+
+                 '<h5><a href="http://jsonviewer.stack.hu/" target="_blank">JSON  Online Viewer:</a></h5><textarea class="prettyprint" rows="16" cols="100"><code>'+ escapeXml(JSON.stringify(jQuery.parseJSON(resJson.Json),null,4)) +'</code></textarea></div><hr/> ';
+                 display.prepend(html);
+                 // output.text(JSON.stringify(jQuery.parseJSON(resJson.Output),null,4));
               } else {
-                output.attr("placeholder",  resJson.Except);
+                // output.attr("placeholder",  resJson.Except);
+                alert(resJson.Except);
               }
             }
         });
@@ -383,127 +396,6 @@
             // "scrollPastEnd": 0.8,
             autoScrollEditorIntoView: true
         });
-
-        ///////////////////////////////////////////////////////////////////////////////////
-        //        Header.                                                                //
-        ///////////////////////////////////////////////////////////////////////////////////
-        // Evaluate the code from the examples and show it to the user
-        /* Make damn sure to copy the objects before handing them to brat
-         since we will modify them later on */
-
-        // Fuck it! We'll do it live!
-        var collInput = $('#coll-input');
-        var docInput = $('#doc-input');
-        var liveDiv = $('#embedding-live-example');
-
-        var templateInput = $('#visualization-template');
-        var annotationInput = $('#last-annotation');
-
-        // Time for some "real" brat coding, let's hook into the dispatcher
-        var liveDispatcher = Util.embed('embedding-live-example',
-                $.extend({'collection': null}, collData),
-                $.extend({}, docData), webFontURLs);
-
-        var renderError = function() {
-            liveDiv.css({'border': '2px solid red'}); // setting this blows the layout
-            collInput.css({'border': '2px solid red'});
-            docInput.css({'border': '2px solid red'});
-        };
-
-        liveDispatcher.on('renderError: Fatal', renderError);
-
-        var annotationInputHandler = function() {
-            var template = templateInput.val();
-            var json = annotationInput.val();
-            docInput.text("");
-            var io = {};
-            io.Template = template;
-            io.Json = json;
-            var req = {};
-            req.io = JSON.stringify(io);
-            $.ajax({
-                type: "POST",
-                dataType: "text",
-                url: "json2json.groovy",
-                data: req,
-                success: function(data, dataType) {
-                  var resJson = jQuery.parseJSON(data);
-                  if (resJson.Transform) {
-                    docInput.text(JSON.stringify(jQuery.parseJSON(resJson.Transform),null,4));
-                    docInputHandler();
-                  } else {
-                    docInput.attr("placeholder",  resJson.Except);
-                  }
-                }
-            });
-        };
-
-        var collInputHandler = function() {
-            var collJSON;
-            try {
-                collJSON = JSON.parse(collInput.val());
-                collInput.css({'border': '2px inset'});
-            } catch (e) {
-                // Not properly formatted JSON...
-                collInput.css({'border': '2px solid red'});
-                return;
-            }
-
-            try {
-                liveDispatcher.post('collectionLoaded',
-                        [$.extend({'collection': null}, collJSON)]);
-                //liveDiv.css({'border': '2px inset'});  // setting this blows the layout
-                docInput.css({'border': '2px inset'});
-            } catch(e) {
-                console.error('collectionLoaded went down with:', e);
-                //liveDiv.css({'border': '2px solid red'});
-                collInput.css({'border': '2px solid red'});
-            }
-        };
-
-        var docInputHandler = function() {
-            var docJSON;
-            try {
-                docJSON = JSON.parse(docInput.val());
-                docInput.css({'border': '2px inset'});
-            } catch (e) {
-                docInput.css({'border': '2px solid red'});
-                return;
-            }
-
-            try {
-                liveDispatcher.post('requestRenderData', [$.extend({}, docJSON)]);
-                // liveDiv.css({'border': '2px inset'});  // setting this blows the layout
-                collInput.css({'border': '2px inset'});
-            } catch(e) {
-                console.error('requestRenderData went down with:', e);
-                // liveDiv.css({'border': '2px solid red'});
-                collInput.css({'border': '2px solid red'});
-            }
-        };
-
-
-        // Inject our current example as a start
-        var collJSON = JSON.stringify(collData, undefined, '    ');
-        docJSON = JSON.stringify(docData, undefined, '    ')
-        // pack those just a bit
-        var packJSON = function(s) {
-            // replace any space with ' ' in non-nested curly brackets
-            s = s.replace(/(\{[^\{\}\[\]]*\})/g,
-                          function(a, b) { return b.replace(/\s+/g, ' '); });
-            // replace any space with ' ' in [] up to nesting depth 1
-            s = s.replace(/(\[(?:[^\[\]\{\}]|\[[^\[\]\{\}]*\])*\])/g,
-                          function(a, b) { return b.replace(/\s+/g, ' '); });
-            return s
-        }
-        collInput.text(packJSON(collJSON));
-        docInput.text(packJSON(docJSON));
-
-        var listenTo = 'propertychange keyup input paste change';
-
-        annotationInput.bind(listenTo, annotationInputHandler);
-        collInput.bind(listenTo, collInputHandler);
-        docInput.bind(listenTo, docInputHandler);
     });
 </script>
 
@@ -519,7 +411,7 @@
 
 <div class="tips">
     <h2 align="center">Annotation Document Formats</h2>
-    <table class="v">
+    <table class="h">
         <thead>
         <th>Infrastructure</th>
         <th>Pipeline Annotation Document</th>
@@ -546,7 +438,6 @@
 <div>
 
  <!------------------------------------  Editor ------------------------------------------------------->
-<div>
     <h2 align="center">Comparison of Different Formats </h2>
     <h3>Please input orginal text document ...</h3>
     <div id="editor">JABBERWOCKY
@@ -558,33 +449,34 @@ All mimsy were the borogoves,
 And the mome raths outgrabe.
     </div>
     <textarea id="input1" style="width:66%; height:100px; display:none"></textarea>
-</div>
+
     <!------------------------------------  Table  ------------------------------------------------------->
 
 <h3>Please select the form of annotation ...</h3>
-
+<div>
 <ol>
     <li>
-        <input type="radio" name="annotation" value="gateannie"><font color="blue">GATE Annie</font>
+        <input type="radio" name="annotation" value="gateannie" onclick="service()"><font color="blue">GATE Annie</font>
     </li><li>
-        <input type="radio" name="annotation" value="gateopennlp"><font color="blue">GATE OpenNLP</font>
+        <input type="radio" name="annotation" value="gateopennlp" onclick="service()"><font color="blue">GATE OpenNLP</font>
     </li><li>
-    <input type="radio" name="annotation" value="female"><font color="green">UIMA OpenNLP</font>
+    <input type="radio" name="annotation" value="uimaopennlp" onclick="service()" ><font color="green">UIMA OpenNLP</font>
     </li><li>
-        <input type="radio" name="annotation" value="female"><font color="green">UIMA Dkpro OpenNLP</font>
+        <input type="radio" name="annotation" value="uimadkproopennlp"  onclick="service()" ><font color="green">UIMA Dkpro OpenNLP</font>
     </li><li>
-        <input type="radio" name="annotation" value="female"><font color="green">UIMA Dkpro Stanford</font>
+        <input type="radio" name="annotation" value="uimadkprostanford"  onclick="service()" ><font color="green">UIMA Dkpro Stanford</font>
     </li><li>
-        <input type="radio" name="annotation" value="female"><font color="orange">Stanford CoreNLP</font>
+        <input type="radio" name="annotation" value="stanfordcorenlp" onclick="service()" ><font color="orange">Stanford CoreNLP</font>
     </li>
 </ol>
-</div> <!-- End of DIV. -->
-
-<div class="tips">
-
+</div>
+    
+<h3>Please view annotation format (XML/JSON) ...</h3>
+<div id="display">
 </div>
 
 
+</div> <!-- End of DIV. -->
 
 <footer>
 <hr />

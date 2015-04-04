@@ -2,6 +2,7 @@ import org.jldservice.server.Lapps2
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 import org.jldservice.cache.Cache
+import org.lappsgrid.wsdlclient.WSDLClient
 
 // application
 import javax.servlet.ServletContext
@@ -46,9 +47,16 @@ if (txtIn != null && txtIn.trim().startsWith('{')) {
         jsonObjIn = new JsonSlurper().parseText(txtIn);
         try{
             log.info("-----------Call------------------");
-            def output = Lapps2.call(jsonObjIn.Wsdl, jsonObjIn.Input, jsonObjIn.Username, jsonObjIn,Password);
-            log.info("Return:" + output);
-            jsonObjRet["Output"] = output;
+            WSDLClient ws = new WSDLClient();
+            ws.init(jsonObjIn.Wsdl);
+            if(jsonObjIn.Username != null) {
+                ws.authorize(jsonObjIn.Username, jsonObjIn,Password);
+            }
+            String xmlOutput = ws.callService("","getXML", jsonObjIn.Input).toString();
+            String jsonOutput = ws.callService("","getJSON", jsonObjIn.Input).toString();
+            jsonObjRet['Xml'] = xmlOutput;
+            jsonObjRet['Json'] = jsonOutput;
+            log.info("Return: XML.length()=" +xmlOutput.length() +" JSON.length()="+jsonOutput.length());
             jsonObjRet["Except"] = "Sucess";
         } catch (Throwable th) {
             log.info("============Error=================");
