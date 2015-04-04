@@ -47,7 +47,7 @@ class Lapps {
         } else {
             input.setDiscriminator(3);
         }
-        Data output = (Data) ws.callService("execute", input);
+        Data output = (Data) ws.callService("", "execute", input);
         return output.getPayload();
     }
 }
