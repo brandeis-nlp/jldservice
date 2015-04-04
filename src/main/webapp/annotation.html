@@ -364,8 +364,8 @@
               if (resJson.Xml) {
                  var html = '<div class="tips"><h4>' + ann + '</h4>'+
                  '<h5><a href="http://codebeautify.org/xmlviewer#" target="_blank">XML Online Viewer:</a></h5>'+
-                 '<textarea class="prettyprint" rows="16" cols="100"><code class="language-xml">'+ escapeXml(formatXml(resJson.Xml)) +'</code></textarea>'+
-                 '<h5><a href="http://jsonviewer.stack.hu/" target="_blank">JSON  Online Viewer:</a></h5><textarea class="prettyprint" rows="16" cols="100"><code>'+ escapeXml(JSON.stringify(jQuery.parseJSON(resJson.Json),null,4)) +'</code></textarea></div><hr/> ';
+                 '<textarea class="prettyprint" rows="16" cols="100">'+ escapeXml(formatXml(resJson.Xml)) +'</textarea>'+
+                 '<h5><a href="http://jsonviewer.stack.hu/" target="_blank">JSON  Online Viewer:</a></h5><textarea class="prettyprint" rows="16" cols="100">'+ escapeXml(JSON.stringify(jQuery.parseJSON(resJson.Json),null,4)) +'</textarea></div><hr/> ';
                  display.prepend(html);
                  // output.text(JSON.stringify(jQuery.parseJSON(resJson.Output),null,4));
               } else {
