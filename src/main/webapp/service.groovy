@@ -1,3 +1,4 @@
+import org.jldservice.server.Lapps
 import org.jldservice.server.Lapps2
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
@@ -46,7 +47,7 @@ if (txtIn != null && txtIn.trim().startsWith('{')) {
         jsonObjIn = new JsonSlurper().parseText(txtIn);
         try{
             log.info("-----------Call------------------");
-            def output = Lapps2.call(jsonObjIn.Wsdl, jsonObjIn.Input, jsonObjIn.Username, jsonObjIn,Password);
+            def output = Lapps.call(jsonObjIn.Wsdl, jsonObjIn.Input, jsonObjIn.Username, jsonObjIn.Password);
             log.info("Return:" + output);
             jsonObjRet["Output"] = output;
             jsonObjRet["Except"] = "Sucess";
