@@ -13,7 +13,7 @@
 
 
     <script type="text/javascript" src="https://rawgithub.com/padolsey/prettyprint.js/master/prettyprint.js" >  </script>
-    <script type="text/javascript" src="https://rawgithub.com/epeli/underscore.string/master/lib/underscore.string.js" >  </script>
+    <script type="text/javascript" src="https://raw.githubusercontent.com/epeli/underscore.string/master/dist/underscore.string.js" >  </script>
     <script type="text/javascript" src="https://rawgithub.com/patricklodder/jquery-zclip/master/jquery.zclip.js" >  </script>
 
 
@@ -236,13 +236,42 @@
     line-height: 1em;  }
 
 
+    .CodeMirror {border: 1px solid #aaa;font-size: 10pt;}
     </style>
 
-
+    <link rel="stylesheet" href="http://codemirror.net/lib/codemirror.css">
+    <script src="http://codemirror.net/lib/codemirror.js"></script>
+    <link rel="stylesheet" href="http://codemirror.net/addon/scroll/simplescrollbars.css">
+    <script src="http://codemirror.net/addon/scroll/simplescrollbars.js"></script>
+    <!--<link rel=stylesheet href="http://codemirror.net/doc/docs.css">-->
+    <script src="http://codemirror.net/mode/markdown/markdown.js"></script>
+    <script src="http://codemirror.net/mode/xml/xml.js"></script>
+    <script src="https://codemirror.net/addon/display/placeholder.js"></script>
 
  <script type="text/javascript">
 
-function display(id) {
+var codeMirrors = {};
+var coverCodeMirror = function(textareaId) {
+    var textarea = document.getElementById(textareaId);
+    var editor = CodeMirror.fromTextArea(textarea, {
+        lineNumbers: true,
+        mode: "htmlmixed",
+        fixedGutter: true,
+        scrollbarStyle: "overlay"
+    });
+    editor.setSize(textarea.style.width, textarea.style.height);
+    codeMirrors[textareaId] = editor;
+}
+
+var getCodeMirrorValue = function(textareaId) {
+    return codeMirrors[textareaId].getValue();
+}
+
+var setCodeMirrorValue = function(textareaId, val) {
+    codeMirrors[textareaId].setValue(val);
+}
+
+var display = function (id) {
     var json = $("#" + id).val();
     if (json) {
         var node = new PrettyJSON.view.Node({
@@ -250,99 +279,6 @@ function display(id) {
                 data:jQuery.parseJSON(json)
         });
         node.expandAll();
-    }
-}
-
-function valid() {
-    var compact_0 = $("#jsonld_compact_0").val();
-    $("#jsonld_expanded_0").val("");
-
-    var json_compact_0;
-    try
-    {
-      json_compact_0 = jQuery.parseJSON(compact_0)
-    } catch(err) {
-      $("#jsonld_expanded_0").attr("placeholder", "Compacted -->  " + err);
-    }
-    if (json_compact_0) {
-        jsonld.expand(json_compact_0, function(err, expanded) {
-            console.log(JSON.stringify(expanded, null, 2));
-            if(err) {
-                $("#jsonld_expanded_0").attr("placeholder", "Expand -->  " + JSON.stringify(err, null, 2));
-            }
-            if (expanded) {
-                $("#jsonld_expanded_0").val(JSON.stringify(expanded, null, 2));
-            }
-            display("jsonld_compact_0");
-            display("jsonld_expanded_0");
-        });
-    }
-}
-
-function compact() {
-    var doc = $("#jsonld_doc").val();
-    var context = $("#jsonld_context").val();
-    $("#jsonld_compacted").val("");
-
-    var json_doc;
-    var json_context;
-    try
-    {
-      json_doc = jQuery.parseJSON(doc)
-    } catch(err) {
-      $("#jsonld_compacted").attr("placeholder", "Document -->  " + err);
-    }
-
-        var json_compact_0;
-    try
-    {
-      json_context = jQuery.parseJSON(context)
-    } catch(err) {
-      $("#jsonld_compacted").attr("placeholder", "Context -->  " + err);
-    }
-
-    if (json_doc && json_context) {
-        jsonld.compact(json_doc, json_context, function(err, compacted) {
-            console.log(JSON.stringify(compacted, null, 2));
-            if (err) {
-                $("#jsonld_compacted").attr("placeholder",  "Compact -->  " + JSON.stringify(err, null, 2));
-            }
-            if (compacted) {
-                $("#jsonld_compacted").val(JSON.stringify(compacted, null, 2));
-            }
-            display("jsonld_doc");
-            display("jsonld_context");
-            display("jsonld_compacted");
-        });
-    }
-}
-
-
-
-function path() {
-    var source = $("#json_source").val();
-    var path = $("#json_path").val();
-    $("#json_result").val("");
-
-    var json_source;
-    try
-    {
-      json_source = jQuery.parseJSON(source)
-    } catch(err) {
-      $("#json_result").attr("placeholder", "Result -->  " + err);
-    }
-
-    if (json_source) {
-
-        var json_paths = path.match(/[^\s]+/g);
-
-        var json_result = "";
-        for(var i = 0; i < json_paths.length; i++){
-            json_result += JSON.stringify(jsonPath(json_source, json_paths[i])[0], null, 2) + "\n\n\n";
-        }
-        $("#json_result").val(json_result);
-        display("json_source");
-        display("json_result");
     }
 }
 
@@ -354,24 +290,24 @@ var formatXml = function(xml) {
     jQuery.each(xml.split('\r\n'), function(index, node) {
     var indent = 0;
     if (node.match( /.+<\/\w[^>]*>$/ )) {
-    indent = 0;
+        indent = 0;
     } else if (node.match( /^<\/\w/ )) {
-    if (pad != 0) {
-    pad -= 1;
-    }
+        if (pad != 0) {
+            pad -= 1;
+        }
     } else if (node.match( /^<\w[^>]*[^\/]>.*$/ )) {
-    indent = 1;
+        indent = 1;
     } else {
-    indent = 0;
+        indent = 0;
     }
 
     var padding = '';
     for (var i = 0; i < pad; i++) {
-    padding += ' ';
+        padding += ' ';
     }
 
     formatted += padding + node + '\r\n';
-    pad += indent;
+        pad += indent;
     });
 
     return formatted;
@@ -389,15 +325,17 @@ var escapeXml = function(unsafe) {
     });
 }
 
-function transform() {
-    var template = $("#json_template").val();
-    var json = $("#json_obj").val();
-    $("#json_transform").val("");
-
+function execService(op, inputIds, outputId) {
     var io = {};
     io.Wsdl = 'http://eldrad.cs-i.brandeis.edu:8282/json2json/0.2-SNAPSHOT/services/Json2JsonWS?wsdl';
-    io.Input = [json, template];
-    io.Op = 'json2json'
+    io.Op = op
+    io.Input = [];
+    // push inputId value into io input
+    for (var i = 0; i < inputIds.length; i++) {
+        io.Input.push(getCodeMirrorValue(inputIds[i]));
+    }
+    // clear outputId value
+    setCodeMirrorValue(outputId, '')
 
     var req = {};
     req.io = JSON.stringify(io);
@@ -409,13 +347,13 @@ function transform() {
         success: function(data, dataType) {
           var resJson = jQuery.parseJSON(data);
           if (resJson.Output) {
-            $("#json_transform").val(JSON.stringify(jQuery.parseJSON(resJson.Output),null,4));
+            if(op == 'xml2json' || op ==  'json2json')
+                setCodeMirrorValue(outputId, JSON.stringify(jQuery.parseJSON(resJson.Output),null,4));
+            else if(op == 'json2xml' || op ==  'xml2xml')
+                setCodeMirrorValue(outputId, formatXml(resJson.Output));
           } else {
-            $("#json_transform").attr("placeholder",  resJson.Except);
+                $("#"+outputId).attr("placeholder",  resJson.Except);
           }
-          display("json_template");
-          display("json_obj");
-          display("json_transform");
         }
     });
 }
@@ -423,17 +361,17 @@ function transform() {
 
 </head>
 
-<body>
+<>
 
 <a name="_top_" />
 <nav class="nav-bar">
-    <a href="#json">json2json</a>
+    <a href="#json2json">json2json</a>
     |
-    <a href="#jsonld">xml2json</a>
+    <a href="#xml2json">xml2json</a>
     |
-    <a href="#jsonpath">json2xml</a>
+    <a href="#json2xml">json2xml</a>
     |
-    <a href="#json2json">xml2xml</a>
+    <a href="#xml2xml">xml2xml</a>
     |
     <a href="https://github.com/chunqishi/edu.brandeis.cs.json2json-web-service/issues" target="_blank">report bugs</a>
 </nav>
@@ -454,7 +392,7 @@ function transform() {
 <table>
     <tr> <th>Source:</th> <th>Template DSL:</th><th> </th><th>Result:</th> </tr>
     <tr>
-        <td><textarea id="json_obj" cols="50" rows="20">{
+        <td><textarea id="json2json_source" style="width:400px;height:300px;">{
   "catalog": {
     "foo:cd": [
       {
@@ -475,168 +413,271 @@ function transform() {
       }
     ]
   }
-}</textarea></td>
-        <td><textarea id="json_template" cols="50" rows="20">cds{
+}</textarea><script>coverCodeMirror("json2json_source");</script>
+        </td>
+        <td><textarea id="json2json_template" style="width:400px;height:300px;">cds{
     titles  &$catalog."foo:cd".foreach{&.title}
     artists  &$catalog."foo:cd".foreach{&.artist}
     countries  &$catalog."foo:cd".foreach{&.country}
     companies  &$catalog."foo:cd".foreach{&.company}
     pricees  &$catalog."foo:cd".foreach{&.price}
     years  &$catalog."foo:cd".foreach{&."bar:year"}
-}</textarea></td>
-        <td><input type="button" value="Transform" onclick="transform()" /></td>
-        <td><textarea  id="json_transform"  cols="50" rows="20"></textarea></td>
-    </tr>
-    <tr>
-        <td><div id="display_json_template"></div></td><td><div id="display_json_obj"></div></td>
-        <td></td>
-        <td><span id="display_json_transform"></span></td>
+}</textarea><script>coverCodeMirror("json2json_template");</script></td>
+        <td><input type="button" value="Transform"
+                   onclick="execService('json2json', ['json2json_source', 'json2json_template'], 'json2json_result')" /></td>
+        <td><textarea  id="json2json_result"  style="width:400px;height:300px;"></textarea>
+            <script>coverCodeMirror("json2json_result");</script></td>
     </tr>
 </table>
 
+<hr/>
 
 <!-- ============================================================================================================== -->
-<a name="jsonld" />
+<input type="button" value="More Examples ..." onclick="$('#json2json_examples').toggle()">
+<div id="json2json_examples" style="display: none;">
+
+    <h3>Rename JSON Keys<a href="#_top_" style="text-decoration: none;">^</a></h3>
+    <table>
+        <tr> <th>Source:</th> <th>Template DSL:</th><th> </th><th>Result:</th> </tr>
+        <tr>
+            <td><textarea id="json2json_example1_source" style="width:400px;height:200px;">{
+  "catalog": {
+    "foo:cd": [
+      {
+        "title": "Hide your heart",
+        "artist": "Bonnie Tyler",
+        "country": "UK",
+        "company": "CBS Records",
+        "price": "9.90",
+        "bar:year": "1988"
+      },
+      {
+        "title": "Greatest Hits",
+        "artist": "Dolly Parton",
+        "country": "USA",
+        "company": "RCA",
+        "price": "9.90",
+        "bar:year": "1982"
+      }
+    ]
+  }
+}</textarea><script>coverCodeMirror("json2json_example1_source");</script>
+            </td>
+            <td><textarea id="json2json_example1_template" style="width:400px;height:200px;">cds{
+    titles  &$catalog."foo:cd".foreach{&.title}
+    artists  &$catalog."foo:cd".foreach{&.artist}
+    countries  &$catalog."foo:cd".foreach{&.country}
+    companies  &$catalog."foo:cd".foreach{&.company}
+    pricees  &$catalog."foo:cd".foreach{&.price}
+    years  &$catalog."foo:cd".foreach{&."bar:year"}
+}</textarea><script>coverCodeMirror("json2json_example1_template");</script></td>
+            <td><input type="button" value="Transform"
+                       onclick="execService('json2json', ['json2json_example1_source', 'json2json_example1_template'], 'json2json_example1_result')" /></td>
+            <td><textarea  id="json2json_example1_result"  style="width:400px;height:200px;"></textarea>
+                <script>coverCodeMirror("json2json_example1_result");</script></td>
+        </tr>
+    </table>
+
+    <!------------------------------------------------------------------------------------>
+
+
+    <h3>Merge 2 Lists<a href="#_top_" style="text-decoration: none;">^</a></h3>
+    <table>
+        <tr> <th>Source:</th> <th>Template DSL:</th><th> </th><th>Result:</th> </tr>
+        <tr>
+            <td><textarea id="json2json_example2_source" style="width:400px;height:200px;">{
+  "catalog": {
+    "foo:cd": [
+      {
+        "title": "Hide your heart",
+        "artist": "Bonnie Tyler",
+        "country": "UK",
+        "company": "CBS Records",
+        "price": "9.90",
+        "bar:year": "1988"
+      },
+      {
+        "title": "Greatest Hits",
+        "artist": "Dolly Parton",
+        "country": "USA",
+        "company": "RCA",
+        "price": "9.90",
+        "bar:year": "1982"
+      }
+    ]
+  }
+}</textarea><script>coverCodeMirror("json2json_example2_source");</script>
+            </td>
+            <td><textarea id="json2json_example2_template" style="width:400px;height:200px;">cds{
+    titles  &$catalog."foo:cd".foreach{&.title}
+    artists  &$catalog."foo:cd".foreach{&.artist}
+    countries  &$catalog."foo:cd".foreach{&.country}
+    companies  &$catalog."foo:cd".foreach{&.company}
+    pricees  &$catalog."foo:cd".foreach{&.price}
+    years  &$catalog."foo:cd".foreach{&."bar:year"}
+}</textarea><script>coverCodeMirror("json2json_example2_template");</script></td>
+            <td><input type="button" value="Transform"
+                       onclick="execService('json2json', ['json2json_example2_source', 'json2json_example2_template'], 'json2json_example2_result')" /></td>
+            <td><textarea  id="json2json_example2_result"  style="width:400px;height:200px;"></textarea>
+                <script>coverCodeMirror("json2json_example2_result");</script></td>
+        </tr>
+    </table>
+
+    <!------------------------------------------------------------------------------------>
+
+
+    <p><input type="button" value="Hide Examples ..." onclick="$('#json2json_examples').toggle()">
+    </p>
+</div>
+
+
+
+<!-- ============================================================================================================== -->
+<a name="xml2json" />
 <h2> XML to JSON <a href="#_top_" style="text-decoration: none;">^</a></h2>
 <table>
 
-    <tr><th>XML:: </th><th></th><th> JSON:</th></tr>
+    <tr><th>XML: </th><th></th><th> JSON:</th></tr>
     <tr>
-        <td><textarea id="jsonld_compact_0" cols="50" rows="20">{
-  "@context": {
-    "name": "http://schema.org/name",
-    "homepage": {
-      "@id": "http://schema.org/url",
-      "@type": "@id"
-    },
-    "image": {
-      "@id": "http://schema.org/image",
-      "@type": "@id"
-    }
-  },
-  "image": "http://manu.sporny.org/images/manu.png",
-  "name": "Manu Sporny",
-  "homepage": "http://manu.sporny.org/"
-}</textarea></td>
-        <td><input type="button" value="Convert" onclick="valid()" /></td>
-        <td><textarea id="jsonld_expanded_0" cols="50" rows="20"></textarea></td>
-    </tr>
-    <tr>
-        <td><div id="display_jsonld_compact_0"></div></td>
-        <td></td>
-        <td><div id="display_jsonld_expanded_0"></div></td>
+        <td><textarea id="xml2json_source"
+                      style="width:400px;height:300px;">&lt;?xml version=&apos;1.0&apos; encoding=&apos;UTF-8&apos;?&gt;
+&lt;GateDocument version=&quot;3&quot;&gt;
+&lt;!-- The document&apos;s features--&gt;
+
+&lt;GateDocumentFeatures&gt;
+&lt;Feature&gt;
+  &lt;Name className=&quot;java.lang.String&quot;&gt;gate.SourceURL&lt;/Name&gt;
+  &lt;Value className=&quot;java.lang.String&quot;&gt;created from String&lt;/Value&gt;
+&lt;/Feature&gt;
+&lt;/GateDocumentFeatures&gt;
+&lt;!-- The document content area with serialized nodes --&gt;
+
+&lt;TextWithNodes&gt;
+&lt;Node id=&quot;0&quot;/&gt;Mike&lt;Node id=&quot;4&quot;/&gt;.&lt;Node id=&quot;5&quot;/&gt;
+
+    &lt;/TextWithNodes&gt;
+&lt;!-- The default annotation set --&gt;
+
+&lt;AnnotationSet&gt;
+&lt;Annotation Id=&quot;0&quot; Type=&quot;Token&quot; StartNode=&quot;0&quot; EndNode=&quot;4&quot;&gt;
+&lt;Feature&gt;
+  &lt;Name className=&quot;java.lang.String&quot;&gt;length&lt;/Name&gt;
+  &lt;Value className=&quot;java.lang.Integer&quot;&gt;4&lt;/Value&gt;
+&lt;/Feature&gt;
+&lt;Feature&gt;
+  &lt;Name className=&quot;java.lang.String&quot;&gt;chunk&lt;/Name&gt;
+  &lt;Value className=&quot;java.lang.String&quot;&gt;B-NP&lt;/Value&gt;
+&lt;/Feature&gt;
+&lt;Feature&gt;
+  &lt;Name className=&quot;java.lang.String&quot;&gt;category&lt;/Name&gt;
+  &lt;Value className=&quot;java.lang.String&quot;&gt;NNP&lt;/Value&gt;
+&lt;/Feature&gt;
+&lt;Feature&gt;
+  &lt;Name className=&quot;java.lang.String&quot;&gt;source&lt;/Name&gt;
+  &lt;Value className=&quot;java.lang.String&quot;&gt;OpenNLP&lt;/Value&gt;
+&lt;/Feature&gt;
+&lt;Feature&gt;
+  &lt;Name className=&quot;java.lang.String&quot;&gt;string&lt;/Name&gt;
+  &lt;Value className=&quot;java.lang.String&quot;&gt;Mike&lt;/Value&gt;
+&lt;/Feature&gt;
+&lt;/Annotation&gt;
+&lt;Annotation Id=&quot;1&quot; Type=&quot;Token&quot; StartNode=&quot;4&quot; EndNode=&quot;5&quot;&gt;
+&lt;Feature&gt;
+  &lt;Name className=&quot;java.lang.String&quot;&gt;length&lt;/Name&gt;
+  &lt;Value className=&quot;java.lang.Integer&quot;&gt;1&lt;/Value&gt;
+&lt;/Feature&gt;
+&lt;Feature&gt;
+  &lt;Name className=&quot;java.lang.String&quot;&gt;chunk&lt;/Name&gt;
+  &lt;Value className=&quot;java.lang.String&quot;&gt;O&lt;/Value&gt;
+&lt;/Feature&gt;
+&lt;Feature&gt;
+  &lt;Name className=&quot;java.lang.String&quot;&gt;category&lt;/Name&gt;
+  &lt;Value className=&quot;java.lang.String&quot;&gt;.&lt;/Value&gt;
+&lt;/Feature&gt;
+&lt;Feature&gt;
+  &lt;Name className=&quot;java.lang.String&quot;&gt;source&lt;/Name&gt;
+  &lt;Value className=&quot;java.lang.String&quot;&gt;OpenNLP&lt;/Value&gt;
+&lt;/Feature&gt;
+&lt;Feature&gt;
+  &lt;Name className=&quot;java.lang.String&quot;&gt;string&lt;/Name&gt;
+  &lt;Value className=&quot;java.lang.String&quot;&gt;.&lt;/Value&gt;
+&lt;/Feature&gt;
+&lt;/Annotation&gt;
+&lt;Annotation Id=&quot;2&quot; Type=&quot;Sentence&quot; StartNode=&quot;0&quot; EndNode=&quot;5&quot;&gt;
+&lt;Feature&gt;
+  &lt;Name className=&quot;java.lang.String&quot;&gt;source&lt;/Name&gt;
+  &lt;Value className=&quot;java.lang.String&quot;&gt;OpenNLP&lt;/Value&gt;
+&lt;/Feature&gt;
+&lt;/Annotation&gt;
+&lt;Annotation Id=&quot;3&quot; Type=&quot;Split&quot; StartNode=&quot;4&quot; EndNode=&quot;5&quot;&gt;
+&lt;Feature&gt;
+  &lt;Name className=&quot;java.lang.String&quot;&gt;source&lt;/Name&gt;
+  &lt;Value className=&quot;java.lang.String&quot;&gt;OpenNLP&lt;/Value&gt;
+&lt;/Feature&gt;
+&lt;Feature&gt;
+  &lt;Name className=&quot;java.lang.String&quot;&gt;kind&lt;/Name&gt;
+  &lt;Value className=&quot;java.lang.String&quot;&gt;internal&lt;/Value&gt;
+&lt;/Feature&gt;
+&lt;/Annotation&gt;
+&lt;Annotation Id=&quot;4&quot; Type=&quot;NP&quot; StartNode=&quot;0&quot; EndNode=&quot;4&quot;&gt;
+&lt;/Annotation&gt;
+&lt;Annotation Id=&quot;5&quot; Type=&quot;Person&quot; StartNode=&quot;0&quot; EndNode=&quot;4&quot;&gt;
+&lt;Feature&gt;
+  &lt;Name className=&quot;java.lang.String&quot;&gt;source&lt;/Name&gt;
+  &lt;Value className=&quot;java.lang.String&quot;&gt;OpenNLP&lt;/Value&gt;
+&lt;/Feature&gt;
+&lt;/Annotation&gt;
+&lt;/AnnotationSet&gt;
+
+&lt;/GateDocument&gt;</textarea><script>coverCodeMirror("xml2json_source")</script></td>
+        <td><input type="button" value="Convert"
+                   onclick="execService('xml2json', ['xml2json_source'], 'xml2json_result')" /></td>
+        <td><textarea id="xml2json_result" style="width:400px;height:300px;"></textarea>
+            <script>coverCodeMirror("xml2json_result")</script></td>
     </tr>
 </table>
 <!------------------------------------------------------------------------------------>
 <hr/>
 
 <!-- ============================================================================================================== -->
-<a name="jsonld" />
+<a name="json2xml" />
 <h2> JSON to XML <a href="#_top_" style="text-decoration: none;">^</a></h2>
 <table>
 
-    <tr><th>XML:: </th><th></th><th> JSON:</th></tr>
+    <tr><th>JSON: </th><th></th><th> XML:</th></tr>
     <tr>
-        <td><textarea id="jsonld_compact_0" cols="50" rows="20">{
-  "@context": {
-    "name": "http://schema.org/name",
-    "homepage": {
-      "@id": "http://schema.org/url",
-      "@type": "@id"
-    },
-    "image": {
-      "@id": "http://schema.org/image",
-      "@type": "@id"
-    }
-  },
-  "image": "http://manu.sporny.org/images/manu.png",
-  "name": "Manu Sporny",
-  "homepage": "http://manu.sporny.org/"
-}</textarea></td>
-        <td><input type="button" value="Convert" onclick="valid()" /></td>
-        <td><textarea id="jsonld_expanded_0" cols="50" rows="20"></textarea></td>
-    </tr>
-    <tr>
-        <td><div id="display_jsonld_compact_0"></div></td>
-        <td></td>
-        <td><div id="display_jsonld_expanded_0"></div></td>
+        <td><textarea id="json2xml_source" style="width:400px;height:300px;"></textarea>
+            <script>coverCodeMirror("json2xml_source")</script></td>
+        <td><input type="button" value="Convert"
+                   onclick="execService('json2xml', ['json2xml_source'],'json2xml_result')" /></td>
+        <td><textarea id="json2xml_result"  style="width:400px;height:300px;"></textarea>
+            <script>coverCodeMirror("json2xml_result")</script></td>
     </tr>
 </table>
 <!------------------------------------------------------------------------------------>
 <hr/>
 
 <!-- ============================================================================================================== -->
-
+<a name="xml2xml" />
 <h2> XML to XML <a href="#_top_" style="text-decoration: none;">^</a></h2>
 <p>
 <table>
     <tr><th>XML: </th><th> XSL:</th><th> </th><th>Result</th></tr>
     <tr>
-        <td><textarea id="jsonld_doc" cols="50" rows="20">{
-  "http://schema.org/name": "Manu Sporny",
-  "http://schema.org/url": {"@id": "http://manu.sporny.org/"},
-  "http://schema.org/image": {"@id": "http://manu.sporny.org/images/manu.png"}
-}</textarea></td>
-        <td><textarea id="jsonld_context" cols="50" rows="20">{
-  "name": "http://schema.org/name",
-  "homepage": {"@id": "http://schema.org/url", "@type": "@id"},
-  "image": {"@id": "http://schema.org/image", "@type": "@id"}
-}</textarea></td>
-        <td><input type="button" value="Compact" onclick="compact()" /></td>
-        <td><textarea  id="jsonld_compacted"  cols="50" rows="20"> </textarea></td>
-    </tr>
-    <tr>
-        <td><div id="display_jsonld_doc"></div></td><td><div id="display_jsonld_context"></div></td>
-        <td></td>
-        <td><span id="display_jsonld_compacted"></span></td>
+        <td><textarea id="xml2xml_source" style="width:400px;height:300px;"></textarea>
+            <script>coverCodeMirror("xml2xml_source")</script></td>
+        <td><textarea id="xml2xml_template" style="width:400px;height:300px;"></textarea>
+            <script>coverCodeMirror("xml2xml_template")</script></td>
+        <td><input type="button" value="Transform"
+                   onclick="execService('xml2xml', ['xml2xml_source', 'xml2xml_template'],'xml2xml_result')" /></td>
+        <td><textarea  id="xml2xml_result"  style="width:400px;height:300px;"> </textarea>
+            <script>coverCodeMirror("xml2xml_result")</script></td>
     </tr>
 </table>
-<hr/>
 
 
 <!------------------------------------------------------------------------------------>
 <!-- ============================================================================================================== -->
-<!-- ============================================================================================================== -->
-<a name="jsonpath" />
-<h2>Please Try the JSON Path  <a href="#_top_" style="text-decoration: none;">^</a></h2>
-
-<p>
-<table>
-    <tr>
-        <th>JSON: </th><th> JSON Path (<a href="http://goessner.net/articles/JsonPath/" target="_blank">What ?</a>):</th><th> </th><th>Result:</th>
-    </tr><tr><td>
-    <textarea id="json_source" cols="50" rows="20">{
-        "@context": {
-        "name": "http://schema.org/name",
-        "homepage": {
-        "@id": "http://schema.org/url",
-        "@type": "@id"
-        },
-        "image": {
-        "@id": "http://schema.org/image",
-        "@type": "@id"
-        }
-        },
-        "image": "http://manu.sporny.org/images/manu.png",
-        "name": "Manu Sporny",
-        "homepage": "http://manu.sporny.org/"
-        }</textarea></td><td>
-    <textarea id="json_path" cols="50" rows="20">$.homepage
-$.@context
-$.@context.homepage.*
-    </textarea></td><td>
-    <input type="button" value="Result" onclick="path()" />
-</td><td>
-    <textarea  id="json_result"  cols="50" rows="20">
-
-    </textarea>
-</td></tr><tr><td>
-    <div id="display_json_source"></div></td><td><div id="display_json_path"></div></td><td></td>
-    <td><span id="display_json_result"></span>
-    </td></tr>
-</table>
-
-
 <!------------------------------------------------------------------------------------>
 
 
