@@ -150,7 +150,7 @@ function transform() {
     $.ajax({
         type: "POST",
         dataType: "text",
-        url: "json2json.groovy",
+        url: "json.groovy",
         data: req,
         success: function(data, dataType) {
           var resJson = jQuery.parseJSON(data);
