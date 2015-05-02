@@ -237,30 +237,58 @@
 
 
     .CodeMirror {border: 1px solid #aaa;font-size: 10pt;}
+
     </style>
 
     <link rel="stylesheet" href="http://codemirror.net/lib/codemirror.css">
     <script src="http://codemirror.net/lib/codemirror.js"></script>
     <link rel="stylesheet" href="http://codemirror.net/addon/scroll/simplescrollbars.css">
+    <link rel="stylesheet" href="https://codemirror.net/addon/display/fullscreen.css">
     <script src="http://codemirror.net/addon/scroll/simplescrollbars.js"></script>
     <!--<link rel=stylesheet href="http://codemirror.net/doc/docs.css">-->
     <script src="http://codemirror.net/mode/markdown/markdown.js"></script>
     <script src="http://codemirror.net/mode/xml/xml.js"></script>
     <script src="https://codemirror.net/addon/display/placeholder.js"></script>
-
+    <script src="https://codemirror.net/addon/display/fullscreen.js"></script>
+    <script src="https://codemirror.net/mode/javascript/javascript.js"></script>
+    <script src="https://codemirror.net/addon/selection/active-line.js"></script>
+    <script src="https://codemirror.net/addon/edit/matchbrackets.js"></script>
+    <script src="https://codemirror.net/mode/xml/xml.js"></script>
+    <link rel="stylesheet" href="https://codemirror.net/theme/neat.css">
+    <script src="https://codemirror.net/addon/mode/overlay.js"></script>
+    <script src="https://codemirror.net/addon/mode/loadmode.js"></script>
+    <script src="https://codemirror.net/mode/meta.js"></script>
+    <script src="https://codemirror.net/mode/htmlmixed/htmlmixed.js"></script>
  <script type="text/javascript">
+var changeMode = function(editor, value) {
+  if (value.indexOf("{") !=-1) {
+    editor.setOption("mode", "javascript");
+    CodeMirror.autoLoadMode(editor, "javascript");
+  } else {
+    editor.setOption("mode", "htmlmixed");
+    CodeMirror.autoLoadMode(editor, "htmlmixed");
+  }
+}
 
 var codeMirrors = {};
 var coverCodeMirror = function(textareaId) {
     var textarea = document.getElementById(textareaId);
     var editor = CodeMirror.fromTextArea(textarea, {
         lineNumbers: true,
-        mode: "htmlmixed",
-        fixedGutter: true,
+        // mode: "htmlmixed",
+        // fixedGutter: true,
+        styleActiveLine: true,
+        matchBrackets: true,
+        // viewportMargin: Infinity,
         scrollbarStyle: "overlay"
     });
+    // editor.setOption("theme", "neat");
     editor.setSize(textarea.style.width, textarea.style.height);
+    changeMode(editor, textarea.value);
     codeMirrors[textareaId] = editor;
+    editor.on('dblclick', function() {
+        editor.setOption("fullScreen", !editor.getOption("fullScreen"));
+    });
 }
 
 var getCodeMirrorValue = function(textareaId) {
@@ -269,6 +297,7 @@ var getCodeMirrorValue = function(textareaId) {
 
 var setCodeMirrorValue = function(textareaId, val) {
     codeMirrors[textareaId].setValue(val);
+    changeMode(codeMirrors[textareaId], val)
 }
 
 var display = function (id) {
@@ -327,7 +356,7 @@ var escapeXml = function(unsafe) {
 
 function execService(op, inputIds, outputId) {
     var io = {};
-    io.Wsdl = 'http://eldrad.cs-i.brandeis.edu:8282/json2json/0.2-SNAPSHOT/services/Json2JsonWS?wsdl';
+    io.Wsdl = 'http://eldrad.cs-i.brandeis.edu:8282/json2json/0.3.0-SNAPSHOT/services/Json2JsonWS?wsdl';
     io.Op = op
     io.Input = [];
     // push inputId value into io input
@@ -347,9 +376,9 @@ function execService(op, inputIds, outputId) {
         success: function(data, dataType) {
           var resJson = jQuery.parseJSON(data);
           if (resJson.Output) {
-            if(op == 'xml2json' || op ==  'json2json')
+            if(op == 'xml2jsondsl' || op ==  'json2jsondsl' || op ==  'xml2json')
                 setCodeMirrorValue(outputId, JSON.stringify(jQuery.parseJSON(resJson.Output),null,4));
-            else if(op == 'json2xml' || op ==  'xml2xml')
+            else if(op ==  'xml2xmlxsl' || op == 'json2xml')
                 setCodeMirrorValue(outputId, formatXml(resJson.Output));
           } else {
                 $("#"+outputId).attr("placeholder",  resJson.Except);
@@ -358,20 +387,19 @@ function execService(op, inputIds, outputId) {
     });
 }
 </script>
-
 </head>
-
-<>
 
 <a name="_top_" />
 <nav class="nav-bar">
-    <a href="#json2json">json2json</a>
+    <a href="#json2jsondsl">json2jsondsl</a>
+    |
+    <a href="#xml2jsondsl">xml2jsondsl</a>
     |
     <a href="#xml2json">xml2json</a>
     |
     <a href="#json2xml">json2xml</a>
     |
-    <a href="#xml2xml">xml2xml</a>
+    <a href="#xml2xmlxsl">xml2xmlxsl</a>
     |
     <a href="https://github.com/chunqishi/edu.brandeis.cs.json2json-web-service/issues" target="_blank">report bugs</a>
 </nav>
@@ -385,14 +413,14 @@ function execService(op, inputIds, outputId) {
 
 <!------------------------------------------------------------------------------------>
 
-<a name="json2json" />
-<h2>JSON to JSON<a href="#_top_" style="text-decoration: none;">^</a></h2>
+<a name="json2jsondsl" />
+<h2>JSON to JSON by DSL<a href="#_top_" style="text-decoration: none;">^</a></h2>
 
 <p>
 <table>
     <tr> <th>Source:</th> <th>Template DSL:</th><th> </th><th>Result:</th> </tr>
     <tr>
-        <td><textarea id="json2json_source" style="width:400px;height:300px;">{
+        <td><textarea id="json2jsondsl_source" style="width:400px;height:300px;">{
   "catalog": {
     "foo:cd": [
       {
@@ -413,34 +441,34 @@ function execService(op, inputIds, outputId) {
       }
     ]
   }
-}</textarea><script>coverCodeMirror("json2json_source");</script>
+}</textarea><script>coverCodeMirror("json2jsondsl_source");</script>
         </td>
-        <td><textarea id="json2json_template" style="width:400px;height:300px;">cds{
+        <td><textarea id="json2jsondsl_template" style="width:400px;height:300px;">cds{
     titles  &$catalog."foo:cd".foreach{&.title}
     artists  &$catalog."foo:cd".foreach{&.artist}
     countries  &$catalog."foo:cd".foreach{&.country}
     companies  &$catalog."foo:cd".foreach{&.company}
     pricees  &$catalog."foo:cd".foreach{&.price}
     years  &$catalog."foo:cd".foreach{&."bar:year"}
-}</textarea><script>coverCodeMirror("json2json_template");</script></td>
+}</textarea><script>coverCodeMirror("json2jsondsl_template");</script></td>
         <td><input type="button" value="Transform"
-                   onclick="execService('json2json', ['json2json_source', 'json2json_template'], 'json2json_result')" /></td>
-        <td><textarea  id="json2json_result"  style="width:400px;height:300px;"></textarea>
-            <script>coverCodeMirror("json2json_result");</script></td>
+                   onclick="execService('json2jsondsl', ['json2jsondsl_source', 'json2jsondsl_template'], 'json2jsondsl_result')" /></td>
+        <td><textarea  id="json2jsondsl_result"  style="width:400px;height:300px;"></textarea>
+            <script>coverCodeMirror("json2jsondsl_result");</script></td>
     </tr>
 </table>
 
 <hr/>
 
 <!-- ============================================================================================================== -->
-<input type="button" value="More Examples ..." onclick="$('#json2json_examples').toggle()">
-<div id="json2json_examples" style="display: none;">
+<input type="button" value="More Examples ..." onclick="$('#json2jsondsl_examples').toggle()">
+<div id="json2jsondsl_examples">
 
-    <h3>Rename JSON Keys<a href="#_top_" style="text-decoration: none;">^</a></h3>
+    <h3>Read Source JSON [global(&$), local(&.), supporting select{} sort{} foreach{} sum{}]</h3>
     <table>
         <tr> <th>Source:</th> <th>Template DSL:</th><th> </th><th>Result:</th> </tr>
         <tr>
-            <td><textarea id="json2json_example1_source" style="width:400px;height:200px;">{
+            <td><textarea id="json2jsondsl_example1_source" style="width:400px;height:200px;">{
   "catalog": {
     "foo:cd": [
       {
@@ -461,31 +489,26 @@ function execService(op, inputIds, outputId) {
       }
     ]
   }
-}</textarea><script>coverCodeMirror("json2json_example1_source");</script>
+}</textarea><script>coverCodeMirror("json2jsondsl_example1_source");</script>
             </td>
-            <td><textarea id="json2json_example1_template" style="width:400px;height:200px;">cds{
-    titles  &$catalog."foo:cd".foreach{&.title}
-    artists  &$catalog."foo:cd".foreach{&.artist}
-    countries  &$catalog."foo:cd".foreach{&.country}
-    companies  &$catalog."foo:cd".foreach{&.company}
-    pricees  &$catalog."foo:cd".foreach{&.price}
-    years  &$catalog."foo:cd".foreach{&."bar:year"}
-}</textarea><script>coverCodeMirror("json2json_example1_template");</script></td>
+            <td><textarea id="json2jsondsl_example1_template"
+                          style="width:400px;height:200px;">MyCDs ( &$.catalog."foo:cd".select{ &.artist == "Dolly Parton" } )
+            </textarea><script>coverCodeMirror("json2jsondsl_example1_template");</script></td>
             <td><input type="button" value="Transform"
-                       onclick="execService('json2json', ['json2json_example1_source', 'json2json_example1_template'], 'json2json_example1_result')" /></td>
-            <td><textarea  id="json2json_example1_result"  style="width:400px;height:200px;"></textarea>
-                <script>coverCodeMirror("json2json_example1_result");</script></td>
+                       onclick="execService('json2jsondsl', ['json2jsondsl_example1_source', 'json2jsondsl_example1_template'], 'json2jsondsl_example1_result')" /></td>
+            <td><textarea  id="json2jsondsl_example1_result"  style="width:400px;height:200px;"></textarea>
+                <script>coverCodeMirror("json2jsondsl_example1_result");</script></td>
         </tr>
     </table>
 
     <!------------------------------------------------------------------------------------>
 
 
-    <h3>Merge 2 Lists<a href="#_top_" style="text-decoration: none;">^</a></h3>
+    <h3>List Operation, supporting + (merge)</h3>
     <table>
         <tr> <th>Source:</th> <th>Template DSL:</th><th> </th><th>Result:</th> </tr>
         <tr>
-            <td><textarea id="json2json_example2_source" style="width:400px;height:200px;">{
+            <td><textarea id="json2jsondsl_example2_source" style="width:400px;height:200px;">{
   "catalog": {
     "foo:cd": [
       {
@@ -506,29 +529,341 @@ function execService(op, inputIds, outputId) {
       }
     ]
   }
-}</textarea><script>coverCodeMirror("json2json_example2_source");</script>
+}</textarea><script>coverCodeMirror("json2jsondsl_example2_source");</script>
             </td>
-            <td><textarea id="json2json_example2_template" style="width:400px;height:200px;">cds{
-    titles  &$catalog."foo:cd".foreach{&.title}
-    artists  &$catalog."foo:cd".foreach{&.artist}
-    countries  &$catalog."foo:cd".foreach{&.country}
-    companies  &$catalog."foo:cd".foreach{&.company}
-    pricees  &$catalog."foo:cd".foreach{&.price}
-    years  &$catalog."foo:cd".foreach{&."bar:year"}
-}</textarea><script>coverCodeMirror("json2json_example2_template");</script></td>
+            <td><textarea id="json2jsondsl_example2_template" style="width:400px;height:200px;">MyCDs{
+    titles  ( &$catalog."foo:cd".foreach{&.title} + ["mytitle1", "mytitle2"] )
+}</textarea><script>coverCodeMirror("json2jsondsl_example2_template");</script></td>
             <td><input type="button" value="Transform"
-                       onclick="execService('json2json', ['json2json_example2_source', 'json2json_example2_template'], 'json2json_example2_result')" /></td>
-            <td><textarea  id="json2json_example2_result"  style="width:400px;height:200px;"></textarea>
-                <script>coverCodeMirror("json2json_example2_result");</script></td>
+                       onclick="execService('json2jsondsl', ['json2jsondsl_example2_source', 'json2jsondsl_example2_template'], 'json2jsondsl_example2_result')" /></td>
+            <td><textarea  id="json2jsondsl_example2_result"  style="width:400px;height:200px;"></textarea>
+                <script>coverCodeMirror("json2jsondsl_example2_result");</script></td>
+        </tr>
+    </table>
+
+    <!------------------------------------------------------------------------------------>
+    <!------------------------------------------------------------------------------------>
+
+
+    <h3>Gate JSON to LIF</h3>
+    <table>
+        <tr> <th>Source:</th> <th>Template DSL:</th><th> </th><th>Result:</th> </tr>
+        <tr>
+            <td><textarea id="json2jsondsl_example3_source" style="width:400px;height:200px;">{
+    "GateDocument": {
+        "@version": "3",
+        "#comment": [
+            " The document's features",
+            " The document content area with serialized nodes ",
+            " The default annotation set "
+        ],
+        "GateDocumentFeatures": {
+            "Feature": {
+                "Name": {
+                    "@className": "java.lang.String",
+                    "__text__": "gate.SourceURL"
+                },
+                "Value": {
+                    "@className": "java.lang.String",
+                    "__text__": "created from String"
+                }
+            }
+        },
+        "TextWithNodes": {
+            "Node": [
+                {
+                    "__tail__": "Mike",
+                    "@id": "0"
+                },
+                {
+                    "__tail__": ".",
+                    "@id": "4"
+                },
+                {
+                    "@id": "5"
+                }
+            ]
+        },
+        "AnnotationSet": {
+            "Annotation": [
+                {
+                    "@EndNode": "4",
+                    "@Id": "0",
+                    "@StartNode": "0",
+                    "@Type": "Token",
+                    "Feature": [
+                        {
+                            "Name": {
+                                "@className": "java.lang.String",
+                                "__text__": "length"
+                            },
+                            "Value": {
+                                "@className": "java.lang.Integer",
+                                "__text__": "4"
+                            }
+                        },
+                        {
+                            "Name": {
+                                "@className": "java.lang.String",
+                                "__text__": "chunk"
+                            },
+                            "Value": {
+                                "@className": "java.lang.String",
+                                "__text__": "B-NP"
+                            }
+                        },
+                        {
+                            "Name": {
+                                "@className": "java.lang.String",
+                                "__text__": "category"
+                            },
+                            "Value": {
+                                "@className": "java.lang.String",
+                                "__text__": "NNP"
+                            }
+                        },
+                        {
+                            "Name": {
+                                "@className": "java.lang.String",
+                                "__text__": "source"
+                            },
+                            "Value": {
+                                "@className": "java.lang.String",
+                                "__text__": "OpenNLP"
+                            }
+                        },
+                        {
+                            "Name": {
+                                "@className": "java.lang.String",
+                                "__text__": "string"
+                            },
+                            "Value": {
+                                "@className": "java.lang.String",
+                                "__text__": "Mike"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "@EndNode": "5",
+                    "@Id": "1",
+                    "@StartNode": "4",
+                    "@Type": "Token",
+                    "Feature": [
+                        {
+                            "Name": {
+                                "@className": "java.lang.String",
+                                "__text__": "length"
+                            },
+                            "Value": {
+                                "@className": "java.lang.Integer",
+                                "__text__": "1"
+                            }
+                        },
+                        {
+                            "Name": {
+                                "@className": "java.lang.String",
+                                "__text__": "chunk"
+                            },
+                            "Value": {
+                                "@className": "java.lang.String",
+                                "__text__": "O"
+                            }
+                        },
+                        {
+                            "Name": {
+                                "@className": "java.lang.String",
+                                "__text__": "category"
+                            },
+                            "Value": {
+                                "@className": "java.lang.String",
+                                "__text__": "."
+                            }
+                        },
+                        {
+                            "Name": {
+                                "@className": "java.lang.String",
+                                "__text__": "source"
+                            },
+                            "Value": {
+                                "@className": "java.lang.String",
+                                "__text__": "OpenNLP"
+                            }
+                        },
+                        {
+                            "Name": {
+                                "@className": "java.lang.String",
+                                "__text__": "string"
+                            },
+                            "Value": {
+                                "@className": "java.lang.String",
+                                "__text__": "."
+                            }
+                        }
+                    ]
+                },
+                {
+                    "@EndNode": "5",
+                    "@Id": "2",
+                    "@StartNode": "0",
+                    "@Type": "Sentence",
+                    "Feature": {
+                        "Name": {
+                            "@className": "java.lang.String",
+                            "__text__": "source"
+                        },
+                        "Value": {
+                            "@className": "java.lang.String",
+                            "__text__": "OpenNLP"
+                        }
+                    }
+                },
+                {
+                    "@EndNode": "5",
+                    "@Id": "3",
+                    "@StartNode": "4",
+                    "@Type": "Split",
+                    "Feature": [
+                        {
+                            "Name": {
+                                "@className": "java.lang.String",
+                                "__text__": "source"
+                            },
+                            "Value": {
+                                "@className": "java.lang.String",
+                                "__text__": "OpenNLP"
+                            }
+                        },
+                        {
+                            "Name": {
+                                "@className": "java.lang.String",
+                                "__text__": "kind"
+                            },
+                            "Value": {
+                                "@className": "java.lang.String",
+                                "__text__": "internal"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "@EndNode": "4",
+                    "@Id": "4",
+                    "@StartNode": "0",
+                    "@Type": "NP"
+                },
+                {
+                    "@EndNode": "4",
+                    "@Id": "5",
+                    "@StartNode": "0",
+                    "@Type": "Person",
+                    "Feature": {
+                        "Name": {
+                            "@className": "java.lang.String",
+                            "__text__": "source"
+                        },
+                        "Value": {
+                            "@className": "java.lang.String",
+                            "__text__": "OpenNLP"
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}</textarea><script>coverCodeMirror("json2jsondsl_example3_source");</script>
+            </td>
+            <td><textarea id="json2jsondsl_example3_template" style="width:400px;height:200px;">{
+discriminator "http://vocab.lappsgrid.org/ns/media/jsonld"
+payload {
+    "@context" "http://vocab.lappsgrid.org/context-1.0.0.jsonld"
+	metadata {}
+    text {
+    	"@value" &$GateDocument.TextWithNodes.Node.select{&."__tail__" != null}.sum { &."__tail__"+" " }
+    }
+    views ([
+    	[
+          metadata:{ contains { "http://vocab.lappsgrid.org/NamedEntity" {
+                                producer "edu.brandeis.cs.lappsgrid.opennlp.json2json:0.2.0"
+                                type "ner:opennlp"
+          }}},
+          annotations: (
+          	&$GateDocument.AnnotationSet.Annotation.select{&."@Type"=="Token"}.foreach{
+          		[
+            	start: &."@StartNode",
+            	end: &."@EndNode",
+	          	label: "http://vocab.lappsgrid.org/NamedEntity",
+                features: [
+                			word:&.Feature.select{&.Name.__text__=="string"}.Value.__text__[0],
+                            category:&.Feature.select{&.Name.__text__=="category"}.Value.__text__[0]
+                          ]
+
+                ]
+            }
+          )
+       ]
+    ])
+ }
+}</textarea><script>coverCodeMirror("json2jsondsl_example3_template");</script></td>
+            <td><input type="button" value="Transform"
+                       onclick="execService('json2jsondsl', ['json2jsondsl_example3_source', 'json2jsondsl_example3_template'], 'json2jsondsl_example3_result')" /></td>
+            <td><textarea  id="json2jsondsl_example3_result"  style="width:400px;height:200px;"></textarea>
+                <script>coverCodeMirror("json2jsondsl_example3_result");</script></td>
         </tr>
     </table>
 
     <!------------------------------------------------------------------------------------>
 
-
-    <p><input type="button" value="Hide Examples ..." onclick="$('#json2json_examples').toggle()">
+    <p><input type="button" value="Hide Examples ..." onclick="$('#json2jsondsl_examples').toggle()">
     </p>
 </div>
+
+<!-- ============================================================================================================== -->
+
+<a name="xml2jsondsl" />
+<h2>XML to JSON by DSL<a href="#_top_" style="text-decoration: none;">^</a></h2>
+
+<p>
+<table>
+    <tr> <th>XML:</th> <th>Template DSL:</th><th> </th><th>Result:</th> </tr>
+    <tr>
+        <td><textarea id="xml2jsondsl_source" style="width:400px;height:300px;">&lt;?xml version=&quot;1.0&quot; ?&gt;
+&lt;catalog&gt;
+ &lt;cd&gt;
+  &lt;title&gt;Hide your heart&lt;/title&gt;
+  &lt;artist&gt;Bonnie Tyler&lt;/artist&gt;
+  &lt;country&gt;UK&lt;/country&gt;
+  &lt;company&gt;CBS Records&lt;/company&gt;
+  &lt;price&gt;9.90&lt;/price&gt;
+  &lt;year&gt;1988&lt;/year&gt;
+ &lt;/cd&gt;
+ &lt;cd&gt;
+  &lt;title&gt;Greatest Hits&lt;/title&gt;
+  &lt;artist&gt;Dolly Parton&lt;/artist&gt;
+  &lt;country&gt;USA&lt;/country&gt;
+  &lt;company&gt;RCA&lt;/company&gt;
+  &lt;price&gt;9.90&lt;/price&gt;
+  &lt;year&gt;1982&lt;/year&gt;
+ &lt;/cd&gt;
+&lt;/catalog&gt;</textarea><script>coverCodeMirror("xml2jsondsl_source");</script>
+        </td>
+        <td><textarea id="xml2jsondsl_template" style="width:400px;height:300px;">cds{
+    titles  &$"cd".foreach{&.title}
+    artists  &$"cd".foreach{&.artist}
+    countries  &$"cd".foreach{&.country}
+    companies  &$"cd".foreach{&.company}
+    pricees  &$"cd".foreach{&.price}
+    years  &$"cd".foreach{&."year"}
+}</textarea><script>coverCodeMirror("xml2jsondsl_template");</script></td>
+        <td><input type="button" value="Transform"
+                   onclick="execService('xml2jsondsl', ['xml2jsondsl_source', 'xml2jsondsl_template'], 'xml2jsondsl_result')" /></td>
+        <td><textarea  id="xml2jsondsl_result"  style="width:400px;height:300px;"></textarea>
+            <script>coverCodeMirror("xml2jsondsl_result");</script></td>
+    </tr>
+</table>
+
+<hr/>
+
 
 
 
@@ -658,20 +993,20 @@ function execService(op, inputIds, outputId) {
 <hr/>
 
 <!-- ============================================================================================================== -->
-<a name="xml2xml" />
-<h2> XML to XML <a href="#_top_" style="text-decoration: none;">^</a></h2>
+<a name="xml2xmlxsl" />
+<h2> XML to XML by XSL <a href="#_top_" style="text-decoration: none;">^</a></h2>
 <p>
 <table>
     <tr><th>XML: </th><th> XSL:</th><th> </th><th>Result</th></tr>
     <tr>
-        <td><textarea id="xml2xml_source" style="width:400px;height:300px;"></textarea>
-            <script>coverCodeMirror("xml2xml_source")</script></td>
-        <td><textarea id="xml2xml_template" style="width:400px;height:300px;"></textarea>
-            <script>coverCodeMirror("xml2xml_template")</script></td>
+        <td><textarea id="xml2xmlxsl_source" style="width:400px;height:300px;"></textarea>
+            <script>coverCodeMirror("xml2xmlxsl_source")</script></td>
+        <td><textarea id="xml2xmlxsl_template" style="width:400px;height:300px;"></textarea>
+            <script>coverCodeMirror("xml2xmlxsl_template")</script></td>
         <td><input type="button" value="Transform"
-                   onclick="execService('xml2xml', ['xml2xml_source', 'xml2xml_template'],'xml2xml_result')" /></td>
-        <td><textarea  id="xml2xml_result"  style="width:400px;height:300px;"> </textarea>
-            <script>coverCodeMirror("xml2xml_result")</script></td>
+                   onclick="execService('xml2xmlxsl', ['xml2xmlxsl_source', 'xml2xmlxsl_template'],'xml2xmlxsl_result')" /></td>
+        <td><textarea  id="xml2xmlxsl_result"  style="width:400px;height:300px;"> </textarea>
+            <script>coverCodeMirror("xml2xmlxsl_result")</script></td>
     </tr>
 </table>
 
