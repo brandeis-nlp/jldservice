@@ -1,7 +1,6 @@
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 import org.jldservice.cache.Cache
-import org.lappsgrid.wsdlclient.WSDLClient
 
 // application
 import javax.servlet.ServletContext
@@ -20,15 +19,15 @@ import java.util.logging.Level
 import java.util.logging.Logger
 import java.util.logging.SimpleFormatter
 
-Logger log = Logger.getLogger("json2json.groovy");
+Logger log = Logger.getLogger("execjava.groovy");
 log.setLevel(Level.ALL);
 
-//Handler handler = new FileHandler("service.log");
+//Handler handler = new FileHandler("execjava.log");
 //handler.setFormatter(new SimpleFormatter());
 //log.addHandler(handler);
 
 
-def txtIn, jsonObjIn, jsonObjRet = [:], txtRet;
+def txtIn, objIn, objRet = [:], txtRet;
 
 // read io parameter from request
 txtIn = request.getParameter("io");
@@ -43,18 +42,13 @@ if (txtIn != null && txtIn.trim().startsWith('{')) {
         log.info("Cached: " + txtRet);
     else {
         // text to json object
-        jsonObjIn = new JsonSlurper().parseText(txtIn);
+        objIn = new JsonSlurper().parseText(txtIn);
         try{
             log.info("-----------Call------------------");
-            WSDLClient ws = new WSDLClient();
-            ws.init(jsonObjIn.Wsdl);
-            if(jsonObjIn.Username != null) {
-                ws.authorize(jsonObjIn.Username, jsonObjIn,Password);
-            }
-            String output = ws.callService("",jsonObjIn.Op, *jsonObjIn.Input).toString();
-            jsonObjRet['Output'] = output;
-            log.info("Return: Output.length()=" +output.length());
-            jsonObjRet["Except"] = "Success";
+            def classObj = this.getClass().classLoader.loadClass(objIn.ClassName).newInstance();
+            objRet['Output'] = classObj."${objIn.Op}"( *objIn.Input );
+            log.info("Return: Output.length()=" +objRet['Output'].toString().length());
+            objRet["Except"] = "Success";
         } catch (Throwable th) {
             log.info("============Error=================");
             StringWriter sw = new StringWriter();
@@ -62,11 +56,11 @@ if (txtIn != null && txtIn.trim().startsWith('{')) {
             String stackTrace = sw.toString();
             def exp = th.toString() + " : " + stackTrace;
             log.info("Error:" + exp);
-            jsonObjRet["Except"] = exp;
-            jsonObjRet["Output"] = "";
+            objRet["Except"] = exp;
+            objRet["Output"] = "";
         }
         // json object to text
-        txtRet = new JsonBuilder(jsonObjRet).toString();
+        txtRet = new JsonBuilder(objRet).toString();
         // put into chache
         Cache.put(txtIn, txtRet);
     }

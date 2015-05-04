@@ -1,9 +1,5 @@
 package org.jldservice.config
 
-
-import org.jldservice.cache.Cache
-
-
 class Config {
 
     def config;

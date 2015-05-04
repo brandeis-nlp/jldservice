@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LappsGrid Visualization</title>
+
+    <!-- =============================================================================================================== -->
+    <!-- Bootstrap core CSS -->
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="http://getbootstrap.com/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="http://getbootstrap.com/examples/theme/theme.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+    <!-- =============================================================================================================== -->
+    <link rel="stylesheet" href="http://codemirror.net/lib/codemirror.css">
+    <link rel="stylesheet" href="http://codemirror.net/addon/scroll/simplescrollbars.css">
+    <link rel="stylesheet" href="https://codemirror.net/addon/display/fullscreen.css">
+    <link rel="stylesheet" href="https://codemirror.net/addon/dialog/dialog.css">
+    <link rel="stylesheet" href="https://codemirror.net/addon/search/matchesonscrollbar.css">
+    <script src="http://codemirror.net/lib/codemirror.js"></script>
+    <script src="http://codemirror.net/addon/scroll/simplescrollbars.js"></script>
+    <!--<link rel=stylesheet href="http://codemirror.net/doc/docs.css">-->
+    <script src="http://codemirror.net/mode/markdown/markdown.js"></script>
+    <script src="http://codemirror.net/mode/xml/xml.js"></script>
+    <script src="https://codemirror.net/addon/display/placeholder.js"></script>
+    <script src="https://codemirror.net/addon/display/fullscreen.js"></script>
+    <script src="https://codemirror.net/mode/javascript/javascript.js"></script>
+    <script src="https://codemirror.net/addon/selection/active-line.js"></script>
+    <script src="https://codemirror.net/addon/edit/matchbrackets.js"></script>
+    <script src="https://codemirror.net/mode/xml/xml.js"></script>
+    <!--<link rel="stylesheet" href="https://codemirror.net/theme/neat.css">-->
+    <script src="https://codemirror.net/addon/mode/overlay.js"></script>
+    <script src="https://codemirror.net/addon/mode/loadmode.js"></script>
+    <script src="https://codemirror.net/mode/meta.js"></script>
+    <script src="https://codemirror.net/mode/htmlmixed/htmlmixed.js"></script>
+    <script src="https://codemirror.net/addon/display/placeholder.js"></script>
+    <script src="https://codemirror.net/addon/dialog/dialog.js"></script>
+    <script src="https://codemirror.net/addon/search/searchcursor.js"></script>
+    <script src="https://codemirror.net/addon/search/search.js"></script>
+    <script src="https://codemirror.net/addon/scroll/annotatescrollbar.js"></script>
+    <script src="https://codemirror.net/addon/search/matchesonscrollbar.js"></script>
+    <script src="https://raw.githubusercontent.com/cfinke/Typo.js/master/typo/typo.js"></script>
+
+    <!-- =============================================================================================================== -->
+    <!-- Brat Visualisation ( http://brat.nlplab.org/embed.html#live) -->
+    <link rel="stylesheet" type="text/css" href="http://brat.nlplab.org/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="http://brat.nlplab.org/css/jquery-theme/jquery-ui-redmond.css"/>
+    <link rel="stylesheet" type="text/css" href="http://weaver.nlplab.org/~brat/demo/v1.3/style-vis.css"/>
+    <script type="text/javascript" src="http://weaver.nlplab.org/~brat/demo/v1.3/client/lib/head.load.min.js"></script>
+    <!-- =============================================================================================================== -->
+    <script type="text/javascript" src="http://weaver.nlplab.org/~brat/demo/v1.3/client/lib/jquery.min.js"></script>
+    <script type="text/javascript" src="http://weaver.nlplab.org/~brat/demo/v1.3/client/lib/jquery.svg.min.js"></script>
+    <script type="text/javascript" src="http://weaver.nlplab.org/~brat/demo/v1.3/client/lib/jquery.svgdom.min.js"></script>
+    <script type="text/javascript" src="http://weaver.nlplab.org/~brat/demo/v1.3/client/src/configuration.js"></script>
+    <script type="text/javascript" src="http://weaver.nlplab.org/~brat/demo/v1.3/client/src/util.js"></script>
+    <script type="text/javascript" src="http://weaver.nlplab.org/~brat/demo/v1.3/client/src/annotation_log.js"></script>
+    <script type="text/javascript" src="http://weaver.nlplab.org/~brat/demo/v1.3/client/lib/webfont.js"></script>
+    <script type="text/javascript" src="http://weaver.nlplab.org/~brat/demo/v1.3/client/src/dispatcher.js"></script>
+    <script type="text/javascript" src="http://weaver.nlplab.org/~brat/demo/v1.3/client/src/url_monitor.js"></script>
+    <script type="text/javascript" src="http://weaver.nlplab.org/~brat/demo/v1.3/client/src/visualizer.js"></script>
+    <script type="text/javascript" src="http://brat.nlplab.org/js/lib/json2.js"></script>
+    <!-- =============================================================================================================== -->
+    <!--All the language services from Vassar College.-->
+    <!--http://grid.anc.org:8080/service_manager/language-services-->
+
+    <!-- =============================================================================================================== -->
+
+    <!-- =============================================================================================================== -->
+    <style type="text/css">
+        .CodeMirror { border: 1px solid #aaa;font-size: 10pt;}
+        .CodeMirror-empty { outline: 1px solid #c22; }
+        .CodeMirror-empty.CodeMirror-focused { outline: none; }
+        .CodeMirror pre.CodeMirror-placeholder { color: #999; }
+        .modal-footer { background-color: #f9f9f9; }
+        .btn-success { width: 100%; padding: 10px; }
+    </style>
+
+    <!-- =============================================================================================================== -->
+
+    <script type="text/javascript">
+    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< //
+    var bratLocation = 'http://weaver.nlplab.org/~brat/demo/v1.3';
+    /* head.js(
+            // External libraries
+                    bratLocation + '/client/lib/jquery.min.js',
+                    bratLocation + '/client/lib/jquery.svg.min.js',
+                    bratLocation + '/client/lib/jquery.svgdom.min.js',
+            // brat helper modules
+                    bratLocation + '/client/src/configuration.js',
+                    bratLocation + '/client/src/util.js',
+                    bratLocation + '/client/src/annotation_log.js',
+                    bratLocation + '/client/lib/webfont.js',
+            // brat modules
+                    bratLocation + '/client/src/dispatcher.js',
+                    bratLocation + '/client/src/url_monitor.js',
+                    bratLocation + '/client/src/visualizer.js',
+
+            // json2
+            'http://brat.nlplab.org/js/lib/json2.js'
+    );  */
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< //
+    var webFontURLs = [
+                bratLocation + '/static/fonts/Astloch-Bold.ttf',
+                bratLocation + '/static/fonts/PT_Sans-Caption-Web-Regular.ttf',
+                bratLocation + '/static/fonts/Liberation_Sans-Regular.ttf'
+    ];
+
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  //
+
+    var formatXml = function(xml) {
+        var formatted = '';
+        var reg = /(>)(<)(\/*)/g;
+        xml = xml.replace(reg, '$1\r\n$2$3');
+        var pad = 0;
+        jQuery.each(xml.split('\r\n'), function(index, node) {
+        var indent = 0;
+        if (node.match( /.+<\/\w[^>]*>$/ )) {
+            indent = 0;
+        } else if (node.match( /^<\/\w/ )) {
+            if (pad != 0) {
+                pad -= 1;
+            }
+        } else if (node.match( /^<\w[^>]*[^\/]>.*$/ )) {
+            indent = 1;
+        } else {
+            indent = 0;
+        }
+
+        var padding = '';
+        for (var i = 0; i < pad; i++) {
+            padding += ' ';
+        }
+
+        formatted += padding + node + '\r\n';
+            pad += indent;
+        });
+
+        return formatted;
+    }
+
+    var escapeXml = function(unsafe) {
+        return unsafe.replace(/[<>&'"]/g, function (c) {
+            switch (c) {
+                case '<': return '&lt;';
+                case '>': return '&gt;';
+                case '&': return '&amp;';
+                case '\'': return '&apos;';
+                case '"': return '&quot;';
+            }
+        });
+    }
+
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  //
+    var changeMode = function(editor, value) {
+      if (value.indexOf("{") !=-1) {
+        editor.setOption("mode", "javascript");
+        CodeMirror.autoLoadMode(editor, "javascript");
+      } else {
+        editor.setOption("mode", "htmlmixed");
+        CodeMirror.autoLoadMode(editor, "htmlmixed");
+      }
+    }
+
+    var codeMirrors = {};
+
+    var coverCodeMirror = function(textareaId, changeHandler) {
+        var textarea = document.getElementById(textareaId);
+        var editor = CodeMirror.fromTextArea(textarea, {
+            lineNumbers: true,
+            // mode: "htmlmixed",
+            // fixedGutter: true,
+            styleActiveLine: true,
+            matchBrackets: true,
+            // viewportMargin: Infinity,
+            scrollbarStyle: "overlay"
+        });
+        // editor.setOption("theme", "neat");
+        editor.setSize(textarea.style.width, textarea.style.height);
+        changeMode(editor, textarea.value);
+        codeMirrors[textareaId] = editor;
+        editor.on('dblclick', function() {
+            editor.setOption("fullScreen", !editor.getOption("fullScreen"));
+        });
+    }
+
+    var getCodeMirrorValue = function(textareaId) {
+        return codeMirrors[textareaId].getValue();
+    }
+
+    var setCodeMirrorValue = function(textareaId, val) {
+        codeMirrors[textareaId].setValue(val);
+        changeMode(codeMirrors[textareaId], val)
+    }
+
+    var docChangeHandler = function(liveDispatcher, textareaId){
+        var docInput = getCodeMirrorValue(textareaId);
+        var docJSON;
+        try {
+            docJSON = JSON.parse(docInput.trim());
+            // docInput.css({'border': '2px inset'});
+        } catch (e) {
+            // docInput.css({'border': '2px solid red'});
+            console.error('invalid JSON Data:', e);
+            return;
+        }
+        try {
+            liveDispatcher.post('requestRenderData', [$.extend({}, docJSON)]);
+            // liveDiv.css({'border': '2px inset'});  // setting this blows the layout
+            // collInput.css({'border': '2px inset'});
+        } catch(e) {
+            console.error('requestRenderData went down with:', e);
+            // liveDiv.css({'border': '2px solid red'});
+            // collInput.css({'border': '2px solid red'});
+        }
+    }
+
+
+    var confChangeHandler = function(liveDispatcher, textareaId) {
+        var collInput = getCodeMirrorValue(textareaId);
+        var collJSON;
+        try {
+            collJSON = JSON.parse(collInput.trim());
+            // collInput.css({'border': '2px inset'});
+        } catch (e) {
+            // Not properly formatted JSON...
+            // collInput.css({'border': '2px solid red'});
+            console.error('invalid JSON Data:', e);
+            return;
+        }
+        try {
+            liveDispatcher.post('collectionLoaded',
+                    [$.extend({'collection': null}, collJSON)]);
+            // liveDiv.css({'border': '2px inset'});  // setting this blows the layout
+            // docInput.css({'border': '2px inset'});
+        } catch(e) {
+            console.error('collectionLoaded went down with:', e);
+            //liveDiv.css({'border': '2px solid red'});
+            // collInput.css({'border': '2px solid red'});
+        }
+    }
+
+    var renderBratDisplay =  function (displayId, inputId, confInputId) {
+        var docData = getCodeMirrorValue(inputId);
+        var collData = getCodeMirrorValue(confInputId);
+        // Time for some "real" brat coding, let's hook into the dispatcher
+        var liveDispatcher = Util.embed(displayId,
+                $.extend({'collection': null}, JSON.parse(collData.trim())),
+                $.extend({}, JSON.parse(docData.trim())), webFontURLs);
+        var renderError = function() {
+            // setting this blows the layout (error --> red)
+            $('#' + displayId).css({'border': '2px solid red'});
+        };
+        liveDispatcher.on('renderError: Fatal', renderError);
+
+        codeMirrors[inputId].on('change', function() {
+            docChangeHandler(liveDispatcher, inputId);
+        });
+
+        codeMirrors[confInputId].on('change', function() {
+            confChangeHandler(liveDispatcher, confInputId);
+        });
+
+        // packJSON used to make json neat and pack.
+        var packJSON = function(s) {
+            // replace any space with ' ' in non-nested curly brackets
+            s = s.replace(/(\{[^\{\}\[\]]*\})/g,
+                          function(a, b) { return b.replace(/\s+/g, ' '); });
+            // replace any space with ' ' in [] up to nesting depth 1
+            s = s.replace(/(\[(?:[^\[\]\{\}]|\[[^\[\]\{\}]*\])*\])/g,
+                          function(a, b) { return b.replace(/\s+/g, ' '); });
+            return s
+        }
+        // when input doc data changed
+        // liveDispatcher.post('requestRenderData', [$.extend({}, JSON.parse(docInput.val()))]);
+
+        // when config input coll data changed
+        // liveDispatcher.post('collectionLoaded',  [$.extend({'collection': null}, JSON.parse(collInput.val()))]);
+    }
+
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  //
+    var wsdls = {
+        json2json : 'http://eldrad.cs-i.brandeis.edu:8282/json2json/0.3.0-SNAPSHOT/services/Json2JsonWS?wsdl'
+    }
+
+    var execJava = function (classname, op, inputs) {
+        var io = {};
+        io.ClassName = classname;
+        io.Op = op
+        io.Input = inputs
+        // clear outputId value
+        var req = {};
+        req.io = JSON.stringify(io);
+        $.ajax({
+            type: "POST",
+            dataType: "text",
+            url: "execjava.groovy",
+            data: req,
+            success: function(data, dataType) {
+              var resJson = jQuery.parseJSON(data);
+              if (resJson.Output) {
+                return resJson.Output;
+              } else {
+                return null;
+              }
+            }
+        });
+    }
+
+    var holdDB = {};
+    var readDB = function(key) {
+        var ret = execJava('org.jldservice.db.Jdbm', 'get', ['brat.html', key]);
+        var json = jQuery.parseJSON(ret);
+        holdDB[key] = json;
+        return json
+    }
+    var saveDB = function(key, json) {
+        json = json || holdDB[key];
+        var s = JSON.stringify(json,null,4);
+        execJava('org.jldservice.db.Jdbm', 'put', ['brat.html', key, s]);
+    }
+
+    var execService = function (wsdl, op, inputIds, outputId) {
+        var io = {};
+        io.Wsdl = wsdl;
+        io.Op = op
+        io.Input = [];
+        // push inputId value into io input
+        for (var i = 0; i < inputIds.length; i++) {
+            io.Input.push(getCodeMirrorValue(inputIds[i]));
+        }
+        // clear outputId value
+        setCodeMirrorValue(outputId, '')
+
+        var req = {};
+        req.io = JSON.stringify(io);
+        $.ajax({
+            type: "POST",
+            dataType: "text",
+            url: "callservice.groovy",
+            data: req,
+            success: function(data, dataType) {
+              var resJson = jQuery.parseJSON(data);
+              if (resJson.Output) {
+                    setCodeMirrorValue(outputId, JSON.stringify(jQuery.parseJSON(resJson.Output),null,4));
+              } else {
+                    $("#"+outputId).attr("placeholder",  resJson.Except);
+              }
+            }
+        });
+    }
+
+
+    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< //
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+    head.ready(function() {
+    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< //
+
+        ///////////////////////////////////////////////////////////////////////////////////
+        //        Header.                                                                //
+        ///////////////////////////////////////////////////////////////////////////////////
+        // Evaluate the code from the examples and show it to the user
+        /* Make damn sure to copy the objects before handing them to brat
+         since we will modify them later on */
+
+        coverCodeMirror("docjson");
+        coverCodeMirror("colljson");
+        renderBratDisplay("bratdisplay", "docjson", "colljson");
+
+
+        var jquery2 = jQuery.noConflict( true );
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+    });  // {head.ready}
+    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  //
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+
+
+
+</script>
+
+    <!-- =============================================================================================================== -->
+</head>
+
+<h1  align="center">Visualization of LappsGrid</h1>
+<p style="text-align:center;font-size: 16pt;">
+    <rt> Brandeis University</rt>,<br />
+    LappsGrid, <var>Version 0.3.0</var>,  April 2015</p>
+
+
+
+
+
+<!-- =============================================================================================================== -->
+<h2 align="center"><span class="label label-info" style="width:800px;display:inline-block;">LappsGrid JSON 2 Brat JSON</span></h2>
+<p>
+<table align="center">
+    <tr> <th>Source:</th> <th>Template DSL:</th><th> </th><th>Result:</th> </tr>
+    <tr>
+        <td><textarea id="json2jsondsl_source" style="width:400px;height:300px;">{
+  "catalog": {
+    "foo:cd": [
+      {
+        "title": "Hide your heart",
+        "artist": "Bonnie Tyler",
+        "country": "UK",
+        "company": "CBS Records",
+        "price": "9.90",
+        "bar:year": "1988"
+      },
+      {
+        "title": "Greatest Hits",
+        "artist": "Dolly Parton",
+        "country": "USA",
+        "company": "RCA",
+        "price": "9.90",
+        "bar:year": "1982"
+      }
+    ]
+  }
+}</textarea><script>coverCodeMirror("json2jsondsl_source");</script>
+        </td>
+        <td><textarea id="json2jsondsl_template" style="width:400px;height:300px;">cds{
+    titles  &$catalog."foo:cd".foreach{&.title}
+    artists  &$catalog."foo:cd".foreach{&.artist}
+    countries  &$catalog."foo:cd".foreach{&.country}
+    companies  &$catalog."foo:cd".foreach{&.company}
+    pricees  &$catalog."foo:cd".foreach{&.price}
+    years  &$catalog."foo:cd".foreach{&."bar:year"}
+}</textarea><script>coverCodeMirror("json2jsondsl_template");</script></td>
+        <td><input type="button" value="Transform"
+                   onclick="execService(wsdls['json2json'], 'json2jsondsl', ['json2jsondsl_source', 'json2jsondsl_template'], 'json2jsondsl_result')" /></td>
+        <td><textarea  id="json2jsondsl_result"  style="width:400px;height:300px;"></textarea>
+            <script>coverCodeMirror("json2jsondsl_result");</script></td>
+    </tr>
+</table>
+
+<hr/>
+<!-- =============================================================================================================== -->
+<h2 align="center"><span class="label label-info" style="width:800px;display:inline-block;">Brat JSON Visualization</span></h2>
+
+<table align="center">
+    <tr> <th>Brat DOC JSON:</th> <th>Brat CONFIG JSON:</th><th></tr>
+    <tr> <td>
+    <textarea id="docjson" style="width:600px">{
+    "text": "Ed O'Kelley was the man who shot the man who shot Jesse James.",
+    "entities": [
+        [
+            "T1",
+            "Person",
+            [ [ 0, 11 ] ]
+        ],
+        [
+            "T2",
+            "Person",
+            [ [ 20, 23 ] ]
+        ],
+        [
+            "T3",
+            "Person",
+            [ [ 37, 40 ] ]
+        ],
+        [
+            "T4",
+            "Person",
+            [ [ 50, 61 ] ]
+        ]
+    ],
+    "attributes": [ [ "A1", "Notorious", "T4" ] ],
+    "relations": [
+        [
+            "R1",
+            "Anaphora",
+            [ [ "Anaphor", "T2" ], [ "Entity", "T1" ] ]
+        ]
+    ],
+    "triggers": [
+        [
+            "T5",
+            "Assassination",
+            [ [ 45, 49 ] ]
+        ],
+        [
+            "T6",
+            "Assassination",
+            [ [ 28, 32 ] ]
+        ]
+    ],
+    "events": [
+        [
+            "E1",
+            "T5",
+            [ [ "Perpetrator", "T3" ], [ "Victim", "T4" ] ]
+        ],
+        [
+            "E2",
+            "T6",
+            [ [ "Perpetrator", "T2" ], [ "Victim", "T3" ] ]
+        ]
+    ]
+}</textarea></td>
+        <td>
+        <textarea id="colljson" style="width:600px">{
+    "entity_types": [
+        {
+            "type": "Person",
+            "labels": [ "Person", "Per" ],
+            "bgColor": "#7fa2ff",
+            "borderColor": "darken"
+        }
+    ],
+    "entity_attribute_types": [
+        {
+            "type": "Notorious",
+            "values": {
+                "Notorious": { "glyph": "★" }
+            },
+            "bool": "Notorious"
+        }
+    ],
+    "relation_types": [
+        {
+            "type": "Anaphora",
+            "labels": [ "Anaphora", "Ana" ],
+            "dashArray": "3,3",
+            "color": "purple",
+            "args": [
+                {
+                    "role": "Anaphor",
+                    "targets": [ "Person" ]
+                },
+                {
+                    "role": "Entity",
+                    "targets": [ "Person" ]
+                }
+            ]
+        }
+    ],
+    "event_types": [
+        {
+            "type": "Assassination",
+            "labels": [ "Assassination", "Assas" ],
+            "bgColor": "lightgreen",
+            "borderColor": "darken",
+            "arcs": [
+                {
+                    "type": "Victim",
+                    "labels": [ "Victim", "Vict" ]
+                },
+                {
+                    "type": "Perpetrator",
+                    "labels": [ "Perpetrator", "Perp" ],
+                    "color": "green"
+                }
+            ]
+        }
+    ]
+}</textarea>
+    </td></tr>
+    <tr><td colspan="2"><div id="bratdisplay"></div></td></tr>
+</table>
+<!-- =============================================================================================================== -->
+
+<!-- =============================================================================================================== -->
+
+<div class="container">
+    <h2 align="center"><span class="label label-info" style="width:800px;display:inline-block;">Visualization by Brat</span></h2>
+
+</div>
+
+<p></p>
+<p></p>
+
+<!-- =============================================================================================================== -->
+<!-- =============================================================================================================== -->
+<!-- =============================================================================================================== -->
+<footer>
+    <hr />
+    <p style="text-align:center">
+        Contacts:
+        <br/>&nbsp; &nbsp; <a target="_blank" class="nolink" href="http://www.cs.brandeis.edu/~jamesp/"> James Pustejovsky</a>
+        (<nonsense>jame</nonsense>sp@<nonsense>cs.</nonsense>brandeis.<nonsense></nonsense>edu)
+    </p>
+</footer>
+<p style="text-align:center">Copyright &copy; 2015 Brandeis University - All Rights Reserved</p>
+
+</body>
+</html>

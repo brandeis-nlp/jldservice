@@ -1,12 +1,13 @@
 package org.jldservice.server
 
+import org.lappsgrid.api.Data
+import org.lappsgrid.wsdlclient.WSDLClient
+
 /**
  * Created by lapps on 8/8/2014.
  */
+import javax.xml.namespace.QName
 
-import org.lappsgrid.wsdlclient.WSDLClient;
-import org.lappsgrid.api.Data
-import javax.xml.namespace.QName;
 class Lapps2 {
     public static String call(String wsdl, String text) {
         return call(wsdl, text, null, null);

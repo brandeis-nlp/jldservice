@@ -1,12 +1,6 @@
 package org.jldservice.clazz
 
-import org.codehaus.groovy.reflection.CachedMethod
-
 import java.lang.reflect.AnnotatedElement
-import java.lang.reflect.Constructor
-import java.lang.reflect.Field
-import java.lang.reflect.Modifier
-import org.jldservice.clazz.ClazzJar
 
 /**
  * @Chunqi SHI (diligence.cs@gmail.com)

@@ -1,7 +1,7 @@
-package org.jldservice.git;
+package org.jldservice.git
 
 import org.eclipse.jgit.api.Git
-import org.eclipse.jgit.internal.storage.file.FileRepository;
+import org.eclipse.jgit.internal.storage.file.FileRepository
 import org.jldservice.config.Config
 
 /**

@@ -492,7 +492,7 @@ function execService(op, inputIds, outputId) {
 }</textarea><script>coverCodeMirror("json2jsondsl_example1_source");</script>
             </td>
             <td><textarea id="json2jsondsl_example1_template"
-                          style="width:400px;height:200px;">MyCDs ( &$.catalog."foo:cd".select{ &.artist == "Dolly Parton" } )
+                          style="width:400px;height:200px;">MyCDs ( &$catalog."foo:cd".select{ &.artist == "Dolly Parton" } )
             </textarea><script>coverCodeMirror("json2jsondsl_example1_template");</script></td>
             <td><input type="button" value="Transform"
                        onclick="execService('json2jsondsl', ['json2jsondsl_example1_source', 'json2jsondsl_example1_template'], 'json2jsondsl_example1_result')" /></td>

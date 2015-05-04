@@ -8,7 +8,6 @@ import org.junit.Before
 import org.junit.Test
 
 import org.jldservice.json.Json
-import org.jldservice.clazz.ClazzJson
 import org.jldservice.clazz.ClazzJar
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation
 import edu.stanford.nlp.pipeline.Annotation

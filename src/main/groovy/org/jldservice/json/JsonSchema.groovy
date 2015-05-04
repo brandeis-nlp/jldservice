@@ -1,11 +1,7 @@
 package org.jldservice.json
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.ObjectWriter
-import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.jsonSchema.factories.SchemaFactoryWrapper
-import com.sun.codemodel.JCodeModel
-import org.jsonschema2pojo.SchemaMapper
 
 //
 // http://stackoverflow.com/questions/17783909/create-json-schema-from-java-class

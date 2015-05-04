@@ -1,9 +1,7 @@
 package org.jldservice.maven
 
 import org.apache.maven.cli.MavenCli
-import org.codehaus.plexus.util.FileUtils;
-
-import java.io.File;
+import org.codehaus.plexus.util.FileUtils
 
 /**
  * @Chunqi SHI (diligence.cs@gmail.com)

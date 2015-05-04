@@ -1,0 +1,48 @@
+{
+  "ServiceTypes" : {
+    "Tokenizers": {
+      "Stanford Tokenizer" : {
+        "provider": "Stanford NLP",
+        "type":"Tokenizer",
+        "name": "Stanford Tokenizer",
+        "version" : "v2.0.0",
+        "server" : "Vassar",
+        "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.tokenizer_2.0.0",
+        "username" : "tester",
+        "password" : "tester"
+      }
+    },
+    "Taggers": {
+
+    },
+    "Sentence Splitters": {
+
+    },
+    "Named Entity Recognizers": {
+
+    },
+    "Evaluation": {
+
+    },
+    "Converters": {
+
+    },
+    "OtherTypes": {
+
+    }
+  },
+  "ServiceProviders" :{
+    "Apache OpenNLP": {
+
+    },
+    "Stanford NLP": {
+
+    },
+    "GATE": {
+
+    },
+    "OtherProviderss": {
+
+    }
+  }
+}
