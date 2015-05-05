@@ -379,15 +379,15 @@
 
     var genResultList = function(panelDivId) {
         var panelDiv = $("#"+ panelDivId);
-        readDB("results", function(resultJson){
+        readDB("results"+userip, function(resultJson){
             if(!resultJson)
                 return;
             var jsonAllList = resultJson[userip];
             //console.info("userip" + userip);
+            var html = "";
             for(var wsdl in jsonAllList) {
                 //console.info("wsdl" + wsdl);
                 var lists = jsonAllList[wsdl];
-                var html = "";
                 if(lists && lists.length > 0) {
                     var name = lists[0]['name'];
                     var id = name.replace(/\s+/g, '_').toLowerCase();
@@ -401,8 +401,8 @@
                     });
                     html += "</ul></div>";
                 }
-                panelDiv.html(html);
             }
+            panelDiv.html(html);
         });
     }
 
@@ -497,7 +497,7 @@
      var saveResult = function(selectedinputId, selectedtoolId, resultjsonId, alertDivId){
         var result = holdDB['latesttoolrun'];
         result.output = getCodeMirrorValue(resultjsonId);
-        readDB("results", function(resultJson){
+        readDB("results"+userip, function(resultJson){
             var userjson, tooljsons;
             if(resultJson) {
                 userjson = resultJson[userip];
@@ -515,7 +515,7 @@
             tooljsons.push(result);
             userjson[result.wsdl] = tooljsons;
             resultJson[userip] = userjson;
-            saveDB("results", resultJson, function(ret){
+            saveDB("results"+userip, resultJson, function(ret){
                 $("#"+alertDivId).html("<div  class='alert alert-success' role='alert'><strong>Well done!</strong> You successfully save <a href='#' class='alert-link'>the data</a>.</div>");
                 setTimeout(function(){
                     $("#"+alertDivId).html("");
@@ -595,7 +595,7 @@
                     <div class="panel-body">
                         <!--.............................................................................................................--->
                         <table><tr><td>
-                        <textarea id="doctext" style="width:800px" onshow="" on>Partial invoice (€100,000, so roughly 40%) for the consignment C27655 we shipped on 15th
+                        <textarea id="doctext" style="width:800px">Partial invoice (€100,000, so roughly 40%) for the consignment C27655 we shipped on 15th
 August to London from the Make Believe Town depot. INV2345 is for the balance.
 Customer contact (Sigourney) says they will pay this on the usual credit terms (30 days).
     </textarea> <script>coverCodeMirror("doctext");</script></td>
@@ -615,8 +615,8 @@ Customer contact (Sigourney) says they will pay this on the usual credit terms (
                 <div id="datainput" class="panel-collapse collapse">
                     <div class="panel-body">
                         <!--.............................................................................................................--->
-                        <table><tr><td  style="text-align:center"><div id="previousdatapanel"></div></td></tr><tr></tr><tr>
-                            <td>
+                        <table><tr><td>Please Select: </td><td><div id="previousdatapanel"></div></td></tr><tr><td colspan="2"><p></p></td></tr><tr>
+                            <td colspan="2">
                             <textarea id="datajson"  style="width:800px"></textarea> <script>coverCodeMirror("datajson");</script>
                             </td>
                         </tr></table>
@@ -644,7 +644,7 @@ Customer contact (Sigourney) says they will pay this on the usual credit terms (
 </div>
 
 
-<table class="table table-bordered table-striped responsive-utilities" align="center" style="width:400px">
+<table class="table table-bordered table-striped responsive-utilities" align="center" style="width:800px">
     <thead>
     <tr >
         <th style="text-align:center">Data</th>
@@ -655,7 +655,7 @@ Customer contact (Sigourney) says they will pay this on the usual credit terms (
     <tbody>
     <tr align="center">
         <td class="is-visible" width="400px"><h4><span id="selectedinput" class="label label-info" title="doctext">Document</span></h4></td>
-        <td class="is-visible" width="400px"><h4><span id="selectedtool" class="label label-info"></span></h4></td>
+        <td class="is-visible" width="300px"><h4><span id="selectedtool" class="label label-info"></span></h4></td>
         <td class="is-visible">
             <button type="button" class="btn btn-default"
                     onclick="$('#resultpanel').show();runTool('selectedinput', 'selectedtool', 'resultjson');">
