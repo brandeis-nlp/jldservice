@@ -48,6 +48,7 @@ if (txtIn != null && txtIn.trim().startsWith('{')) {
             def classObj = this.getClass().classLoader.loadClass(objIn.ClassName).newInstance();
             objRet['Output'] = classObj."${objIn.Op}"( *objIn.Input );
             log.info("Return: Output.length()=" +objRet['Output'].toString().length());
+            log.info("Return: Output=" +objRet['Output'].toString());
             objRet["Except"] = "Success";
         } catch (Throwable th) {
             log.info("============Error=================");

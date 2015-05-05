@@ -35,11 +35,13 @@ class Jdbm {
     def put(String mapName, String key, String val) {
         ConcurrentNavigableMap<String,String> map = db.getTreeMap(mapName);
         map.put(key, val);
+        println "\n----------------------------\nPUT:" + mapName + "\n VAL:" + val;
         db.commit();
     }
 
     def get(String mapName, String key) {
         ConcurrentNavigableMap<String,String> map = db.getTreeMap(mapName);
+        println "\n----------------------------\nGET:" + mapName;
         return map.get(key);
     }
 
@@ -111,12 +113,12 @@ class Jdbm {
     }
 
 
+    // http://pro.jsonlint.com/
     public static void main(String [] args) {
         Jdbm jdbm = new Jdbm();
         // ServiceType, Producer, Version, Url, P
-        // http://pro.jsonlint.com/
 //        jdbm.init("brat.html", "services");
-        println jdbm.get("brat.html", "services");
+        println jdbm.remove("brat.html", "results");
     }
 }
 

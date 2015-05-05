@@ -49,7 +49,7 @@ if (txtIn != null && txtIn.trim().startsWith('{')) {
             WSDLClient ws = new WSDLClient();
             ws.init(jsonObjIn.Wsdl);
             if(jsonObjIn.Username != null) {
-                ws.authorize(jsonObjIn.Username, jsonObjIn,Password);
+                ws.authorize(jsonObjIn.Username, jsonObjIn.Password);
             }
             String output = ws.callService("",jsonObjIn.Op, *jsonObjIn.Input).toString();
             jsonObjRet['Output'] = output;

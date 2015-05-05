@@ -66,6 +66,7 @@
     <script type="text/javascript" src="http://weaver.nlplab.org/~brat/demo/v1.3/client/src/url_monitor.js"></script>
     <script type="text/javascript" src="http://weaver.nlplab.org/~brat/demo/v1.3/client/src/visualizer.js"></script>
     <script type="text/javascript" src="http://brat.nlplab.org/js/lib/json2.js"></script>
+    <script type="text/javascript" src="http://l2.io/ip.js?var=userip"></script>
     <!-- =============================================================================================================== -->
     <!--All the language services from Vassar College.-->
     <!--http://grid.anc.org:8080/service_manager/language-services-->
@@ -80,6 +81,22 @@
         .CodeMirror pre.CodeMirror-placeholder { color: #999; }
         .modal-footer { background-color: #f9f9f9; }
         .btn-success { width: 100%; padding: 10px; }
+
+        .dropdown-menu .dropdown-menu {
+            position: static;
+            float: none;
+            padding: 5px 0;
+            margin: 2px 0 0;
+            list-style: none;
+            font-size: 14px;
+            background-color: #fff;
+            border: none;
+            border: none;
+            border-radius: 0;
+            -webkit-box-shadow: none;
+            box-shadow:none;
+            background-clip: padding-box;
+        }
     </style>
 
     <!-- =============================================================================================================== -->
@@ -191,6 +208,10 @@
         editor.on('dblclick', function() {
             editor.setOption("fullScreen", !editor.getOption("fullScreen"));
         });
+        editor.on("viewportChange", function(){
+            editor.refresh();
+        });
+        return editor;
     }
 
     var getCodeMirrorValue = function(textareaId) {
@@ -253,9 +274,14 @@
         var docData = getCodeMirrorValue(inputId);
         var collData = getCodeMirrorValue(confInputId);
         // Time for some "real" brat coding, let's hook into the dispatcher
-        var liveDispatcher = Util.embed(displayId,
+        var liveDispatcher;
+        try{
+            liveDispatcher = Util.embed(displayId,
                 $.extend({'collection': null}, JSON.parse(collData.trim())),
                 $.extend({}, JSON.parse(docData.trim())), webFontURLs);
+        }catch(e) {
+            console.error("ERROR: wrong data format. doc="+docData+"; coll="+collData);
+        }
         var renderError = function() {
             // setting this blows the layout (error --> red)
             $('#' + displayId).css({'border': '2px solid red'});
@@ -293,7 +319,8 @@
         json2json : 'http://eldrad.cs-i.brandeis.edu:8282/json2json/0.3.0-SNAPSHOT/services/Json2JsonWS?wsdl'
     }
 
-    var execJava = function (classname, op, inputs) {
+
+    var execJava = function (classname, op, inputs, callback) {
         var io = {};
         io.ClassName = classname;
         io.Op = op
@@ -308,26 +335,118 @@
             data: req,
             success: function(data, dataType) {
               var resJson = jQuery.parseJSON(data);
+              callback(resJson.Output);
               if (resJson.Output) {
-                return resJson.Output;
-              } else {
-                return null;
+                 // console.info("RET:" + resJson.Output);
               }
+            },
+            error: function(x, t, m) {
+                console.error("ERROR:" + x);
             }
         });
     }
 
     var holdDB = {};
-    var readDB = function(key) {
-        var ret = execJava('org.jldservice.db.Jdbm', 'get', ['brat.html', key]);
-        var json = jQuery.parseJSON(ret);
-        holdDB[key] = json;
-        return json
+    var readDB = function(key, callback) {
+        execJava('org.jldservice.db.Jdbm', 'get', ['brat.html', key], function(ret){
+            var json;
+            if(ret){
+                json = jQuery.parseJSON(ret);
+                holdDB[key] = json;
+            }
+            callback(json);
+        });
     }
-    var saveDB = function(key, json) {
+    var saveDB = function(key, json, callback) {
         json = json || holdDB[key];
         var s = JSON.stringify(json,null,4);
-        execJava('org.jldservice.db.Jdbm', 'put', ['brat.html', key, s]);
+        execJava('org.jldservice.db.Jdbm', 'put', ['brat.html', key, s], function(ret){
+            callback(ret);
+        });
+    }
+
+    var selectTool = function(spanId, service, wsdl) {
+        $("#"+spanId).text(service);
+        $("#"+spanId).prop('title', wsdl);
+    }
+
+    var selectData = function(selectedinputId, datajsonId) {
+        var lastdata = holdDB['lastdataselect'];
+        $("#"+selectedinputId).text(lastdata.name +" < "+lastdata.time+" >");
+        $("#"+selectedinputId).prop("title", datajsonId);
+        setCodeMirrorValue(datajsonId, lastdata.output);
+    }
+
+    var genResultList = function(panelDivId) {
+        var panelDiv = $("#"+ panelDivId);
+        readDB("results", function(resultJson){
+            if(!resultJson)
+                return;
+            var jsonAllList = resultJson[userip];
+            //console.info("userip" + userip);
+            for(var wsdl in jsonAllList) {
+                //console.info("wsdl" + wsdl);
+                var lists = jsonAllList[wsdl];
+                var html = "";
+                if(lists && lists.length > 0) {
+                    var name = lists[0]['name'];
+                    var id = name.replace(/\s+/g, '_').toLowerCase();
+                    html += "<div class='dropdown'><button class='btn btn-default dropdown-toggle' type='button' id='"+ id +"' data-toggle='dropdown' aria-expanded='true'>"
+                    html += name + "<span class='caret'></span></button>";
+                    html += "<ul class='dropdown-menu' role='menu' aria-labelledby='"+id+"'>";
+                    lists.map( function(record) {
+                        holdDB['lastdataselect'] = record;
+                        html += "<li role='presentation' onclick='selectData(\"selectedinput\",\"datajson\")'>"
+                        html += "<a role='menuitem' tabindex='-1' href='#'>"+record['time']+"</a></li>"
+                    });
+                    html += "</ul></div>";
+                }
+                panelDiv.html(html);
+            }
+        });
+    }
+
+    var genPanelHTML = function(name, jsonOneType, parentDivId, panelDivId) {
+        html = "<div class='panel panel-info'>";
+        html += "<div class='panel-heading'><h4 class='panel-title'>";
+        html += "<a class='collapsed' data-toggle='collapse' aria-expanded='false' data-parent='#" +
+                parentDivId + "' href='#"+panelDivId+"'>"+name+"</a>";
+        html += "</h4></div>";
+        html += "<div id='"+panelDivId+"' class='panel-collapse collapse'>";
+        for (var provider in jsonOneType) {
+            html += "<div class='panel panel-default'>";
+            var services = jsonOneType[provider];
+            html += "<button type='button' class='btn btn-default'> "+provider+" <span class='badge'>" +
+                     services.length + "</span></button> <span style='width:20px;'></span>"
+            // iterate over array.
+            services.map(function(service){
+                html += " <label class='radio-inline'>";
+                var showname = service['name'] +":"+service['version'] + " ( "+service['server']+" ) ";
+                html += "<input type='radio' name='optradio' onclick='selectTool(\"selectedtool\",\""+showname+"\",\""+service['wsdl'] +"\")' >";
+                html += showname
+                html += "</label>";
+            });
+            html += "</div>";
+        }
+        html += "</div>";
+        html += "</div>";
+        return html;
+    }
+
+
+    var genToolList = function(panelgroupDivId) {
+        var panelgroupDiv = $("#"+ panelgroupDivId);
+        panelgroupDiv.attr("class", "panel-group");
+        readDB("services", function(servicesJson){
+            var jsonAllTypes = servicesJson['ServiceTypes'];
+            for(var typename in jsonAllTypes) {
+                if(Object.keys(jsonAllTypes[typename]).length == 0)
+                    continue;
+                var panel = genPanelHTML(typename, jsonAllTypes[typename], panelgroupDivId, typename);
+                panelgroupDiv.append(panel);
+            }
+        });
+        panelgroupDiv.hide().fadeIn('fast');
     }
 
     var execService = function (wsdl, op, inputIds, outputId) {
@@ -338,6 +457,10 @@
         // push inputId value into io input
         for (var i = 0; i < inputIds.length; i++) {
             io.Input.push(getCodeMirrorValue(inputIds[i]));
+        }
+        if(wsdl.indexOf('grid.anc') >= 0) {
+            io.Username = 'tester';
+            io.Password = 'tester';
         }
         // clear outputId value
         setCodeMirrorValue(outputId, '')
@@ -361,6 +484,46 @@
     }
 
 
+    var runTool = function(selectedinputId, selectedtoolId, resultjsonId) {
+        var inputTxtId = $("#"+selectedinputId).prop( "title" );
+        var wsdl = $("#"+selectedtoolId).prop( "title" );
+        if(inputTxtId && wsdl) {
+            execService(wsdl, 'execute', [inputTxtId], resultjsonId);
+        }
+        var inputTxt = getCodeMirrorValue(inputTxtId);
+        holdDB['latesttoolrun'] = {time:new Date().toLocaleString(), name:$("#"+selectedtoolId).text(), wsdl:wsdl, input:inputTxt};
+     }
+
+     var saveResult = function(selectedinputId, selectedtoolId, resultjsonId, alertDivId){
+        var result = holdDB['latesttoolrun'];
+        result.output = getCodeMirrorValue(resultjsonId);
+        readDB("results", function(resultJson){
+            var userjson, tooljsons;
+            if(resultJson) {
+                userjson = resultJson[userip];
+            } else {
+                resultJson = {}
+            }
+            if(userjson) {
+                tooljsons = userjson[result.wsdl];
+            } else {
+                userjson = {}
+            }
+            if(!tooljsons) {
+                tooljsons = [];
+            }
+            tooljsons.push(result);
+            userjson[result.wsdl] = tooljsons;
+            resultJson[userip] = userjson;
+            saveDB("results", resultJson, function(ret){
+                $("#"+alertDivId).html("<div  class='alert alert-success' role='alert'><strong>Well done!</strong> You successfully save <a href='#' class='alert-link'>the data</a>.</div>");
+                setTimeout(function(){
+                    $("#"+alertDivId).html("");
+                }, 5000);
+            });
+        });
+     }
+
     // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< //
     // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
     head.ready(function() {
@@ -373,8 +536,6 @@
         /* Make damn sure to copy the objects before handing them to brat
          since we will modify them later on */
 
-        coverCodeMirror("docjson");
-        coverCodeMirror("colljson");
         renderBratDisplay("bratdisplay", "docjson", "colljson");
 
 
@@ -396,12 +557,135 @@
     <rt> Brandeis University</rt>,<br />
     LappsGrid, <var>Version 0.3.0</var>,  April 2015</p>
 
+<!-- =============================================================================================================== -->
 
+<h2 align="center">
+    <span class="label label-primary" style="width:800px;display:inline-block;">
+    LappsGrid Input
+</span></h2>
 
 
 
 <!-- =============================================================================================================== -->
-<h2 align="center"><span class="label label-info" style="width:800px;display:inline-block;">LappsGrid JSON 2 Brat JSON</span></h2>
+<!-- =============================================================================================================== -->
+
+
+<!--------------------------------------------------------------------------------------------------------------------->
+<!--<h2 align="center"><span class="label label-primary" style="width:800px;display:inline-block;">Document Text</span></h2>-->
+<table align="center">
+    <tr><td>
+
+<!--------------------------------------------------------------------------------------------------------------------->
+        <div style="display: block; margin-left: auto; margin-right: auto">
+            <div class="dropdown">
+                <button class="btn btn-info dropdown-toggle" id="menu1" type="button" data-toggle="dropdown">Input Type <span class="caret"></span></button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                    <li role="presentation"><a onclick="genResultList('previousdatapanel')" role="menuitem" tabindex="-1" data-toggle="collapse" data-parent="#selectinput" href="#datainput">Privous Output >></a></li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation"><a onclick="$('#selectedinput').text('Document');$('#selectedinput').prop('title', 'doctext');" role="menuitem" tabindex="-1" data-toggle="collapse" data-parent="#selectinput" href="#textinput">Text Document >></a></li>
+                </ul>
+            </div>
+        </div>
+<!--------------------------------------------------------------------------------------------------------------------->
+    </td><td width="20px"></td><td>
+<!--------------------------------------------------------------------------------------------------------------------->
+        <div class="panel-group" id="selectinput">
+            <div class="panel panel-default">
+                <div id="textinput" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <!--.............................................................................................................--->
+                        <table><tr><td>
+                        <textarea id="doctext" style="width:800px" onshow="" on>Partial invoice (€100,000, so roughly 40%) for the consignment C27655 we shipped on 15th
+August to London from the Make Believe Town depot. INV2345 is for the balance.
+Customer contact (Sigourney) says they will pay this on the usual credit terms (30 days).
+    </textarea> <script>coverCodeMirror("doctext");</script></td>
+                            <td width="20px"></td><td width="160px">
+                                <dl>
+                                    <dt>Ctrl-F / Cmd-F</dt><dd>Start searching</dd><dt>Ctrl-G / Cmd-G</dt><dd>Find next</dd>
+                                    <dt>Shift-Ctrl-G / Shift-Cmd-G</dt><dd>Find previous</dd>
+                                    <dt>Shift-Ctrl-F / Cmd-Option-F</dt><dd>Replace</dd>
+                                    <dt>Shift-Ctrl-R / Shift-Cmd-Option-F</dt><dd>Replace all</dd>
+                                </dl></td>
+                        </tr></table>
+                        <!--.............................................................................................................--->
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div id="datainput" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <!--.............................................................................................................--->
+                        <table><tr><td  style="text-align:center"><div id="previousdatapanel"></div></td></tr><tr></tr><tr>
+                            <td>
+                            <textarea id="datajson"  style="width:800px"></textarea> <script>coverCodeMirror("datajson");</script>
+                            </td>
+                        </tr></table>
+                        <!--.............................................................................................................--->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </td></tr></table>
+<!--------------------------------------------------------------------------------------------------------------------->
+
+<!--------------------------------------------------------------------------------------------------------------------->
+
+
+<!--------------------------------------------------------------------------------------------------------------------->
+
+
+<!-- =============================================================================================================== -->
+
+<!-- =============================================================================================================== -->
+
+<div class="container">
+    <h2 align="center"><span class="label label-primary" style="width:800px;display:inline-block;">LappsGrid Tools</span></h2>
+    <div class="panel-group" id="lappstools"></div><script> genToolList('lappstools')</script>
+</div>
+
+
+<table class="table table-bordered table-striped responsive-utilities" align="center" style="width:400px">
+    <thead>
+    <tr >
+        <th style="text-align:center">Data</th>
+        <th style="text-align:center">Tool Service</th>
+        <th style="text-align:center">Execute</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr align="center">
+        <td class="is-visible" width="400px"><h4><span id="selectedinput" class="label label-info" title="doctext">Document</span></h4></td>
+        <td class="is-visible" width="400px"><h4><span id="selectedtool" class="label label-info"></span></h4></td>
+        <td class="is-visible">
+            <button type="button" class="btn btn-default"
+                    onclick="$('#resultpanel').show();runTool('selectedinput', 'selectedtool', 'resultjson');">
+            <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Run >>
+        </button></td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="container" id="resultpanel" style="display:none">
+    <table align="center">
+        <tr><th width="100px"> </th> <th>Tool Output</th><th width="20px"> </th> <th> Save Output </th> </tr>
+        <tr><td width="100px"></td>
+        <td>
+        <textarea id="resultjson" style="width:600px"></textarea><script>coverCodeMirror("resultjson");</script>
+        </td><td width="20px"></td><td><button type="button" class="btn btn-default"
+                         onclick="saveResult('selectedinput', 'selectedtool', 'resultjson', 'savealert');">
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Save >>
+            </button></td>
+        </tr>
+        <tr><td></td><td colspan="2"><p><div id="savealert"></div></p></td></tr>
+    </table>
+</div>
+
+<!-- =============================================================================================================== -->
+
+
+
+<!-- =============================================================================================================== -->
+<h2 align="center"><span class="label label-primary" style="width:800px;display:inline-block;">LappsGrid JSON 2 Brat JSON</span></h2>
 <p>
 <table align="center">
     <tr> <th>Source:</th> <th>Template DSL:</th><th> </th><th>Result:</th> </tr>
@@ -446,7 +730,7 @@
 
 <hr/>
 <!-- =============================================================================================================== -->
-<h2 align="center"><span class="label label-info" style="width:800px;display:inline-block;">Brat JSON Visualization</span></h2>
+<h2 align="center"><span class="label label-primary" style="width:800px;display:inline-block;">Brat JSON Visualization</span></h2>
 
 <table align="center">
     <tr> <th>Brat DOC JSON:</th> <th>Brat CONFIG JSON:</th><th></tr>
@@ -507,7 +791,7 @@
             [ [ "Perpetrator", "T2" ], [ "Victim", "T3" ] ]
         ]
     ]
-}</textarea></td>
+}</textarea><script>coverCodeMirror("docjson");</script></td>
         <td>
         <textarea id="colljson" style="width:600px">{
     "entity_types": [
@@ -564,7 +848,7 @@
             ]
         }
     ]
-}</textarea>
+}</textarea><script>coverCodeMirror("colljson");</script>
     </td></tr>
     <tr><td colspan="2"><div id="bratdisplay"></div></td></tr>
 </table>
@@ -573,7 +857,7 @@
 <!-- =============================================================================================================== -->
 
 <div class="container">
-    <h2 align="center"><span class="label label-info" style="width:800px;display:inline-block;">Visualization by Brat</span></h2>
+    <h2 align="center"><span class="label label-primary" style="width:800px;display:inline-block;">Visualization by Brat</span></h2>
 
 </div>
 
@@ -592,6 +876,5 @@
     </p>
 </footer>
 <p style="text-align:center">Copyright &copy; 2015 Brandeis University - All Rights Reserved</p>
-
 </body>
 </html>
