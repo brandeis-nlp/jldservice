@@ -1,16 +1,7 @@
 {
   "ServiceTypes" : {
     "Sentence-Splitter": {
-    "Stanford-NLP" : [{
-      "provider": "Stanford NLP",
-      "type":"Sentence-Splitter",
-      "name": "Stanford Sentence Splitter",
-      "version" : "v2.0.0",
-      "server" : "Vassar Collage",
-      "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.splitter_2.0.0",
-      "username" : "tester",
-      "password" : "tester"
-    }, {
+    "Stanford-NLP" : [ {
       "provider": "Stanford NLP",
       "type":"Sentence-Splitter",
       "name": "Stanford Sentence Splitter",
@@ -19,6 +10,15 @@
       "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/Splitter?wsdl",
       "username" : "",
       "password" : ""
+    },{
+      "provider": "Stanford NLP",
+      "type":"Sentence-Splitter",
+      "name": "Stanford Sentence Splitter",
+      "version" : "v2.0.0",
+      "server" : "Vassar Collage",
+      "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.splitter_2.0.0",
+      "username" : "tester",
+      "password" : "tester"
     }
     ],
     "OpenNLP": [
@@ -50,19 +50,19 @@
         "type":"Tokenizer",
         "name": "Stanford Tokenizer",
         "version" : "v2.0.0",
-        "server" : "Vassar Collage",
-        "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.tokenizer_2.0.0",
-        "username" : "tester",
-        "password" : "tester"
-      }, {
-        "provider": "Stanford NLP",
-        "type":"Tokenizer",
-        "name": "Stanford Tokenizer",
-        "version" : "v2.0.0",
         "server" : "Brandeis University",
         "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/Tokenizer?wsdl",
         "username" : "",
         "password" : ""
+      },{
+        "provider": "Stanford NLP",
+        "type":"Tokenizer",
+        "name": "Stanford Tokenizer",
+        "version" : "v2.0.0",
+        "server" : "Vassar Collage",
+        "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.tokenizer_2.0.0",
+        "username" : "tester",
+        "password" : "tester"
       }
       ],
       "OpenNLP": [
@@ -89,16 +89,7 @@
       }]
     },
     "POS-Tagger": {
-      "Stanford-NLP" : [{
-        "provider": "Stanford NLP",
-        "type":"POS-Tagger",
-        "name": "Stanford POSTagger",
-        "version" : "v2.0.0",
-        "server" : "Vassar Collage",
-        "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.tagger_2.0.0",
-        "username" : "tester",
-        "password" : "tester"
-      }, {
+      "Stanford-NLP" : [ {
         "provider": "Stanford NLP",
         "type":"POS-Tagger",
         "name": "Stanford POSTagger",
@@ -107,6 +98,15 @@
         "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/POSTagger?wsdl",
         "username" : "",
         "password" : ""
+      },{
+        "provider": "Stanford NLP",
+        "type":"POS-Tagger",
+        "name": "Stanford POSTagger",
+        "version" : "v2.0.0",
+        "server" : "Vassar Collage",
+        "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.tagger_2.0.0",
+        "username" : "tester",
+        "password" : "tester"
       }
       ],
       "OpenNLP": [
@@ -135,16 +135,7 @@
     },
 
     "Named-Entity-Recognizer": {
-      "Stanford-NLP" : [{
-        "provider": "Stanford NLP",
-        "type":"Named-Entity-Recognizer",
-        "name": "Stanford NER",
-        "version" : "v2.0.0",
-        "server" : "Vassar Collage",
-        "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.ner_2.0.0",
-        "username" : "tester",
-        "password" : "tester"
-      }, {
+      "Stanford-NLP" : [ {
         "provider": "Stanford NLP",
         "type":"Named-Entity-Recognizer",
         "name": "Stanford NER",
@@ -153,6 +144,15 @@
         "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/NamedEntityRecognizer?wsdl",
         "username" : "",
         "password" : ""
+      },{
+        "provider": "Stanford NLP",
+        "type":"Named-Entity-Recognizer",
+        "name": "Stanford NER",
+        "version" : "v2.0.0",
+        "server" : "Vassar Collage",
+        "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.ner_2.0.0",
+        "username" : "tester",
+        "password" : "tester"
       }
       ],
       "OpenNLP": [

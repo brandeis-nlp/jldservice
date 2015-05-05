@@ -117,8 +117,8 @@ class Jdbm {
     public static void main(String [] args) {
         Jdbm jdbm = new Jdbm();
         // ServiceType, Producer, Version, Url, P
-//        jdbm.init("brat.html", "services");
-        println jdbm.remove("brat.html", "results");
+        jdbm.init("brat.html", "services");
+//        println jdbm.remove("brat.html", "results");
     }
 }
 
