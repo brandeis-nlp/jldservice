@@ -489,14 +489,21 @@
         var wsdl = $("#"+selectedtoolId).prop( "title" );
         if(inputTxtId && wsdl) {
             execService(wsdl, 'execute', [inputTxtId], resultjsonId);
+            var inputTxt = getCodeMirrorValue(inputTxtId);
+            holdDB['latesttoolrun'] = {time:new Date().toLocaleString(), name:$("#"+selectedtoolId).text(), wsdl:wsdl, input:inputTxt};
         }
-        var inputTxt = getCodeMirrorValue(inputTxtId);
-        holdDB['latesttoolrun'] = {time:new Date().toLocaleString(), name:$("#"+selectedtoolId).text(), wsdl:wsdl, input:inputTxt};
      }
 
      var saveResult = function(selectedinputId, selectedtoolId, resultjsonId, alertDivId){
         var result = holdDB['latesttoolrun'];
         result.output = getCodeMirrorValue(resultjsonId);
+        if(!result.output) {
+            $("#"+alertDivId).html("<div  class='alert alert-warning' role='alert'><strong>NO Result!</strong> Run  <a href='#' class='alert-link'>the data</a> again.</div>");
+                setTimeout(function(){
+                    $("#"+alertDivId).html("");
+                }, 5000);
+            return;
+        }
         readDB("results"+userip, function(resultJson){
             var userjson, tooljsons;
             if(resultJson) {
