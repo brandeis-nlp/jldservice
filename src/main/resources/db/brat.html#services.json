@@ -15,7 +15,7 @@
       "type":"Sentence-Splitter",
       "name": "Stanford Sentence Splitter",
       "version" : "v2.0.0",
-      "server" : "Vassar Collage",
+      "server" : "Vassar College",
       "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.splitter_2.0.0",
       "username" : "tester",
       "password" : "tester"
@@ -38,7 +38,7 @@
       "type":"Sentence-Splitter",
       "name": "Gate Sentence Splitter",
       "version" : "v2.0.0",
-      "server" : "Vassar Collage",
+      "server" : "Vassar College",
       "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:gate.splitter_2.0.0",
       "username" : "tester",
       "password" : "tester"
@@ -59,7 +59,7 @@
         "type":"Tokenizer",
         "name": "Stanford Tokenizer",
         "version" : "v2.0.0",
-        "server" : "Vassar Collage",
+        "server" : "Vassar College",
         "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.tokenizer_2.0.0",
         "username" : "tester",
         "password" : "tester"
@@ -82,7 +82,7 @@
         "type":"Tokenizer",
         "name": "Gate Tokenizer",
         "version" : "v2.0.0",
-        "server" : "Vassar Collage",
+        "server" : "Vassar College",
         "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:gate.tokenizer_2.0.0",
         "username" : "tester",
         "password" : "tester"
@@ -103,7 +103,7 @@
         "type":"POS-Tagger",
         "name": "Stanford POSTagger",
         "version" : "v2.0.0",
-        "server" : "Vassar Collage",
+        "server" : "Vassar College",
         "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.tagger_2.0.0",
         "username" : "tester",
         "password" : "tester"
@@ -126,7 +126,7 @@
         "type":"POS-Tagger",
         "name": "Gate POSTagger",
         "version" : "v2.0.0",
-        "server" : "Vassar Collage",
+        "server" : "Vassar College",
         "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:gate.tagger_2.0.0",
         "username" : "tester",
         "password" : "tester"
@@ -149,7 +149,7 @@
         "type":"Named-Entity-Recognizer",
         "name": "Stanford NER",
         "version" : "v2.0.0",
-        "server" : "Vassar Collage",
+        "server" : "Vassar College",
         "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.ner_2.0.0",
         "username" : "tester",
         "password" : "tester"
@@ -172,7 +172,7 @@
         "type":"Named-Entity-Recognizer",
         "name": "Gate NER",
         "version" : "v2.0.0",
-        "server" : "Vassar Collage",
+        "server" : "Vassar College",
         "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:gate.ner_2.0.0",
         "username" : "tester",
         "password" : "tester"
@@ -261,7 +261,7 @@
         "type":"Sentence-Splitter",
         "name": "Stanford Sentence Splitter",
         "version" : "v2.0.0",
-        "server" : "Vassar Collage",
+        "server" : "Vassar College",
         "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.splitter_2.0.0",
         "username" : "tester",
         "password" : "tester"
@@ -280,7 +280,7 @@
         "type":"Tokenizer",
         "name": "Stanford Tokenizer",
         "version" : "v2.0.0",
-        "server" : "Vassar Collage",
+        "server" : "Vassar College",
         "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.tokenizer_2.0.0",
         "username" : "tester",
         "password" : "tester"
@@ -299,7 +299,7 @@
         "type":"POS-Tagger",
         "name": "Stanford POSTagger",
         "version" : "v2.0.0",
-        "server" : "Vassar Collage",
+        "server" : "Vassar College",
         "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.tagger_2.0.0",
         "username" : "tester",
         "password" : "tester"
@@ -318,7 +318,7 @@
         "type":"Named-Entity-Recognizer",
         "name": "Stanford NER",
         "version" : "v2.0.0",
-        "server" : "Vassar Collage",
+        "server" : "Vassar College",
         "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.ner_2.0.0",
         "username" : "tester",
         "password" : "tester"
@@ -340,7 +340,7 @@
           "type":"Sentence-Splitter",
           "name": "Gate Sentence Splitter",
           "version" : "v2.0.0",
-          "server" : "Vassar Collage",
+          "server" : "Vassar College",
           "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:gate.splitter_2.0.0",
           "username" : "tester",
           "password" : "tester"
@@ -351,7 +351,7 @@
           "type":"Tokenizer",
           "name": "Gate Tokenizer",
           "version" : "v2.0.0",
-          "server" : "Vassar Collage",
+          "server" : "Vassar College",
           "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:gate.tokenizer_2.0.0",
           "username" : "tester",
           "password" : "tester"
@@ -362,7 +362,7 @@
           "type":"POS-Tagger",
           "name": "Gate POSTagger",
           "version" : "v2.0.0",
-          "server" : "Vassar Collage",
+          "server" : "Vassar College",
           "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:gate.tagger_2.0.0",
           "username" : "tester",
           "password" : "tester"
@@ -373,7 +373,7 @@
           "type":"Named-Entity-Recognizer",
           "name": "Gate NER",
           "version" : "v2.0.0",
-          "server" : "Vassar Collage",
+          "server" : "Vassar College",
           "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:gate.ner_2.0.0",
           "username" : "tester",
           "password" : "tester"
