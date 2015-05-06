@@ -342,6 +342,12 @@
               if (resJson.Output) {
                  // console.info("RET:" + resJson.Output);
               }
+              if(resJson.Except.indexOf('Success') < 0) {
+                //
+                console.error("Server Error:" + resJson.Except);
+              }else{
+                //
+              }
             },
             error: function(x, t, m) {
                 console.error("ERROR:" + x);
@@ -479,10 +485,20 @@
               var resJson = jQuery.parseJSON(data);
               if (resJson.Output) {
                     setCodeMirrorValue(outputId, JSON.stringify(jQuery.parseJSON(resJson.Output),null,4));
-              } else {
-                    $("#"+outputId).attr("placeholder",  resJson.Except);
               }
-            }
+              if(resJson.Except.indexOf('Success') < 0) {
+                console.error("Server Error:" + resJson.Except);
+                $("#runalert").html("<div  class='alert alert-warning' role='alert'><strong>Service Error!</strong>  <a href='#' class='alert-link'>Exception:</a> "+ resJson.Except + "</div>");
+                    setTimeout(function(){
+                        $("#runalert").html("");
+                    }, 20000);
+              } else {
+                $("#runalert").html("<div  class='alert alert-success' role='alert'><strong>Well done!</strong> You successfully exec <a href='#' class='alert-link'>the service</a>.</div>");
+                setTimeout(function(){
+                    $("#runalert").html("");
+                }, 5000);
+              }
+             }
         });
     }
 
@@ -565,7 +581,7 @@
     <!-- =============================================================================================================== -->
 </head>
 
-<h1  align="center">Visualization of LappsGrid</h1>
+<h1  align="center">Online Environment of LappsGrid</h1>
 <p style="text-align:center;font-size: 16pt;">
     <rt> Brandeis University</rt>,<br />
     LappsGrid, <var>Version 0.3.0</var>,  April 2015</p>
@@ -672,6 +688,7 @@
             <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Run >>
         </button></td>
     </tr>
+    <tr><td colspan="3" height="50px"><p><div id="runalert"></div></p></td></tr>
     </tbody>
 </table>
 
@@ -682,7 +699,7 @@
 <div class="container" id="resultpanel">
     <table align="center" class="table table-bordered table-striped responsive-utilities" align="center" style="width:800px;">
         <tr><th> Brat Display </th></tr>
-        <tr><td height="200px"><div id="instantbratdisplay"></div></td></tr>
+        <tr><td height="100px"><div id="instantbratdisplay"></div></td></tr>
     </table>
     <table align="center" class="table table-bordered table-striped responsive-utilities" align="center" style="width:800px">
         <tr><th>Tool Output</th> <th> Save Output </th> </tr>
@@ -712,94 +729,12 @@
 <table align="center">
     <tr> <th>Source:</th> <th>Template DSL:</th><th> </th><th>Result:</th> </tr>
     <tr>
-        <td><textarea id="json2jsondsl_source" style="width:400px;height:300px;">{
-    "discriminator": "http://vocab.lappsgrid.org/ns/media/jsonld",
-    "payload": {
-        "text": {
-            "@value": "p53 regulates human insulin-like growth factor II gene expression through active P4 promoter in rhabdomyosarcoma cells."
-        },
-        "@context": "http://vocab.lappsgrid.org/context-1.0.0.jsonld",
-        "views": [
-            {
-                "metadata": {
-                    "contains": {
-                        "http://vocab.lappsgrid.org/NamedEntity": {
-                            "producer": "edu.brandeis.cs.manchester.gnat.GnatWS: 0.0.1",
-                            "type": "ner:gnat"
-                        }
-                    }
-                },
-                "annotations": [
-                    {
-                        "id": "gnat0",
-                        "start": "81",
-                        "end": "82",
-                        "label": "http://vocab.lappsgrid.org/NamedEntity",
-                        "features": {
-                            "category": "gene",
-                            "word": "P4",
-                            "subtype": "9606",
-                            "ids": "201780"
-                        }
-                    },
-                    {
-                        "id": "gnat1",
-                        "start": "20",
-                        "end": "48",
-                        "label": "http://vocab.lappsgrid.org/NamedEntity",
-                        "features": {
-                            "category": "gene",
-                            "word": "insulin-like growth factor II",
-                            "subtype": "9606",
-                            "ids": "3481"
-                        }
-                    },
-                    {
-                        "id": "gnat2",
-                        "start": "0",
-                        "end": "2",
-                        "label": "http://vocab.lappsgrid.org/NamedEntity",
-                        "features": {
-                            "category": "gene",
-                            "word": "p53",
-                            "subtype": "9606",
-                            "ids": "352997;7157"
-                        }
-                    },
-                    {
-                        "id": "gnat3",
-                        "start": "20",
-                        "end": "26",
-                        "label": "http://vocab.lappsgrid.org/NamedEntity",
-                        "features": {
-                            "category": "gene",
-                            "word": "insulin",
-                            "subtype": "9606",
-                            "ids": "3630"
-                        }
-                    },
-                    {
-                        "id": "gnat4",
-                        "start": "81",
-                        "end": "82",
-                        "label": "http://vocab.lappsgrid.org/NamedEntity",
-                        "features": {
-                            "category": "gene",
-                            "word": "P4",
-                            "subtype": "9606",
-                            "ids": "5394"
-                        }
-                    }
-                ]
-            }
-        ]
-    }
-}</textarea><script>coverCodeMirror("json2jsondsl_source");</script>
+        <td><textarea id="json2jsondsl_source" style="width:400px;height:300px;">{}</textarea><script>coverCodeMirror("json2jsondsl_source");</script>
         </td>
         <td><textarea id="json2jsondsl_template" style="width:400px;height:300px;">{
   def idx = 1
   text &$payload.text."@value"
-  entities (&$payload.views[-1].annotations.unique{it.start+" "+it.end}.select{&.features.category != null}.foreach{
+  entities (&$payload.views[-1].annotations.unique{it.start+" "+it.end}.select{&.features != null && &.features.category != null}.foreach{
     ["T${idx++}", &.features.category.trim().toUpperCase(), [[&.start.toInteger(), &.end.toInteger()]]]
   })
 }</textarea><script>coverCodeMirror("json2jsondsl_template");</script></td>
