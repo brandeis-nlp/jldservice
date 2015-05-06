@@ -18,8 +18,11 @@ class Jdbm {
     DBMaker maker;
     DB db;
     def Jdbm(){
-        fl = FileUtils.toFile(Jdbm.class.getResource("/db/org.jldservice.db.Jdbm"));
+        File root = FileUtils.toFile(Jdbm.class.getResource("/"));
+        fl = new File(new File(root, "db"), "org.jldservice.db.Jdbm");
         println "db.local.file = " + fl
+        if(!fl.exists())
+            fl.createNewFile();
         maker = DBMaker.newFileDB(fl).closeOnJvmShutdown();
         db = maker.make();
     }
@@ -117,7 +120,7 @@ class Jdbm {
     public static void main(String [] args) {
         Jdbm jdbm = new Jdbm();
         // ServiceType, Producer, Version, Url, P
-        jdbm.init("brat.html", "services");
+        jdbm.init("lapps.html", "services");
 //        println jdbm.remove("brat.html", "results");
     }
 }
