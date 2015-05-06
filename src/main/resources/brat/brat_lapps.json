@@ -27,7 +27,7 @@
     {
       "type": "LOCATION",
       "labels": [ "Location", "Loc"],
-      "bgColor": "#95dfff",
+      "bgColor": "#f1f447",
       "borderColor": "darken"
     },
     {
@@ -39,7 +39,7 @@
     {
       "type": "GENE",
       "labels": [ "Gene", "Gen" ],
-      "bgColor": "#f1f447",
+      "bgColor": "#95dfff",
       "borderColor": "darken"
     },
     {
