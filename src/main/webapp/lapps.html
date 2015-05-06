@@ -236,6 +236,7 @@
         }
         try {
             liveDispatcher.post('requestRenderData', [$.extend({}, docJSON)]);
+            console.info("docChangeHandler");
             // liveDiv.css({'border': '2px inset'});  // setting this blows the layout
             // collInput.css({'border': '2px inset'});
         } catch(e) {
@@ -261,6 +262,7 @@
         try {
             liveDispatcher.post('collectionLoaded',
                     [$.extend({'collection': null}, collJSON)]);
+            console.info("confChangeHandler");
             // liveDiv.css({'border': '2px inset'});  // setting this blows the layout
             // docInput.css({'border': '2px inset'});
         } catch(e) {
@@ -279,8 +281,9 @@
             liveDispatcher = Util.embed(displayId,
                 $.extend({'collection': null}, JSON.parse(collData.trim())),
                 $.extend({}, JSON.parse(docData.trim())), webFontURLs);
+            console.info("Finished: liveDispatch");
         }catch(e) {
-            console.error("ERROR: wrong data format. doc="+docData+"; coll="+collData);
+            console.error("ERROR: "+e+" ;doc="+docData+"; coll="+collData);
         }
         var renderError = function() {
             // setting this blows the layout (error --> red)
@@ -602,10 +605,7 @@
                     <div class="panel-body">
                         <!--.............................................................................................................--->
                         <table><tr><td>
-                        <textarea id="doctext" style="width:800px">Partial invoice (€100,000, so roughly 40%) for the consignment C27655 we shipped on 15th
-August to London from the Make Believe Town depot. INV2345 is for the balance.
-Customer contact (Sigourney) says they will pay this on the usual credit terms (30 days).
-    </textarea> <script>coverCodeMirror("doctext");</script></td>
+                        <textarea id="doctext" style="width:800px">p53 regulates human insulin-like growth factor II gene expression through active P4 promoter in rhabdomyosarcoma cells.</textarea> <script>coverCodeMirror("doctext");</script></td>
                             <td width="20px"></td><td width="160px">
                                 <dl>
                                     <dt>Ctrl-F / Cmd-F</dt><dd>Start searching</dd><dt>Ctrl-G / Cmd-G</dt><dd>Find next</dd>
@@ -698,35 +698,95 @@ Customer contact (Sigourney) says they will pay this on the usual credit terms (
     <tr> <th>Source:</th> <th>Template DSL:</th><th> </th><th>Result:</th> </tr>
     <tr>
         <td><textarea id="json2jsondsl_source" style="width:400px;height:300px;">{
-  "catalog": {
-    "foo:cd": [
-      {
-        "title": "Hide your heart",
-        "artist": "Bonnie Tyler",
-        "country": "UK",
-        "company": "CBS Records",
-        "price": "9.90",
-        "bar:year": "1988"
-      },
-      {
-        "title": "Greatest Hits",
-        "artist": "Dolly Parton",
-        "country": "USA",
-        "company": "RCA",
-        "price": "9.90",
-        "bar:year": "1982"
-      }
-    ]
-  }
+    "discriminator": "http://vocab.lappsgrid.org/ns/media/jsonld",
+    "payload": {
+        "text": {
+            "@value": "p53 regulates human insulin-like growth factor II gene expression through active P4 promoter in rhabdomyosarcoma cells."
+        },
+        "@context": "http://vocab.lappsgrid.org/context-1.0.0.jsonld",
+        "views": [
+            {
+                "metadata": {
+                    "contains": {
+                        "http://vocab.lappsgrid.org/NamedEntity": {
+                            "producer": "edu.brandeis.cs.manchester.gnat.GnatWS: 0.0.1",
+                            "type": "ner:gnat"
+                        }
+                    }
+                },
+                "annotations": [
+                    {
+                        "id": "gnat0",
+                        "start": "81",
+                        "end": "82",
+                        "label": "http://vocab.lappsgrid.org/NamedEntity",
+                        "features": {
+                            "category": "gene",
+                            "word": "P4",
+                            "subtype": "9606",
+                            "ids": "201780"
+                        }
+                    },
+                    {
+                        "id": "gnat1",
+                        "start": "20",
+                        "end": "48",
+                        "label": "http://vocab.lappsgrid.org/NamedEntity",
+                        "features": {
+                            "category": "gene",
+                            "word": "insulin-like growth factor II",
+                            "subtype": "9606",
+                            "ids": "3481"
+                        }
+                    },
+                    {
+                        "id": "gnat2",
+                        "start": "0",
+                        "end": "2",
+                        "label": "http://vocab.lappsgrid.org/NamedEntity",
+                        "features": {
+                            "category": "gene",
+                            "word": "p53",
+                            "subtype": "9606",
+                            "ids": "352997;7157"
+                        }
+                    },
+                    {
+                        "id": "gnat3",
+                        "start": "20",
+                        "end": "26",
+                        "label": "http://vocab.lappsgrid.org/NamedEntity",
+                        "features": {
+                            "category": "gene",
+                            "word": "insulin",
+                            "subtype": "9606",
+                            "ids": "3630"
+                        }
+                    },
+                    {
+                        "id": "gnat4",
+                        "start": "81",
+                        "end": "82",
+                        "label": "http://vocab.lappsgrid.org/NamedEntity",
+                        "features": {
+                            "category": "gene",
+                            "word": "P4",
+                            "subtype": "9606",
+                            "ids": "5394"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
 }</textarea><script>coverCodeMirror("json2jsondsl_source");</script>
         </td>
-        <td><textarea id="json2jsondsl_template" style="width:400px;height:300px;">cds{
-    titles  &$catalog."foo:cd".foreach{&.title}
-    artists  &$catalog."foo:cd".foreach{&.artist}
-    countries  &$catalog."foo:cd".foreach{&.country}
-    companies  &$catalog."foo:cd".foreach{&.company}
-    pricees  &$catalog."foo:cd".foreach{&.price}
-    years  &$catalog."foo:cd".foreach{&."bar:year"}
+        <td><textarea id="json2jsondsl_template" style="width:400px;height:300px;">{
+  def idx = 1
+  text &$payload.text."@value"
+  entities (&$payload.views[-1].annotations.unique{it.start+" "+it.end}.foreach{
+    ["T${idx++}", &.features.category.trim().toUpperCase(), [[&.start.toInteger(), &.end.toInteger()]]]
+  })
 }</textarea><script>coverCodeMirror("json2jsondsl_template");</script></td>
         <td><input type="button" value="Transform"
                    onclick="execService(wsdls['json2json'], 'json2jsondsl', ['json2jsondsl_source', 'json2jsondsl_template'], 'json2jsondsl_result')" /></td>
@@ -743,118 +803,548 @@ Customer contact (Sigourney) says they will pay this on the usual credit terms (
     <tr> <th>Brat DOC JSON:</th> <th>Brat CONFIG JSON:</th><th></tr>
     <tr> <td>
     <textarea id="docjson" style="width:600px">{
-    "text": "Ed O'Kelley was the man who shot the man who shot Jesse James.",
+    "text": "p53 regulates human insulin-like growth factor II gene expression through active P4 promoter in rhabdomyosarcoma cells.",
     "entities": [
         [
             "T1",
-            "Person",
-            [ [ 0, 11 ] ]
+            "NN",
+            [
+                [
+                    0,
+                    3
+                ]
+            ]
         ],
         [
             "T2",
-            "Person",
-            [ [ 20, 23 ] ]
+            "VBZ",
+            [
+                [
+                    4,
+                    13
+                ]
+            ]
         ],
         [
             "T3",
-            "Person",
-            [ [ 37, 40 ] ]
+            "JJ",
+            [
+                [
+                    14,
+                    19
+                ]
+            ]
         ],
         [
             "T4",
-            "Person",
-            [ [ 50, 61 ] ]
-        ]
-    ],
-    "attributes": [ [ "A1", "Notorious", "T4" ] ],
-    "relations": [
-        [
-            "R1",
-            "Anaphora",
-            [ [ "Anaphor", "T2" ], [ "Entity", "T1" ] ]
-        ]
-    ],
-    "triggers": [
+            "JJ",
+            [
+                [
+                    20,
+                    32
+                ]
+            ]
+        ],
         [
             "T5",
-            "Assassination",
-            [ [ 45, 49 ] ]
+            "NN",
+            [
+                [
+                    33,
+                    39
+                ]
+            ]
         ],
         [
             "T6",
-            "Assassination",
-            [ [ 28, 32 ] ]
-        ]
-    ],
-    "events": [
-        [
-            "E1",
-            "T5",
-            [ [ "Perpetrator", "T3" ], [ "Victim", "T4" ] ]
+            "NN",
+            [
+                [
+                    40,
+                    46
+                ]
+            ]
         ],
         [
-            "E2",
-            "T6",
-            [ [ "Perpetrator", "T2" ], [ "Victim", "T3" ] ]
+            "T7",
+            "CD",
+            [
+                [
+                    47,
+                    49
+                ]
+            ]
+        ],
+        [
+            "T8",
+            "NN",
+            [
+                [
+                    50,
+                    54
+                ]
+            ]
+        ],
+        [
+            "T9",
+            "NN",
+            [
+                [
+                    55,
+                    65
+                ]
+            ]
+        ],
+        [
+            "T10",
+            "IN",
+            [
+                [
+                    66,
+                    73
+                ]
+            ]
+        ],
+        [
+            "T11",
+            "JJ",
+            [
+                [
+                    74,
+                    80
+                ]
+            ]
+        ],
+        [
+            "T12",
+            "NN",
+            [
+                [
+                    81,
+                    83
+                ]
+            ]
+        ],
+        [
+            "T13",
+            "NN",
+            [
+                [
+                    84,
+                    92
+                ]
+            ]
+        ],
+        [
+            "T14",
+            "IN",
+            [
+                [
+                    93,
+                    95
+                ]
+            ]
+        ],
+        [
+            "T15",
+            "NN",
+            [
+                [
+                    96,
+                    112
+                ]
+            ]
+        ],
+        [
+            "T16",
+            "NNS",
+            [
+                [
+                    113,
+                    118
+                ]
+            ]
+        ],
+        [
+            "T17",
+            ".",
+            [
+                [
+                    118,
+                    119
+                ]
+            ]
         ]
     ]
 }</textarea><script>coverCodeMirror("docjson");</script></td>
         <td>
+            <!--https://github.com/nlplab/brat/blob/master/configurations/Stanford-CoreNLP/visual.conf-->
         <textarea id="colljson" style="width:600px">{
-    "entity_types": [
-        {
-            "type": "Person",
-            "labels": [ "Person", "Per" ],
-            "bgColor": "#7fa2ff",
-            "borderColor": "darken"
-        }
-    ],
-    "entity_attribute_types": [
-        {
-            "type": "Notorious",
-            "values": {
-                "Notorious": { "glyph": "★" }
-            },
-            "bool": "Notorious"
-        }
-    ],
-    "relation_types": [
-        {
-            "type": "Anaphora",
-            "labels": [ "Anaphora", "Ana" ],
-            "dashArray": "3,3",
-            "color": "purple",
-            "args": [
-                {
-                    "role": "Anaphor",
-                    "targets": [ "Person" ]
-                },
-                {
-                    "role": "Entity",
-                    "targets": [ "Person" ]
-                }
-            ]
-        }
-    ],
-    "event_types": [
-        {
-            "type": "Assassination",
-            "labels": [ "Assassination", "Assas" ],
-            "bgColor": "lightgreen",
-            "borderColor": "darken",
-            "arcs": [
-                {
-                    "type": "Victim",
-                    "labels": [ "Victim", "Vict" ]
-                },
-                {
-                    "type": "Perpetrator",
-                    "labels": [ "Perpetrator", "Perp" ],
-                    "color": "green"
-                }
-            ]
-        }
-    ]
+  "entity_types": [
+    {
+      "type": "PERSON",
+      "labels": ["Person", "Per" ],
+      "bgColor": "#ffccaa",
+      "borderColor": "darken"
+    },
+    {
+      "type": "TIME",
+      "labels": [ "Time" ],
+      "bgColor": "#ffccaa",
+      "borderColor": "darken"
+    },
+    {
+      "type": "NUMBER",
+      "labels": [ "Number", "Num" ],
+      "bgColor": "#ffccaa",
+      "borderColor": "darken"
+    },
+    {
+      "type": "DATE",
+      "labels": [ "Date" ],
+      "bgColor": "#ffccaa",
+      "borderColor": "darken"
+    },
+    {
+      "type": "LOCATION",
+      "labels": [ "Location", "Loc"],
+      "bgColor": "#95dfff",
+      "borderColor": "darken"
+    },
+    {
+      "type": "ORGANIZATION",
+      "labels": [ "Organization", "Org"],
+      "bgColor": "#8fb2ff",
+      "borderColor": "darken"
+    },
+    {
+      "type": "GENE",
+      "labels": [ "Gene", "Gen" ],
+      "bgColor": "#f1f447",
+      "borderColor": "darken"
+    },
+    {
+      "type": "-LRB-",
+      "labels": ["-LRB-"],
+      "bgColor": "#e3e3e3",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "-RRB-",
+      "labels": ["-RRB-"],
+      "bgColor": "#e3e3e3",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "DT",
+      "labels": ["DT"],
+      "bgColor": "#ccadf6",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "PDT",
+      "labels": ["PDT"],
+      "bgColor": "#ccadf6",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "WDT",
+      "labels": ["WDT"],
+      "bgColor": "#ccadf6",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "CD",
+      "labels": ["CD"],
+      "bgColor": "#ccdaf6",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "NP",
+      "labels": ["NP"],
+      "bgColor": "#7fa2ff",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "NN",
+      "labels": ["NN"],
+      "bgColor": "#a4bced",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "NNP",
+      "labels": ["NNP"],
+      "bgColor": "#a4bced",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "NNPS",
+      "labels": ["NNPS"],
+      "bgColor": "#a4bced",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "NNS",
+      "labels": ["NNS"],
+      "bgColor": "#a4bced",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "VP",
+      "labels": ["VP"],
+      "bgColor": "lightgreen",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "MD",
+      "labels": ["MD"],
+      "bgColor": "#adf6a2",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "VB",
+      "labels": ["VB"],
+      "bgColor": "#adf6a2",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "VBZ",
+      "labels": ["VBZ"],
+      "bgColor": "#adf6a2",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "VBP",
+      "labels": ["VBP"],
+      "bgColor": "#adf6a2",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "VBN",
+      "labels": ["VBN"],
+      "bgColor": "#adf6a2",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "VBG",
+      "labels": ["VBG"],
+      "bgColor": "#adf6a2",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "VBD",
+      "labels": ["VBD"],
+      "bgColor": "#adf6a2",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "PP",
+      "labels": ["PP"],
+      "bgColor": "lightblue",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "PRP",
+      "labels": ["PRP"],
+      "bgColor": "#ccdaf6",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "RB",
+      "labels": ["RB"],
+      "bgColor": "#fffda8",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "RBR",
+      "labels": ["RBR"],
+      "bgColor": "#fffda8",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "RBS",
+      "labels": ["RBS"],
+      "bgColor": "#fffda8",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "WRB",
+      "labels": ["WRB"],
+      "bgColor": "#fffda8",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "WP",
+      "labels": ["WP"],
+      "bgColor": "#ccdaf6",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "ADVP",
+      "labels": ["ADVP"],
+      "bgColor": "lightgray",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "SBAR",
+      "labels": ["SBAR"],
+      "bgColor": "lightgray",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "ADJP",
+      "labels": ["ADJP"],
+      "bgColor": "lightgray",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "JJ",
+      "labels": ["JJ"],
+      "bgColor": "#fffda8",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "JJS",
+      "labels": ["JJS"],
+      "bgColor": "#fffda8",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "JJR",
+      "labels": ["JJR"],
+      "bgColor": "#fffda8",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "PRT",
+      "labels": ["PRT"],
+      "bgColor": "lightgray",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "CONJP",
+      "labels": ["CONJP"],
+      "bgColor": "lightgray",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "TO",
+      "labels": ["TO"],
+      "bgColor": "#ffe8be",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "IN",
+      "labels": ["IN"],
+      "bgColor": "#ffe8be",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "INTJ",
+      "labels": ["INTJ"],
+      "bgColor": "lightgray",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "EX",
+      "labels": ["EX"],
+      "bgColor": "#e4cbf6",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "FW",
+      "labels": ["FW"],
+      "bgColor": "#e4cbf6",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "LS",
+      "labels": ["LS"],
+      "bgColor": "#e4cbf6",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "POS",
+      "labels": ["POS"],
+      "bgColor": "#e4cbf6",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "RP",
+      "labels": ["RP"],
+      "bgColor": "#e4cbf6",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "SYM",
+      "labels": ["SYM"],
+      "bgColor": "#e4cbf6",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "UH",
+      "labels": ["UH"],
+      "bgColor": "#e4cbf6",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "LST",
+      "labels": ["LST"],
+      "bgColor": "lightgray",
+      "borderColor": "darken",
+      "fgColor": "black"
+    }
+  ],
+  "entity_attribute_types": [
+  ],
+  "relation_types": [
+  ],
+  "event_types": [
+  ]
 }</textarea><script>coverCodeMirror("colljson");</script>
     </td></tr>
     <tr><td colspan="2"><div id="bratdisplay"></div></td></tr>
