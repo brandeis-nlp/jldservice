@@ -546,8 +546,11 @@
         /* Make damn sure to copy the objects before handing them to brat
          since we will modify them later on */
 
-        renderBratDisplay("bratdisplay", "docjson", "colljson");
-
+        renderBratDisplay("instantbratdisplay", "docjson", "colljson");
+        // onchange setting.
+        codeMirrors['resultjson'].on('change', function() {
+            execService(wsdls['json2json'], 'json2jsondsl', ['resultjson', 'json2jsondsl_template'], 'docjson')
+        });
 
         var jquery2 = jQuery.noConflict( true );
     // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
@@ -665,22 +668,27 @@
         <td class="is-visible" width="300px"><h4><span id="selectedtool" class="label label-info"></span></h4></td>
         <td class="is-visible">
             <button type="button" class="btn btn-default"
-                    onclick="$('#resultpanel').show();runTool('selectedinput', 'selectedtool', 'resultjson');">
+                    onclick="runTool('selectedinput', 'selectedtool', 'resultjson');">
             <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Run >>
         </button></td>
     </tr>
     </tbody>
 </table>
 
+
+
+<h2 align="center"><span class="label label-primary" style="width:800px;display:inline-block;">LappsGrid Result</span></h2>
+
 <div class="container" id="resultpanel">
     <table align="center">
-        <tr><th width="100px"> </th> <th>Tool Output</th><th width="20px"> </th> <th> Save Output </th> </tr>
+        <!--<tr><th width="100px"> </th> <th>Tool Output</th><th width="20px"> </th> <th> Save Output </th> </tr>-->
+        <tr><td></td><td colspan="2"><p><div id="instantbratdisplay"></div></p></td></tr>
         <tr><td width="100px"></td>
         <td>
         <textarea id="resultjson" style="width:600px"></textarea><script>coverCodeMirror("resultjson");</script>
         </td><td width="20px"></td><td><button type="button" class="btn btn-default"
                          onclick="saveResult('selectedinput', 'selectedtool', 'resultjson', 'savealert');">
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Save >>
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Save Result >>
             </button></td>
         </tr>
         <tr><td></td><td colspan="2"><p><div id="savealert"></div></p></td></tr>
@@ -688,8 +696,13 @@
 </div>
 
 <!-- =============================================================================================================== -->
-
-
+<!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| -->
+<!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| -->
+<!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| -->
+<!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| -->
+<!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| -->
+<!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| -->
+<!-- =============================================================================================================== -->
 
 <!-- =============================================================================================================== -->
 <div style="display:none">
@@ -785,7 +798,7 @@
         <td><textarea id="json2jsondsl_template" style="width:400px;height:300px;">{
   def idx = 1
   text &$payload.text."@value"
-  entities (&$payload.views[-1].annotations.unique{it.start+" "+it.end}.foreach{
+  entities (&$payload.views[-1].annotations.unique{it.start+" "+it.end}.select{&.features.category != null}.foreach{
     ["T${idx++}", &.features.category.trim().toUpperCase(), [[&.start.toInteger(), &.end.toInteger()]]]
   })
 }</textarea><script>coverCodeMirror("json2jsondsl_template");</script></td>
@@ -805,181 +818,7 @@
 <table align="center">
     <tr> <th>Brat DOC JSON:</th> <th>Brat CONFIG JSON:</th><th></tr>
     <tr> <td>
-    <textarea id="docjson" style="width:600px">{
-    "text": "p53 regulates human insulin-like growth factor II gene expression through active P4 promoter in rhabdomyosarcoma cells.",
-    "entities": [
-        [
-            "T1",
-            "NN",
-            [
-                [
-                    0,
-                    3
-                ]
-            ]
-        ],
-        [
-            "T2",
-            "VBZ",
-            [
-                [
-                    4,
-                    13
-                ]
-            ]
-        ],
-        [
-            "T3",
-            "JJ",
-            [
-                [
-                    14,
-                    19
-                ]
-            ]
-        ],
-        [
-            "T4",
-            "JJ",
-            [
-                [
-                    20,
-                    32
-                ]
-            ]
-        ],
-        [
-            "T5",
-            "NN",
-            [
-                [
-                    33,
-                    39
-                ]
-            ]
-        ],
-        [
-            "T6",
-            "NN",
-            [
-                [
-                    40,
-                    46
-                ]
-            ]
-        ],
-        [
-            "T7",
-            "CD",
-            [
-                [
-                    47,
-                    49
-                ]
-            ]
-        ],
-        [
-            "T8",
-            "NN",
-            [
-                [
-                    50,
-                    54
-                ]
-            ]
-        ],
-        [
-            "T9",
-            "NN",
-            [
-                [
-                    55,
-                    65
-                ]
-            ]
-        ],
-        [
-            "T10",
-            "IN",
-            [
-                [
-                    66,
-                    73
-                ]
-            ]
-        ],
-        [
-            "T11",
-            "JJ",
-            [
-                [
-                    74,
-                    80
-                ]
-            ]
-        ],
-        [
-            "T12",
-            "NN",
-            [
-                [
-                    81,
-                    83
-                ]
-            ]
-        ],
-        [
-            "T13",
-            "NN",
-            [
-                [
-                    84,
-                    92
-                ]
-            ]
-        ],
-        [
-            "T14",
-            "IN",
-            [
-                [
-                    93,
-                    95
-                ]
-            ]
-        ],
-        [
-            "T15",
-            "NN",
-            [
-                [
-                    96,
-                    112
-                ]
-            ]
-        ],
-        [
-            "T16",
-            "NNS",
-            [
-                [
-                    113,
-                    118
-                ]
-            ]
-        ],
-        [
-            "T17",
-            ".",
-            [
-                [
-                    118,
-                    119
-                ]
-            ]
-        ]
-    ]
-}</textarea><script>coverCodeMirror("docjson");</script></td>
+    <textarea id="docjson" style="width:600px"></textarea><script>coverCodeMirror("docjson");</script></td>
         <td>
             <!--https://github.com/nlplab/brat/blob/master/configurations/Stanford-CoreNLP/visual.conf-->
         <textarea id="colljson" style="width:600px">{
@@ -1350,7 +1189,7 @@
   ]
 }</textarea><script>coverCodeMirror("colljson");</script>
     </td></tr>
-    <tr><td colspan="2"><div id="bratdisplay"></div></td></tr>
+    <tr><td colspan="2"><div id="___bratdisplay___"></div></td></tr>
 </table>
 <!-- =============================================================================================================== -->
 
