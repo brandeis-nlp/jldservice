@@ -63,7 +63,7 @@ if (txtIn != null && txtIn.trim().startsWith('{')) {
         // json object to text
         txtRet = new JsonBuilder(objRet).toString();
         // put into chache
-        Cache.put(txtIn, txtRet);
+        // Cache.put(txtIn, txtRet);
     }
 }
 log.info("txtRet.length() : " + txtRet.length());
