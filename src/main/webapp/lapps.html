@@ -680,18 +680,19 @@
 <h2 align="center"><span class="label label-primary" style="width:800px;display:inline-block;">LappsGrid Result</span></h2>
 
 <div class="container" id="resultpanel">
-    <table align="center">
-        <!--<tr><th width="100px"> </th> <th>Tool Output</th><th width="20px"> </th> <th> Save Output </th> </tr>-->
-        <tr><td></td><td colspan="2"><p><div id="instantbratdisplay"></div></p></td></tr>
-        <tr><td width="100px"></td>
-        <td>
+    <table align="center" class="table table-bordered table-striped responsive-utilities" align="center" style="width:800px;">
+        <tr><th> Brat Display </th></tr>
+        <tr><td height="200px"><div id="instantbratdisplay"></div></td></tr>
+    </table>
+    <table align="center" class="table table-bordered table-striped responsive-utilities" align="center" style="width:800px">
+        <tr><th>Tool Output</th> <th> Save Output </th> </tr>
+        <tr><td>
         <textarea id="resultjson" style="width:600px"></textarea><script>coverCodeMirror("resultjson");</script>
-        </td><td width="20px"></td><td><button type="button" class="btn btn-default"
-                         onclick="saveResult('selectedinput', 'selectedtool', 'resultjson', 'savealert');">
+        </td> <td><button type="button" class="btn btn-default"
+                                  onclick="saveResult('selectedinput', 'selectedtool', 'resultjson', 'savealert');">
                 <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Save Result >>
-            </button></td>
-        </tr>
-        <tr><td></td><td colspan="2"><p><div id="savealert"></div></p></td></tr>
+            </button></td></tr>
+        <tr><td colspan="2" height="50px"><p><div id="savealert"></div></p></td></tr>
     </table>
 </div>
 
@@ -818,7 +819,7 @@
 <table align="center">
     <tr> <th>Brat DOC JSON:</th> <th>Brat CONFIG JSON:</th><th></tr>
     <tr> <td>
-    <textarea id="docjson" style="width:600px"></textarea><script>coverCodeMirror("docjson");</script></td>
+    <textarea id="docjson" style="width:600px">{}</textarea><script>coverCodeMirror("docjson");</script></td>
         <td>
             <!--https://github.com/nlplab/brat/blob/master/configurations/Stanford-CoreNLP/visual.conf-->
         <textarea id="colljson" style="width:600px">{
