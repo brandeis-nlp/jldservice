@@ -196,6 +196,16 @@
         "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/lingpipe/0.0.1/services/LingPipeWS?wsdl",
         "username" : "",
         "password" : ""
+      }],
+      "Abner" : [{
+        "provider": "Abner",
+        "type":"Named-Entity-Recognizer",
+        "name": "Abner NER",
+        "version" : "v0.0.1",
+        "server" : "Brandeis University",
+        "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/abner/services/AbnerWS?wsdl",
+        "username" : "",
+        "password" : ""
       }]
     },
     "Evaluation": {

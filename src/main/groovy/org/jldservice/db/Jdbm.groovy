@@ -120,8 +120,8 @@ class Jdbm {
     public static void main(String [] args) {
         Jdbm jdbm = new Jdbm();
         // ServiceType, Producer, Version, Url, P
-//        jdbm.init("lapps.html", "services");
-        println jdbm.get("lapps.html", "results");
+        jdbm.init("lapps.html", "services");
+//        println jdbm.get("lapps.html", "results");
     }
 }
 
