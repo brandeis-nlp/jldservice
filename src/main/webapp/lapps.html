@@ -458,6 +458,18 @@
         panelgroupDiv.hide().fadeIn('fast');
     }
 
+    var text2lappsjson = function(txt) {
+        txt = txt.trim();
+        if (txt.indexOf("{") == 0 && txt.lastIndexOf("}") ==txt.length-1) {
+            return txt;
+        } else {
+            var json = {};
+            json.discriminator = "http://vocab.lappsgrid.org/ns/media/text";
+            json.payload = txt;
+            return JSON.stringify(json);
+        }
+    }
+
     var execService = function (wsdl, op, inputIds, outputId) {
         var io = {};
         io.Wsdl = wsdl;
@@ -465,7 +477,7 @@
         io.Input = [];
         // push inputId value into io input
         for (var i = 0; i < inputIds.length; i++) {
-            io.Input.push(getCodeMirrorValue(inputIds[i]));
+            io.Input.push(text2lappsjson(getCodeMirrorValue(inputIds[i])));
         }
         if(wsdl.indexOf('grid.anc') >= 0) {
             io.Username = 'tester';
@@ -1141,6 +1153,9 @@
 <p></p>
 </div>
 <!-- =============================================================================================================== -->
+
+
+
 <!-- =============================================================================================================== -->
 <!-- =============================================================================================================== -->
 <footer>

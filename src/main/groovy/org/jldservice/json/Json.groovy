@@ -12,6 +12,7 @@ import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility
 import org.codehaus.jackson.annotate.JsonMethod
 import org.codehaus.jackson.map.ObjectMapper
 import org.jldservice.clazz.ClazzJar
+import org.lappsgrid.api.Data
 
 import java.util.logging.Level
 import java.util.logging.Logger
@@ -132,6 +133,12 @@ class Json {
         def json = toJsonbyIO(obj);
         log.info(json);
         return JsonOutput.prettyPrint(json);
+    }
+
+
+    static final def main(String []args) {
+        Data data = new Data();
+        toJsonPretty(data);
     }
 
 }

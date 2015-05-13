@@ -363,6 +363,76 @@
       "bgColor": "lightgray",
       "borderColor": "darken",
       "fgColor": "black"
+    },
+    {
+      "type": "B-DNA",
+      "labels": ["B-DNA", "BDNA"],
+      "bgColor": "#a4bced",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "I-DNA",
+      "labels": ["I-DNA", "IDNA"],
+      "bgColor": "#a4bced",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "B-PROTEIN",
+      "labels": ["B-PROTEIN", "B-PRO", "BPRO"],
+      "bgColor": "#ffe8be",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "I-PROTEIN",
+      "labels": ["I-PROTEIN", "I-PRO", "IPRO"],
+      "bgColor": "#ffe8be",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "B-CELL_TYPE",
+      "labels": ["B-CELL_TYPE","B-CELL", "BCELL"],
+      "bgColor": "#fffda8",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "I-CELL_TYPE",
+      "labels": ["B-CELL_TYPE","I-CELL", "ICELL"],
+      "bgColor": "#fffda8",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "DNA",
+      "labels": ["DNA"],
+      "bgColor": "#a4bced",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "PROTEIN",
+      "labels": ["PROTEIN", "PROT"],
+      "bgColor": "#ffe8be",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "CELL_TYPE",
+      "labels": ["CELL-TYPE","CELL-T"],
+      "bgColor": "#fffda8",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "CELL_LINE",
+      "labels": ["CELL_LINE","CELL-L"],
+      "bgColor": "#fffda8",
+      "borderColor": "darken",
+      "fgColor": "black"
     }
   ],
   "entity_attribute_types": [
