@@ -201,23 +201,15 @@
             mode: "javascript",
             lineNumbers: true,
             lineWrapping: true,
-            // mode: "htmlmixed",
-            // fixedGutter: true,
             styleActiveLine: true,
             matchBrackets: true,
-            // viewportMargin: Infinity,
             scrollbarStyle: "overlay",
             foldGutter: true,
             gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
         });
         // editor.setOption("theme", "neat");
         editor.setSize(textarea.style.width, textarea.style.height);
-        // changeMode(editor, textarea.value);
         codeMirrors[textareaId] = editor;
-        /* editor.on("change", function() {
-          var value = editor.getValue();
-          changeMode(editor, value);
-        }); */
         editor.on('dblclick', function() {
             editor.setOption("fullScreen", !editor.getOption("fullScreen"));
         });
@@ -233,7 +225,6 @@
 
     var setCodeMirrorValue = function(textareaId, val) {
         codeMirrors[textareaId].setValue(val);
-        //changeMode(codeMirrors[textareaId], val)
     }
 
     var docChangeHandler = function(liveDispatcher, textareaId){
