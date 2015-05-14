@@ -563,6 +563,29 @@
         });
      }
 
+    var loadLappsServices = function(textareaId, accountId, passwordId) {
+        setCodeMirrorValue(textareaId, "");
+        if($("#"+accountId).val() == "brandeis" && $("#"+accountId).val() == "brandeis") {
+            readDB("services", function(servicesJson){
+                var txt = JSON.stringify(servicesJson,null,4);
+                alert(txt);
+                setCodeMirrorValue(textareaId, txt);
+            });
+        }
+    }
+
+    var saveLappsServices = function(textareaId, accountId, passwordId, alertDivId) {
+        var txt = getCodeMirrorValue(textareaId);
+        var json = JSON.parse(txt);
+        if($("#"+accountId).val() == "brandeis" && $("#"+accountId).val() == "brandeis") {
+            saveDB("services",json, function(ret){
+                $("#"+alertDivId).html("<div  class='alert alert-success' role='alert'><strong>Well done!</strong> You successfully save <a href='#' class='alert-link'>the data</a>.</div>");
+                setTimeout(function(){
+                    $("#"+alertDivId).html("");
+                }, 5000);
+            });
+        }
+    }
     // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< //
     // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
     head.ready(function() {
@@ -1154,7 +1177,32 @@
 </div>
 <!-- =============================================================================================================== -->
 
+<h6>
+    <span class="glyphicon glyphicon-apple" aria-hidden="true" ondblclick="$('#servicesupdate').toggle()"></span>
+</h6>
 
+<div id="servicesupdate" style="display:none">
+    <h2 align="center">
+    <span class="label label-primary" style="width:800px;display:inline-block;">
+    Lapps Service Update</span></h2>
+    <table align="center">
+        <tr><td><span class="label label-primary">UserName</span>
+            <input type="text" id="account"></td><td>
+            <span class="label label-primary">PassWord</span><input type="password" id="password"></td></tr>
+        <tr><td colspan="2">
+            <textarea id="servicesjson"  style="width:800px"></textarea> <script>coverCodeMirror("servicesjson");</script>
+        </td></tr>
+        <tr><td><button type="button" class="btn btn-default"
+                        onclick="loadLappsServices('servicesjson', 'account','password');">
+            <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Load Services
+        </button></td>
+            <td><button type="button" class="btn btn-default"
+                        onclick="saveLappsServices('servicesjson', 'account','password','saveservicesalert');">
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Save Services
+            </button></td></tr>
+        <tr><td colspan="2" height="50px"><p><div id="saveservicesalert"></div></p></td></tr>
+    </table>
+</div>
 
 <!-- =============================================================================================================== -->
 <!-- =============================================================================================================== -->
