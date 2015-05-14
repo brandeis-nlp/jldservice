@@ -187,12 +187,9 @@
     // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
     // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  //
     var changeMode = function(editor, value) {
-      if (value.indexOf("{") !=-1) {
+      if (value.trim().substr(0, 1) == "{" && editor.getOption("mode") != "javascript") {
         editor.setOption("mode", "javascript");
         CodeMirror.autoLoadMode(editor, "javascript");
-      } else {
-        editor.setOption("mode", "htmlmixed");
-        CodeMirror.autoLoadMode(editor, "htmlmixed");
       }
     }
 
@@ -201,6 +198,7 @@
     var coverCodeMirror = function(textareaId, changeHandler) {
         var textarea = document.getElementById(textareaId);
         var editor = CodeMirror.fromTextArea(textarea, {
+            mode: "javascript",
             lineNumbers: true,
             lineWrapping: true,
             // mode: "htmlmixed",
@@ -216,10 +214,10 @@
         editor.setSize(textarea.style.width, textarea.style.height);
         // changeMode(editor, textarea.value);
         codeMirrors[textareaId] = editor;
-        editor.on("change", function() {
+        /* editor.on("change", function() {
           var value = editor.getValue();
           changeMode(editor, value);
-        });
+        }); */
         editor.on('dblclick', function() {
             editor.setOption("fullScreen", !editor.getOption("fullScreen"));
         });
