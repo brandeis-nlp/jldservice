@@ -209,17 +209,29 @@
       }]
     },
     "Evaluation": {
-
     },
     "Converters": {
 
     },
     "OtherTypes": {
-
     }
   },
-
-
+  "EvaluationTypes" : {
+    "Gold-Standard-Evaluation" : {
+      "OAQA": [
+        {
+          "provider": "CMU",
+          "type": "Evaluation",
+          "name": "OAQA Evaluation",
+          "version": "v0.0.1",
+          "server": "Carnegie Mellon University",
+          "wsdl": "http://gold.lti.cs.cmu.edu:4040/services/AnnotationEvaluator?wsdl",
+          "username": "",
+          "password": ""
+        }
+      ]
+    }
+  },
 
 
 

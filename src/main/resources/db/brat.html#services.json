@@ -208,6 +208,11 @@
 
     }
   },
+
+  "EvaluationTypes" : {
+
+  },
+
   "ServiceProviders" :{
     "Apache-OpenNLP": {
       "Sentence-Splitter" :[

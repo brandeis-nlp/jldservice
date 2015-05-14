@@ -13,71 +13,10 @@
     <link rel="shortcut icon" href="favicon.ico"/>
     <script type="text/javascript" src="http://brat.nlplab.org/js/lib/json2.js"></script>
     <script type="text/javascript" src="http://weaver.nlplab.org/~brat/demo/v1.3/client/lib/head.load.min.js"></script>
-    <!-- Google Webmaster Tools -->
-    <meta name="google-site-verification" content="YJkZhvWcgZNvVX2HY3TXG1OcEWJHMy7Bi_ossuqKvRE"/>
 </head>
 <body>
 <div id="main" class="center">
-    <div id="hp-header" class="ui-widget-header rounded">
-        <div id="menulogo" class="hp-logo hp-unselectable"><a style="text-decoration: none" href="about.html">brat</a></div>
-        <span><a href="index.html">home</a></span>
-        <span style="color:lightblue" class="hp-unselectable">|</span>
-        <span><a href="introduction.html">introduction</a></span>
-        <span style="color:lightblue" class="hp-unselectable">|</span>
-        <span><a href="examples.html">examples</a></span>
-        <span style="color:lightblue" class="hp-unselectable">|</span>
-        <span><a href="features.html">features</a></span>
-        <!-- 	<span style="color:lightblue" class="hp-unselectable">|</span> -->
-        <!--         <span><a href="installation.html">installation</a></span> -->
-        <span style="color:lightblue" class="hp-unselectable">|</span>
-        <span><a href="manual.html">manual</a></span>
-        <span style="color:lightblue" class="hp-unselectable">|</span>
-        <span><a href="sitemap.html">site map</a></span>
-        <span style="color:lightblue" class="hp-unselectable">|</span>
-        <span><a href="contact.html">contact</a></span>
-    </div>
     <div id="content">
-        <h1>embedding brat visualisations</h1>
-
-        <noscript>
-            <div id="noscript">
-                It appears that you have Javascript disabled, while this is a sane
-                default it makes an our demo slightly difficult (if not impossible).
-                Please consider enabling Javascript for this page to try out the demo.
-            </div>
-        </noscript>
-
-        <p>
-            This document provides an example of how to embed brat visualisations into
-            any homepage and how it can be used as a stand-alone server-less
-            visualisation of the output of your own tools or to illustrate examples of
-            text annotations.
-        </p>
-
-        <p>
-            Throughout this document we will use <i>"Ed O'Kelley was the man
-            who shot the man who shot Jesse James."</i> as our example text, we will
-            produce both annotation configurations and annotations that are given to
-            brat using JSON.
-            We will also take the opportunity to embed the very same examples
-            that we are creating into this page to give you an instant preview of the
-            end results.
-        </p>
-
-        <p>
-            If you just want a quick glance of what can be achieved by embedding brat,
-            do skip ahead to the <a href="#live">live example</a> at the end of the
-            page and save the technical instructions for later.
-        </p>
-
-        <h2>prerequisites</h2>
-
-        <p>
-            Since brat embeds an SVG image in your document, your document should be
-            XHTML compliant, otherwise the embedding won't show up properly.
-            The first step necessary is to include the brat visualisation style-sheet.
-            Do so by including the line below in the head of your XHTML document.
-        </p>
 
 <pre><code id="embedding-css">
     &lt;link rel="stylesheet" type="text/css" href="http://${YOUR_BRAT_INSTALLATION}/style-vis.css"/&gt;
@@ -530,10 +469,6 @@
     });
 </script>
 
-    </div>
-    <div id="footer">
-        <p class="footer-text">&copy; 2010-2014 the <a href="about.html" style="color:gray">brat contributors</a></p>
-        <p class="footer-logo"><a href="http://creativecommons.org/licenses/by/3.0/"><img title="Content on this website is licensed under a Creative Commons Attribution 3.0 License. (Linked corpus data licensed separately.)" src="http://i.creativecommons.org/l/by/3.0/80x15.png"/></a></p>
     </div>
 </div>
 </body>

@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="https://codemirror.net/addon/display/fullscreen.css">
     <link rel="stylesheet" href="https://codemirror.net/addon/dialog/dialog.css">
     <link rel="stylesheet" href="https://codemirror.net/addon/search/matchesonscrollbar.css">
+    <link rel="stylesheet" href="https://codemirror.net/addon/fold/foldgutter.css" />
     <script src="http://codemirror.net/lib/codemirror.js"></script>
     <script src="http://codemirror.net/addon/scroll/simplescrollbars.js"></script>
     <!--<link rel=stylesheet href="http://codemirror.net/doc/docs.css">-->
@@ -45,6 +46,13 @@
     <script src="https://codemirror.net/addon/search/searchcursor.js"></script>
     <script src="https://codemirror.net/addon/search/search.js"></script>
     <script src="https://codemirror.net/addon/scroll/annotatescrollbar.js"></script>
+    <!--  https://codemirror.net/demo/folding.html  -->
+    <script src="https://codemirror.net/addon/fold/foldcode.js"></script>
+    <script src="https://codemirror.net/addon/fold/foldgutter.js"></script>
+    <script src="https://codemirror.net/addon/fold/brace-fold.js"></script>
+    <script src="https://codemirror.net/addon/fold/xml-fold.js"></script>
+    <script src="https://codemirror.net/addon/fold/markdown-fold.js"></script>
+    <script src="https://codemirror.net/addon/fold/comment-fold.js"></script>
     <script src="https://codemirror.net/addon/search/matchesonscrollbar.js"></script>
     <script src="https://raw.githubusercontent.com/cfinke/Typo.js/master/typo/typo.js"></script>
 
@@ -194,17 +202,24 @@
         var textarea = document.getElementById(textareaId);
         var editor = CodeMirror.fromTextArea(textarea, {
             lineNumbers: true,
+            lineWrapping: true,
             // mode: "htmlmixed",
             // fixedGutter: true,
             styleActiveLine: true,
             matchBrackets: true,
             // viewportMargin: Infinity,
-            scrollbarStyle: "overlay"
+            scrollbarStyle: "overlay",
+            foldGutter: true,
+            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
         });
         // editor.setOption("theme", "neat");
         editor.setSize(textarea.style.width, textarea.style.height);
-        changeMode(editor, textarea.value);
+        // changeMode(editor, textarea.value);
         codeMirrors[textareaId] = editor;
+        editor.on("change", function() {
+          var value = editor.getValue();
+          changeMode(editor, value);
+        });
         editor.on('dblclick', function() {
             editor.setOption("fullScreen", !editor.getOption("fullScreen"));
         });
@@ -220,7 +235,7 @@
 
     var setCodeMirrorValue = function(textareaId, val) {
         codeMirrors[textareaId].setValue(val);
-        changeMode(codeMirrors[textareaId], val)
+        //changeMode(codeMirrors[textareaId], val)
     }
 
     var docChangeHandler = function(liveDispatcher, textareaId){
@@ -568,7 +583,6 @@
         if($("#"+accountId).val() == "brandeis" && $("#"+accountId).val() == "brandeis") {
             readDB("services", function(servicesJson){
                 var txt = JSON.stringify(servicesJson,null,4);
-                alert(txt);
                 setCodeMirrorValue(textareaId, txt);
             });
         }
@@ -717,7 +731,7 @@
     <tbody>
     <tr align="center">
         <td class="is-visible" width="400px"><h4><span id="selectedinput" class="label label-info" title="doctext">Document</span></h4></td>
-        <td class="is-visible" width="300px"><h4><span id="selectedtool" class="label label-info"></span></h4></td>
+        <td class="is-visible" width="300px"><h4><span id="selectedtool" class="label label-info">Select a tool above ^</span></h4></td>
         <td class="is-visible">
             <button type="button" class="btn btn-default"
                     onclick="runTool('selectedinput', 'selectedtool', 'resultjson');">
@@ -770,8 +784,8 @@
         <td><textarea id="json2jsondsl_template" style="width:400px;height:300px;">{
   def idx = 1
   text &$payload.text."@value"
-  entities (&$payload.views[-1].annotations.unique{it.start+" "+it.end}.select{&.features != null && &.features.category != null}.foreach{
-    ["T${idx++}", &.features.category.trim().toUpperCase(), [[&.start.toInteger(), &.end.toInteger()]]]
+  entities (&$payload.views[-1].annotations.unique{it.start+" "+it.end}.select{&.features != null && (&.features.category != null || &.features.pos != null)}.foreach{
+    ["T${idx++}", &.features.category != null?&.features.category.trim().toUpperCase():&.features.pos.trim().toUpperCase(), [[&.start.toInteger(), &.end.toInteger()]]]
   })
 }</textarea><script>coverCodeMirror("json2jsondsl_template");</script></td>
         <td><input type="button" value="Transform"
