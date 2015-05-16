@@ -206,6 +206,51 @@
         "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/abner/services/AbnerWS?wsdl",
         "username" : "",
         "password" : ""
+      },
+        {
+          "provider": "Abner",
+          "type":"Named-Entity-Recognizer",
+          "name": "Abner NER",
+          "version" : "v0.0.2",
+          "server" : "Brandeis University",
+          "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/abner/0.0.2/services/AbnerWS?wsdl",
+          "username" : "",
+          "password" : ""
+        }
+      ]
+    },
+    "Parser": {
+      "Stanford-NLP" : [ {
+        "provider": "Stanford NLP",
+        "type":"Parser",
+        "name": "Stanford Parser",
+        "version" : "v2.0.0",
+        "server" : "Brandeis University",
+        "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/Parser?wsdl",
+        "username" : "",
+        "password" : ""
+      }],
+      "OpenNLP" : [ {
+        "provider": "OpenNLP",
+        "type":"Parser",
+        "name": "OpenNLP Parser",
+        "version" : "v2.0.0",
+        "server" : "Brandeis University",
+        "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/Parser?wsdl",
+        "username" : "",
+        "password" : ""
+      }]
+    },
+    "DependencyParser": {
+      "Stanford-NLP" : [ {
+        "provider": "Stanford NLP",
+        "type":"DependencyParser ",
+        "name": "Stanford Dependency Parser",
+        "version" : "v2.0.0",
+        "server" : "Brandeis University",
+        "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/DependencyParser?wsdl",
+        "username" : "",
+        "password" : ""
       }]
     },
     "Evaluation": {
