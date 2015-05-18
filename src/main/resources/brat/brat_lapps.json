@@ -439,7 +439,35 @@
   ],
   "relation_types": [
     {
-      "type"     : "COREFERENCE",
+      "args": [
+        {
+          "role": "Arg1",
+          "targets": [
+            "Mention"
+          ]
+        },
+        {
+          "role": "Arg2",
+          "targets": [
+            "Mention"
+          ]
+        }
+      ],
+      "arrowHead": "none",
+      "name": "Coref",
+      "labels": ["Coreference", "Coref"],
+      "children": [],
+      "unused": false,
+      "dashArray": "3,3",
+      "attributes": [],
+      "type": "COREFERENCE",
+      "properties": {
+        "symmetric": true,
+        "transitive": true
+      }
+    },
+    {
+      "type"     : "COREFERENCE_1",
       "labels"   : ["Coreference", "Coref"],
       // dashArray allows you to adjust the style of the relation arc
       "dashArray": "3,3",
@@ -453,5 +481,33 @@
     }
   ],
   "event_types": [
+    {
+      "borderColor": "darken",
+      "normalizations": [],
+      "name": "Mention",
+      "arcs": [
+        {
+          "arrowHead": "none",
+          "dashArray": "3,3",
+          "labels": [
+            "Coref"
+          ],
+          "type": "Coreference",
+          "targets": [
+            "Mention"
+          ]
+        }
+      ],
+      "labels": [
+        "Mention",
+        "Ment",
+        "M"
+      ],
+      "unused": false,
+      "bgColor": "#ffe000",
+      "attributes": [],
+      "type": "Mention",
+      "children": []
+    }
   ]
 }
