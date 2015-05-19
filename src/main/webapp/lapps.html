@@ -772,16 +772,28 @@
         <td><textarea id="json2jsondsl_source" style="width:400px;height:300px;">{}</textarea><script>coverCodeMirror("json2jsondsl_source");</script>
         </td>
         <td><textarea id="json2jsondsl_template" style="width:400px;height:300px;">{
-  def idx = 0
-  def parse = &$payload.views[-1].annotations.features[0].penntree
-  text &$payload.text."@value" + (parse == null?"":"\n\n\n"+parse)
-  entities (&$payload.views[-1].annotations.unique{it.start+" "+it.end}.select{&.features != null && (&.features.category != null || &.features.pos != null)}.foreach{
-    [&.id == null?"T${idx++}":&.id, &.features.category != null?&.features.category.trim().toUpperCase():&.features.pos.trim().toUpperCase(), [[&.start.toInteger(), &.end.toInteger()]]]
-  })
-  relations (&$payload.views[-1].annotations.select{&.type=="http://vocab.lappsgrid.org/DependencyStructure"}.features.dependencies
-             .flatten().foreach{
-             [&.id, &.label, [["Governor", &.features.governor], ["Dependent", &.features.dependent]]]
-             })
+         def idx = 0
+         def parse = &$payload.views[-1].annotations.features[0].penntree
+         def coref = &$payload.views[-1].annotations.select{&.type=="http://vocab.lappsgrid.org/Coreference"}.features.mentions
+
+         text &$payload.text."@value" + (parse == null?"":"\n\n\n"+parse)
+
+
+         relations (&$payload.views[-1].annotations.select{&.type=="http://vocab.lappsgrid.org/DependencyStructure"}.features.dependencies
+                    .flatten().foreach{
+                    ["D${idx++}", &.label, [["Governor", &.features.governor], ["Dependent", &.features.dependent]]]
+                    })
+
+         equivs (&$payload.views[-1].annotations.select{&.type=="http://vocab.lappsgrid.org/Coreference"}.features
+                    .flatten().foreach{
+                                     ["*", "Coreference", &.mentions[0], &.mentions[1]]
+                                     })
+
+         entities (&$payload.views[-1].annotations.unique{&.start+" "+&.end}.select{&.features != null && (&.features.category != null || &.features.pos != null)}.foreach{
+           [&.id == null?"T${idx++}":&.id, &.features.category != null?&.features.category.trim().toUpperCase():&.features.pos.trim().toUpperCase(), [[&.start.toInteger(), &.end.toInteger()]]]
+         } + &$payload.views[-1].annotations.select{&.type=="http://vocab.lappsgrid.org/Markable" && coref.toString().contains(&.id)}.foreach{
+           [&.id == null?"M${idx++}":&.id, "Mention", [[&.start.toInteger(), &.end.toInteger()]]]
+         })
 }</textarea><script>coverCodeMirror("json2jsondsl_template");</script></td>
         <td><input type="button" value="Transform"
                    onclick="execService(wsdls['json2json'], 'json2jsondsl', ['json2jsondsl_source', 'json2jsondsl_template'], 'json2jsondsl_result')" /></td>
@@ -878,6 +890,13 @@
       "type": "WDT",
       "labels": ["WDT"],
       "bgColor": "#ccadf6",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
+      "type": "CC",
+      "labels":  ["CC"],
+      "bgColor": "white",
       "borderColor": "darken",
       "fgColor": "black"
     },
@@ -1239,7 +1258,8 @@
       "fgColor": "black"
     }
   ],
-  "entity_attribute_types": [],
+  "entity_attribute_types": [
+  ],
   "relation_types": [
     {
       "args": [
@@ -1263,21 +1283,11 @@
       "unused": false,
       "dashArray": "3,3",
       "attributes": [],
-      "type": "COREFERENCE",
+      "type": "Coreference",
       "properties": {
         "symmetric": true,
         "transitive": true
       }
-    },
-    {
-      "type"     : "COREFERENCE_1",
-      "labels"   : ["Coreference", "Coref"],
-      "dashArray": "3,3",
-      "color"    : "purple",
-      "args"     : [
-        {"role": "Representative", "targets": ["MENTION"] },
-        {"role": "Mention",  "targets": ["MENTION"] }
-      ]
     }
   ],
   "event_types": [
@@ -1300,7 +1310,7 @@
       ],
       "labels": [
         "Mention",
-        "Ment",f
+        "Ment",
         "M"
       ],
       "unused": false,

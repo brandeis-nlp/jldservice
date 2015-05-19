@@ -253,6 +253,29 @@
         "password" : ""
       }]
     },
+    "Coreference": {
+      "Stanford-NLP" : [ {
+        "provider": "Stanford NLP",
+        "type":"Coreference ",
+        "name": "Stanford Coreference",
+        "version" : "v2.0.0",
+        "server" : "Brandeis University",
+        "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/Coreference?wsdl",
+        "username" : "",
+        "password" : ""
+      }],
+
+      "OpenNLP" : [ {
+        "provider": "OpenNLP",
+        "type":"Coreference ",
+        "name": "OpenNLP Coreference",
+        "version" : "v2.0.0",
+        "server" : "Brandeis University",
+        "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/Coreference?wsdl",
+        "username" : "",
+        "password" : ""
+      }]
+    },
     "Evaluation": {
     },
     "Converters": {

@@ -78,6 +78,13 @@
       "fgColor": "black"
     },
     {
+      "type": "CC",
+      "labels":  ["CC"],
+      "bgColor": "white",
+      "borderColor": "darken",
+      "fgColor": "black"
+    },
+    {
       "type": "CD",
       "labels": ["CD"],
       "bgColor": "#ccdaf6",
@@ -460,21 +467,11 @@
       "unused": false,
       "dashArray": "3,3",
       "attributes": [],
-      "type": "COREFERENCE",
+      "type": "Coreference",
       "properties": {
         "symmetric": true,
         "transitive": true
       }
-    },
-    {
-      "type"     : "COREFERENCE_1",
-      "labels"   : ["Coreference", "Coref"],
-      "dashArray": "3,3",
-      "color"    : "purple",
-      "args"     : [
-        {"role": "Representative", "targets": ["MENTION"] },
-        {"role": "Mention",  "targets": ["MENTION"] }
-      ]
     }
   ],
   "event_types": [
