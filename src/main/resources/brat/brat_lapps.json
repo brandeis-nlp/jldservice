@@ -469,11 +469,8 @@
     {
       "type"     : "COREFERENCE_1",
       "labels"   : ["Coreference", "Coref"],
-      // dashArray allows you to adjust the style of the relation arc
       "dashArray": "3,3",
       "color"    : "purple",
-      /* A relation takes two arguments, both are named and can be constrained
-          as to which types they may apply to */
       "args"     : [
         {"role": "Representative", "targets": ["MENTION"] },
         {"role": "Mention",  "targets": ["MENTION"] }

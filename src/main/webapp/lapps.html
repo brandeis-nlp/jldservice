@@ -604,7 +604,8 @@
         renderBratDisplay("instantbratdisplay", "docjson", "colljson");
         // onchange setting.
         codeMirrors['resultjson'].on('change', function() {
-            execService(wsdls['json2json'], 'json2jsondsl', ['resultjson', 'json2jsondsl_template'], 'docjson')
+            if(getCodeMirrorValue('resultjson').indexOf('@value') > 0)
+                execService(wsdls['json2json'], 'json2jsondsl', ['resultjson', 'json2jsondsl_template'], 'docjson')
         });
 
         var jquery2 = jQuery.noConflict( true );
@@ -771,11 +772,16 @@
         <td><textarea id="json2jsondsl_source" style="width:400px;height:300px;">{}</textarea><script>coverCodeMirror("json2jsondsl_source");</script>
         </td>
         <td><textarea id="json2jsondsl_template" style="width:400px;height:300px;">{
-  def idx = 1
-  text &$payload.text."@value"
+  def idx = 0
+  def parse = &$payload.views[-1].annotations.features[0].penntree
+  text &$payload.text."@value" + (parse == null?"":"\n\n\n"+parse)
   entities (&$payload.views[-1].annotations.unique{it.start+" "+it.end}.select{&.features != null && (&.features.category != null || &.features.pos != null)}.foreach{
-    ["T${idx++}", &.features.category != null?&.features.category.trim().toUpperCase():&.features.pos.trim().toUpperCase(), [[&.start.toInteger(), &.end.toInteger()]]]
+    [&.id == null?"T${idx++}":&.id, &.features.category != null?&.features.category.trim().toUpperCase():&.features.pos.trim().toUpperCase(), [[&.start.toInteger(), &.end.toInteger()]]]
   })
+  relations (&$payload.views[-1].annotations.select{&.type=="http://vocab.lappsgrid.org/DependencyStructure"}.features.dependencies
+             .flatten().foreach{
+             [&.id, &.label, [["Governor", &.features.governor], ["Dependent", &.features.dependent]]]
+             })
 }</textarea><script>coverCodeMirror("json2jsondsl_template");</script></td>
         <td><input type="button" value="Transform"
                    onclick="execService(wsdls['json2json'], 'json2jsondsl', ['json2jsondsl_source', 'json2jsondsl_template'], 'json2jsondsl_result')" /></td>
@@ -1234,8 +1240,76 @@
     }
   ],
   "entity_attribute_types": [],
-  "relation_types": [],
-  "event_types": []
+  "relation_types": [
+    {
+      "args": [
+        {
+          "role": "Arg1",
+          "targets": [
+            "Mention"
+          ]
+        },
+        {
+          "role": "Arg2",
+          "targets": [
+            "Mention"
+          ]
+        }
+      ],
+      "arrowHead": "none",
+      "name": "Coref",
+      "labels": ["Coreference", "Coref"],
+      "children": [],
+      "unused": false,
+      "dashArray": "3,3",
+      "attributes": [],
+      "type": "COREFERENCE",
+      "properties": {
+        "symmetric": true,
+        "transitive": true
+      }
+    },
+    {
+      "type"     : "COREFERENCE_1",
+      "labels"   : ["Coreference", "Coref"],
+      "dashArray": "3,3",
+      "color"    : "purple",
+      "args"     : [
+        {"role": "Representative", "targets": ["MENTION"] },
+        {"role": "Mention",  "targets": ["MENTION"] }
+      ]
+    }
+  ],
+  "event_types": [
+    {
+      "borderColor": "darken",
+      "normalizations": [],
+      "name": "Mention",
+      "arcs": [
+        {
+          "arrowHead": "none",
+          "dashArray": "3,3",
+          "labels": [
+            "Coref"
+          ],
+          "type": "Coreference",
+          "targets": [
+            "Mention"
+          ]
+        }
+      ],
+      "labels": [
+        "Mention",
+        "Ment",f
+        "M"
+      ],
+      "unused": false,
+      "bgColor": "#ffe000",
+      "attributes": [],
+      "type": "Mention",
+      "children": []
+    }
+  ]
 }</textarea><script>coverCodeMirror("colljson");</script>
     </td></tr>
     <tr><td colspan="2"><div id="___bratdisplay___"></div></td></tr>
