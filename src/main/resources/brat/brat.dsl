@@ -1,17 +1,17 @@
 {
          def idx = 0
          def parse = &$payload.views[-1].annotations.features[0].penntree
-         def coref = &$payload.views[-1].annotations.select{&.type=="http://vocab.lappsgrid.org/Coreference"}.features.mentions
-         def markables = &$payload.views[-1].annotations.select{&.type=="http://vocab.lappsgrid.org/Markable" && coref.toString().contains(&.id)}
+         def coref = &$payload.views[-1].annotations.select{&."@type"=="http://vocab.lappsgrid.org/Coreference"}.features.mentions
+         def markables = &$payload.views[-1].annotations.select{&."@type"=="http://vocab.lappsgrid.org/Markable" && coref.toString().contains(&.id)}
 
          text &$payload.text."@value" + (parse == null?"":"\n\n\n"+parse)
 
-         relations (&$payload.views[-1].annotations.select{&.type=="http://vocab.lappsgrid.org/DependencyStructure"}.features.dependencies
+         relations (&$payload.views[-1].annotations.select{&."@type"=="http://vocab.lappsgrid.org/DependencyStructure"}.features.dependencies
                     .flatten().foreach{
                     ["D${idx++}", &.label, [["Governor", &.features.governor], ["Dependent", &.features.dependent]]]
                     })
 
-         equivs (&$payload.views[-1].annotations.select{&.type=="http://vocab.lappsgrid.org/Coreference"}.features
+         equivs (&$payload.views[-1].annotations.select{&."@type"=="http://vocab.lappsgrid.org/Coreference"}.features
                     .flatten().foreach{
                                      ["*", "Coreference", &.mentions[0], &.mentions[1]]
                                      })
