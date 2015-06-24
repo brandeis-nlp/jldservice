@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>DotSVG</title>
+
+    <!--<link rel="stylesheet" type="text/css" href="https://rawgit.com/gyuque/livizjs/master/liviz/jsviz.css" />-->
+    <!--<script type="text/javascript" src="https://rawgit.com/gyuque/livizjs/master/liviz/js/workered-jsviz.js?v=2"></script>-->
+    <!--<script type="text/javascript" src="https://rawgit.com/gyuque/livizjs/master/liviz/js/jquery.js"></script>-->
+    <!--<script type="text/javascript" src="https://rawgit.com/gyuque/livizjs/master/liviz/js/progress-view.js?v=2"></script>-->
+    <!--<script type="text/javascript" src="https://rawgit.com/gyuque/livizjs/master/liviz/js/progress-model.js?v=2"></script>-->
+    <!--<script type="text/javascript" src="https://rawgit.com/gyuque/livizjs/master/liviz/js/worker-stopgo.js?v=2"></script>-->
+    <!--<script type="text/javascript" src="https://rawgit.com/gyuque/livizjs/master/liviz/js/global-util.js?v=2"></script>-->
+    <!--<script type="text/javascript" src="https://rawgit.com/gyuque/livizjs/master/liviz/js/jsviz.js?v=2"></script>-->
+    <!--<script type="text/javascript" src="https://rawgit.com/gyuque/livizjs/master/liviz/js/errorsink.js?v=2"></script>-->
+    <!--<script type="text/javascript" src="https://rawgit.com/gyuque/livizjs/master/liviz/js/jsviz-ui.js?v=2"></script>-->
+    <!--<script type="text/javascript" src="https://rawgit.com/gyuque/livizjs/master/liviz/js/graph-model.js?v=2"></script>-->
+    <!--<script type="text/javascript" src="https://rawgit.com/gyuque/livizjs/master/liviz/js/curve-tween.js?v=2"></script>-->
+    <!--<script type="text/javascript" src="https://rawgit.com/gyuque/livizjs/master/liviz/js/difftype.js?v=2"></script>-->
+
+
+    <!--<script src='http://cdnjs.cloudflare.com/ajax/libs/headjs/0.96/head.min.js'></script>-->
+    <!--<script type='text/javascript'>-->
+      <!--head.js('http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js');-->
+      <!--head.js('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js');-->
+      <!--head.js('https://rawgit.com/bpartridge/graphviz.js/blob/master/graphviz.min.js');-->
+      <!--head.ready(function() {-->
+        <!--var gv = Module.cwrap('graphvizjs','string',['string','string','string']);-->
+
+        <!--var input = $('#dot-src').val();-->
+        <!--var output = gv(input, 'dot', 'dot');-->
+
+        <!--$('#output').val(output);-->
+      <!--});-->
+    <!--</script>-->
+
+
+
+    <!--<script src="http://mdaines.github.io/viz.js/viz.js"></script>-->
+
+
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/headjs/0.96/head.min.js'></script>
+
+    <!--http://jsxml.net/-->
+    <!--<link rel="stylesheet" type="text/css" href="http://jsxml.net/assets/class/Pub/css/app.css?2010052101">-->
+    <!--<script type="text/javascript" src="http://jsxml.net/assets/class/Pub/js/app.js?2010052101"></script>-->
+
+
+    <script type='text/javascript'>
+    <!-- load jquery and viz.js -->
+    head.js('http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js');
+    head.js('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js');
+    head.js('http://mdaines.github.io/viz.js/viz.js');
+    <!-- load xslt process -->
+    head.js('http://jsxml.net/assets/class/Pub/js/app.js?2010052101');
+
+
+    var findnext = function(s, start, end, chr) {
+        for(var i = start; i ++; i < end) {
+            if(s[i] == chr)
+               return i;
+        }
+        return -1;
+    }
+
+    var findedge = function(s, start, end) {
+        for(var i = start; i ++; i < end) {
+            //if(s[i] == "(" || s[i] == ")" || s[i].trim() == "")
+            //   return i;
+            if(/\W/.test(s[i]))
+                return i;
+        }
+        return end;
+    }
+
+
+    var findmatch = function(s, start, end, left, right) {
+        var lstart = start;
+        while(s[lstart] != left) {
+           lstart ++;
+           if(lstart >= end)
+               return -1;
+        }
+        for (var i = lstart+1; i < end; i++) {
+            if(s[i] == right) {
+                return i;
+            } else if (s[i] == left) {
+                var subend = findmatch(s, i, end, left, right);
+                if(subend == -1) {
+                    return -1;
+                } else {
+                    i = subend;
+                }
+            }
+        }
+        return -1;
+    }
+
+    var mapcon = {};
+    var mapchild = {};
+
+    var parselisp = function(s, start, end, parent, mapcon, mapchild) {
+        mapchild[parent] = []; // fill empty array.
+        var len = s.length;
+        for(var i = 0; i < len; i ++) {
+            var chr = s[i];
+            if (chr == "\"") {
+                var childid = i;
+                mapchild[parent].append(childid);
+                var ridx = findnext(s, i, len, "\"");
+                var childcon = s.substring(i+1, ridx);
+                mapcon[childid] = childcon;
+            } else  (chr == "(") {
+                var childid = i;
+                mapchild[parent].append(childid);
+                var ridx = findmatch(s, i, len, "\"", "\"");
+                if (ridx > 0) {
+                    parselisp(s, i, ridx, childid, mapcon, mapchild);
+                }
+            } else  (chr == "[") {
+                var childid = i;
+                mapchild[parent].append(childid);
+                var ridx = findmatch(s, i, len, "[", "]");
+                var childcon = s.substring(i+1, ridx);
+                mapcon[childid] = childcon;
+            } else if (/\w/.test(chr)) { // valid name
+                var childid = i;
+                mapchild[parent].append(childid);
+                var ridx = findedge(s, i, len);
+                var childcon = s.substring(i+1, ridx);
+                mapcon[childid] = childcon;
+            } else {
+
+            }
+        }
+    }
+
+
+
+
+    var lisp2dot = function(lisp){
+        parselisp(lisp, 0, lisp.length, 0, mapcon, mapchild);
+        var dot = "digraph simpleDotFile {";
+        var stack = [];
+        stack.push(0);
+        while(stack.length > 0) {
+            var p = stack.pop();
+            if(p in mapchild) {
+                for(var i = 0; i < mapchild[p].length; i++) {
+
+                }
+            }
+        }
+
+
+    }
+
+
+
+    <!-- set ready -->
+    head.ready(function() {
+        var listenTo = 'propertychange keyup input paste change';
+        var dot = $('#dot-src');
+        var display = $('#output');
+        var inputHandler = function() {
+            if(dot.val().indexOf('{') > 0) {
+                var svg = Viz(dot.val(), "svg");
+                display.html("");
+                display.prepend(svg);
+            }
+        }
+        display.html("");
+        display.prepend(Viz(dot.val(), "svg"));
+        dot.bind(listenTo, inputHandler);
+
+
+
+        //=======================================================================//
+
+        var xml = $('#xml'),
+            xsl = $('#xsl'),
+            xslt = $('#xslt'),
+            x_dot = $('#x-dot-src'),
+            x_display = $('#x-output');
+
+        var transHandler = function() {
+            if(xml.val().trim().length > 0 && xsl.val().trim().length > 0) {
+                var res = jsxml.transReady(xml.val().trim(), xsl.val().trim());
+                xslt.val(res);
+                xslt.trigger("change");
+            }
+        }
+        xslt.val(jsxml.transReady(xml.val().trim(), xsl.val().trim()));
+        xml.bind(listenTo, transHandler);
+        xsl.bind(listenTo, transHandler);
+
+
+        x_dot.val($('<div/>').html(xslt.val()).text());
+        xslt.bind(listenTo, function() {
+            if(xslt.val().trim().length > 0) {
+                var dot_val = $('<div/>').html(xslt.val()).text();
+                x_dot.val(dot_val);
+                x_dot.trigger("change");
+            }
+        });
+
+        x_display.html("");
+        x_display.prepend(Viz(x_dot.val(), "svg"));
+        x_dot.bind(listenTo, function() {
+            if(x_dot.val().indexOf('{') > 0) {
+                var svg = Viz(x_dot.val(), "svg");
+                x_display.html("");
+                x_display.prepend(svg);
+            }
+        });
+        //=======================================================================//
+    });
+    </script>
+</head>
+
+
+
+<h1  align="center">Dot to SVG Display</h1>
+
+
+<h2  align="center">Dot to SVG Display</h2>
+
+<p>Please change the dot in the textarea:
+    (<a href="https://en.wikipedia.org/wiki/DOT_%28graph_description_language%29" target="_blank">Other Examples</a>)</p>
+<textarea id="dot-src" style="width: 600px; height: 400px;">
+digraph G {
+
+	subgraph cluster_0 {
+		style=filled;
+		color=lightgrey;
+		node [style=filled,color=white];
+		a0 -> a1 -> a2 -> a3;
+		label = "process #1";
+	}
+
+	subgraph cluster_1 {
+		node [style=filled];
+		b0 -> b1 -> b2 -> b3;
+		label = "process #2";
+		color=blue
+	}
+	start -> a0;
+	start -> b0;
+	a1 -> b3;
+	b2 -> a3;
+	a3 -> a0;
+	a3 -> end;
+	b3 -> end;
+
+	start [shape=Mdiamond];
+	end [shape=Msquare];
+}
+
+</textarea>
+<div id="output"></div>
+
+<h2  align="center">XSLT Display</h2>
+
+<p>
+    Please copy output of source page (in XML) of <a href="http://trips.ihmc.us/parser/cgi/parse?genre=text&input=How+are+you%3F&extsformat=table&tagsformat=hidden&treecontents=phrase&treeformat=LinGO&lfformat=svg&no-sense-words=&tag-type=%28or+terms+words+punctuation+%28and+stanford_core_nlp+%28or+named-entity+pos%29%29+street_addresses+capitalized_names+alphanumerics+quotations+alternate_spellings%29&senses-only-for-penn-poss=#" target="_blank">Trips</a>
+    into the XML textarea:
+</p>
+
+<table>
+    <tbody>
+    <tr>
+        <td>XML:</td>
+        <td>XSLT:</td>
+        <td>Result:</td>
+    </tr>
+    <tr>
+        <td><textarea id="xml" cols="48" rows="16" class="code">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+            &lt;?xml-stylesheet type="text/xsl" href="parser-interface.xsl"?&gt;
+&lt;trips-parser-output parser-build-date="2015-06-11T12:37:56-0400" genre="drum" extsformat="table" tagsformat="hidden"
+                     treecontents="phrase" treeformat="LinGO" lfformat="svg"
+                     no-sense-words="history,procedure,histories,procedures,including,developed,development,seen,common"
+                     input="The oncogenes are KRAS, PIK3CA, and BRAF."&gt;
+    &lt;utt&gt;
+        &lt;terms root="#V242159"&gt;
+            &lt;lisp&gt;((ONT::SPEECHACT ONT::V242159 ONT::SA_TELL :PUNCTYPE
+                (ONT::OR ONT::DECL ONT::DECIMALPOINT) :CONTENT ONT::V241958 :START 0 :END 41
+                :START 0 :END 41)
+                (ONT::F ONT::V241958 (:* ONT::BE W::BE) :NEUTRAL ONT::V241951 :NEUTRAL1
+                ONT::V241997 :TENSE ONT::PRES :START 0 :END 40 :WNSENSE "be%2:42:06::" :START
+                0 :END 40)
+                (ONT::THE-SET ONT::V241951 (:* ONT::GENE W::ONCOGENES) :START 0 :END 14
+                :WNSENSE "oncogene%1:08:00::" :START 0 :END 14)
+                (ONT::THE-SET ONT::V241997 ONT::GENE :OPERATOR ONT::AND :SEQUENCE
+                (ONT::V242008 ONT::V241969 ONT::V241990) :START 18 :END 40 :START 18 :END 40)
+                (ONT::THE ONT::V241969 (:* ONT::GENE W::KRAS) :NAME-OF (ONT::KRAS) :START 18
+                :END 22 :DRUM
+                ((:DRUM
+                (TERM :ID HGNC::|6407| :NAME "Kirsten rat sarcoma viral oncogene homolog"
+                :MATCHED-VARIANTS ("KRAS") :DBXREFS (UP::P01116))))
+                :START 18 :END 22)
+                (ONT::THE ONT::V241990 (:* ONT::GENE W::PIK-3-CA) :NAME-OF
+                (ONT::PIK 3 ONT::CA) :START 24 :END 30 :DRUM
+                ((:DRUM
+                (TERM :ID HGNC::|8975| :NAME
+                "phosphatidylinositol-4,5-bisphosphate 3-kinase, catalytic subunit alpha"
+                :MATCHED-VARIANTS ("PIK3CA") :DBXREFS (UP::P42336))))
+                :START 24 :END 30)
+                (ONT::THE ONT::V242008 (:* ONT::GENE W::BRAF) :NAME-OF (ONT::BRAF) :START 36
+                :END 40 :DRUM
+                ((:DRUM
+                (TERM :ID HGNC::|1097| :NAME
+                "B-Raf proto-oncogene, serine/threonine kinase" :MATCHED-VARIANTS ("BRAF")
+                :DBXREFS (UP::P15056))))
+                :START 36 :END 40))
+            &lt;/lisp&gt;
+            &lt;rdf:RDF
+                    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                    xmlns:role="http://www.cs.rochester.edu/research/trips/role#"
+                    xmlns:LF="http://www.cs.rochester.edu/research/trips/LF#"&gt;
+                &lt;rdf:Description rdf:ID="V242159"&gt;
+                    &lt;LF:indicator&gt;SPEECHACT&lt;/LF:indicator&gt;
+                    &lt;LF:type&gt;SA_TELL&lt;/LF:type&gt;
+                    &lt;role:PUNCTYPE&gt;(OR DECL DECIMALPOINT)&lt;/role:PUNCTYPE&gt;
+                    &lt;role:CONTENT rdf:resource="#V241958"/&gt;
+                    &lt;LF:start&gt;0&lt;/LF:start&gt;
+                    &lt;LF:end&gt;41&lt;/LF:end&gt;
+                    &lt;LF:start&gt;0&lt;/LF:start&gt;
+                    &lt;LF:end&gt;41&lt;/LF:end&gt;
+                &lt;/rdf:Description&gt;
+                &lt;rdf:Description rdf:ID="V241958"&gt;
+                    &lt;LF:indicator&gt;F&lt;/LF:indicator&gt;
+                    &lt;LF:type&gt;BE&lt;/LF:type&gt;
+                    &lt;LF:word&gt;BE&lt;/LF:word&gt;
+                    &lt;role:NEUTRAL rdf:resource="#V241951"/&gt;
+                    &lt;role:NEUTRAL1 rdf:resource="#V241997"/&gt;
+                    &lt;role:TENSE&gt;PRES&lt;/role:TENSE&gt;
+                    &lt;LF:start&gt;0&lt;/LF:start&gt;
+                    &lt;LF:end&gt;40&lt;/LF:end&gt;
+                    &lt;role:WNSENSE&gt;be%2:42:06::&lt;/role:WNSENSE&gt;
+                    &lt;LF:start&gt;0&lt;/LF:start&gt;
+                    &lt;LF:end&gt;40&lt;/LF:end&gt;
+                &lt;/rdf:Description&gt;
+                &lt;rdf:Description rdf:ID="V241951"&gt;
+                    &lt;LF:indicator&gt;THE-SET&lt;/LF:indicator&gt;
+                    &lt;LF:type&gt;GENE&lt;/LF:type&gt;
+                    &lt;LF:word&gt;ONCOGENES&lt;/LF:word&gt;
+                    &lt;LF:start&gt;0&lt;/LF:start&gt;
+                    &lt;LF:end&gt;14&lt;/LF:end&gt;
+                    &lt;role:WNSENSE&gt;oncogene%1:08:00::&lt;/role:WNSENSE&gt;
+                    &lt;LF:start&gt;0&lt;/LF:start&gt;
+                    &lt;LF:end&gt;14&lt;/LF:end&gt;
+                &lt;/rdf:Description&gt;
+                &lt;rdf:Description rdf:ID="V241997"&gt;
+                    &lt;LF:indicator&gt;THE-SET&lt;/LF:indicator&gt;
+                    &lt;LF:type&gt;GENE&lt;/LF:type&gt;
+                    &lt;role:OPERATOR&gt;AND&lt;/role:OPERATOR&gt;
+                    &lt;role:SEQUENCE-0 rdf:resource="#V242008"/&gt;
+                    &lt;role:SEQUENCE-1 rdf:resource="#V241969"/&gt;
+                    &lt;role:SEQUENCE-2 rdf:resource="#V241990"/&gt;
+                    &lt;LF:start&gt;18&lt;/LF:start&gt;
+                    &lt;LF:end&gt;40&lt;/LF:end&gt;
+                    &lt;LF:start&gt;18&lt;/LF:start&gt;
+                    &lt;LF:end&gt;40&lt;/LF:end&gt;
+                &lt;/rdf:Description&gt;
+                &lt;rdf:Description rdf:ID="V241969"&gt;
+                    &lt;LF:indicator&gt;THE&lt;/LF:indicator&gt;
+                    &lt;LF:type&gt;GENE&lt;/LF:type&gt;
+                    &lt;LF:word&gt;KRAS&lt;/LF:word&gt;
+                    &lt;role:NAME-OF&gt;(KRAS)&lt;/role:NAME-OF&gt;
+                    &lt;LF:start&gt;18&lt;/LF:start&gt;
+                    &lt;LF:end&gt;22&lt;/LF:end&gt;
+                    &lt;role:DRUM&gt;((:DRUM
+                        (TERM :ID |6407| :NAME "Kirsten rat sarcoma viral oncogene homolog"
+                        :MATCHED-VARIANTS ("KRAS") :DBXREFS (P01116))))
+                    &lt;/role:DRUM&gt;
+                    &lt;LF:start&gt;18&lt;/LF:start&gt;
+                    &lt;LF:end&gt;22&lt;/LF:end&gt;
+                &lt;/rdf:Description&gt;
+                &lt;rdf:Description rdf:ID="V241990"&gt;
+                    &lt;LF:indicator&gt;THE&lt;/LF:indicator&gt;
+                    &lt;LF:type&gt;GENE&lt;/LF:type&gt;
+                    &lt;LF:word&gt;PIK-3-CA&lt;/LF:word&gt;
+                    &lt;role:NAME-OF&gt;(PIK 3 CA)&lt;/role:NAME-OF&gt;
+                    &lt;LF:start&gt;24&lt;/LF:start&gt;
+                    &lt;LF:end&gt;30&lt;/LF:end&gt;
+                    &lt;role:DRUM&gt;((:DRUM
+                        (TERM :ID |8975| :NAME
+                        "phosphatidylinositol-4,5-bisphosphate 3-kinase, catalytic subunit alpha"
+                        :MATCHED-VARIANTS ("PIK3CA") :DBXREFS (P42336))))
+                    &lt;/role:DRUM&gt;
+                    &lt;LF:start&gt;24&lt;/LF:start&gt;
+                    &lt;LF:end&gt;30&lt;/LF:end&gt;
+                &lt;/rdf:Description&gt;
+                &lt;rdf:Description rdf:ID="V242008"&gt;
+                    &lt;LF:indicator&gt;THE&lt;/LF:indicator&gt;
+                    &lt;LF:type&gt;GENE&lt;/LF:type&gt;
+                    &lt;LF:word&gt;BRAF&lt;/LF:word&gt;
+                    &lt;role:NAME-OF&gt;(BRAF)&lt;/role:NAME-OF&gt;
+                    &lt;LF:start&gt;36&lt;/LF:start&gt;
+                    &lt;LF:end&gt;40&lt;/LF:end&gt;
+                    &lt;role:DRUM&gt;((:DRUM
+                        (TERM :ID |1097| :NAME "B-Raf proto-oncogene, serine/threonine kinase"
+                        :MATCHED-VARIANTS ("BRAF") :DBXREFS (P15056))))
+                    &lt;/role:DRUM&gt;
+                    &lt;LF:start&gt;36&lt;/LF:start&gt;
+                    &lt;LF:end&gt;40&lt;/LF:end&gt;
+                &lt;/rdf:Description&gt;
+            &lt;/rdf:RDF&gt;
+        &lt;/terms&gt;
+    &lt;/utt&gt;
+&lt;/trips-parser-output&gt;
+        </textarea></td>
+        <td><textarea id="xsl" cols="48" rows="16" class="code">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+            &lt;xsl:stylesheet version="1.0"
+                            xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                            xmlns:exsl="http://exslt.org/common"
+                            xmlns:str="http://exslt.org/strings"
+                            xmlns:html="http://www.w3.org/1999/xhtml"
+                            xmlns:role="http://www.cs.rochester.edu/research/trips/role#"
+                            xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                            xmlns:LF="http://www.cs.rochester.edu/research/trips/LF#"
+                            xmlns="http://www.w3.org/1999/xhtml"&gt;
+
+                &lt;xsl:output method="xml" encoding="UTF-8" /&gt;
+                &lt;xsl:template match="text()|@*" mode="lf-to-dot"/&gt;
+                &lt;xsl:template name="str:replace"&gt;
+                    &lt;xsl:param name="string" select="''" /&gt;
+                    &lt;xsl:param name="search" select="/.." /&gt;
+                    &lt;xsl:param name="replace" select="/.." /&gt;
+                    &lt;xsl:choose&gt;
+                        &lt;xsl:when test="not($string)" /&gt;
+                        &lt;xsl:when test="not($search)"&gt;
+                            &lt;xsl:value-of select="$string" /&gt;
+                        &lt;/xsl:when&gt;
+                        &lt;xsl:when test="function-available('exsl:node-set')"&gt;
+                            &lt;!-- this converts the search and replace arguments to node sets
+                                 if they are one of the other XPath types --&gt;
+                            &lt;xsl:variable name="search-nodes-rtf"&gt;
+                                &lt;xsl:copy-of select="$search" /&gt;
+                            &lt;/xsl:variable&gt;
+                            &lt;xsl:variable name="replace-nodes-rtf"&gt;
+                                &lt;xsl:copy-of select="$replace" /&gt;
+                            &lt;/xsl:variable&gt;
+                            &lt;xsl:variable name="replacements-rtf"&gt;
+                                &lt;xsl:for-each select="exsl:node-set($search-nodes-rtf)/node()"&gt;
+                                    &lt;xsl:variable name="pos" select="position()" /&gt;
+                                    &lt;replace search="{.}"&gt;
+                                        &lt;xsl:copy-of select="exsl:node-set($replace-nodes-rtf)/node()[$pos]" /&gt;
+                                    &lt;/replace&gt;
+                                &lt;/xsl:for-each&gt;
+                            &lt;/xsl:variable&gt;
+                            &lt;xsl:variable name="sorted-replacements-rtf"&gt;
+                                &lt;xsl:for-each select="exsl:node-set($replacements-rtf)/replace"&gt;
+                                    &lt;xsl:sort select="string-length(@search)" data-type="number" order="descending" /&gt;
+                                    &lt;xsl:copy-of select="." /&gt;
+                                &lt;/xsl:for-each&gt;
+                            &lt;/xsl:variable&gt;
+                            &lt;xsl:call-template name="str:_replace"&gt;
+                                &lt;xsl:with-param name="string" select="$string" /&gt;
+                                &lt;xsl:with-param name="replacements" select="exsl:node-set($sorted-replacements-rtf)/replace" /&gt;
+                            &lt;/xsl:call-template&gt;
+                        &lt;/xsl:when&gt;
+                        &lt;xsl:otherwise&gt;
+                            &lt;xsl:message terminate="yes"&gt;
+                                ERROR: template implementation of str:replace relies on exsl:node-set().
+                            &lt;/xsl:message&gt;
+                        &lt;/xsl:otherwise&gt;
+                    &lt;/xsl:choose&gt;
+                &lt;/xsl:template&gt;
+
+                &lt;xsl:template name="str:_replace"&gt;
+                    &lt;xsl:param name="string" select="''" /&gt;
+                    &lt;xsl:param name="replacements" select="/.." /&gt;
+                    &lt;xsl:choose&gt;
+                        &lt;xsl:when test="not($string)" /&gt;
+                        &lt;xsl:when test="not($replacements)"&gt;
+                            &lt;xsl:value-of select="$string" /&gt;
+                        &lt;/xsl:when&gt;
+                        &lt;xsl:otherwise&gt;
+                            &lt;xsl:variable name="replacement" select="$replacements[1]" /&gt;
+                            &lt;xsl:variable name="search" select="$replacement/@search" /&gt;
+                            &lt;xsl:choose&gt;
+                                &lt;xsl:when test="not(string($search))"&gt;
+                                    &lt;xsl:value-of select="substring($string, 1, 1)" /&gt;
+                                    &lt;xsl:copy-of select="$replacement/node()" /&gt;
+                                    &lt;xsl:call-template name="str:_replace"&gt;
+                                        &lt;xsl:with-param name="string" select="substring($string, 2)" /&gt;
+                                        &lt;xsl:with-param name="replacements" select="$replacements" /&gt;
+                                    &lt;/xsl:call-template&gt;
+                                &lt;/xsl:when&gt;
+                                &lt;xsl:when test="contains($string, $search)"&gt;
+                                    &lt;xsl:call-template name="str:_replace"&gt;
+                                        &lt;xsl:with-param name="string" select="substring-before($string, $search)" /&gt;
+                                        &lt;xsl:with-param name="replacements" select="$replacements[position() &gt; 1]" /&gt;
+                                    &lt;/xsl:call-template&gt;
+                                    &lt;xsl:copy-of select="$replacement/node()" /&gt;
+                                    &lt;xsl:call-template name="str:_replace"&gt;
+                                        &lt;xsl:with-param name="string" select="substring-after($string, $search)" /&gt;
+                                        &lt;xsl:with-param name="replacements" select="$replacements" /&gt;
+                                    &lt;/xsl:call-template&gt;
+                                &lt;/xsl:when&gt;
+                                &lt;xsl:otherwise&gt;
+                                    &lt;xsl:call-template name="str:_replace"&gt;
+                                        &lt;xsl:with-param name="string" select="$string" /&gt;
+                                        &lt;xsl:with-param name="replacements" select="$replacements[position() &gt; 1]" /&gt;
+                                    &lt;/xsl:call-template&gt;
+                                &lt;/xsl:otherwise&gt;
+                            &lt;/xsl:choose&gt;
+                        &lt;/xsl:otherwise&gt;
+                    &lt;/xsl:choose&gt;
+                &lt;/xsl:template&gt;
+                &lt;!-- role edges and non-term nodes --&gt;
+                &lt;xsl:template
+                        match="role:*[local-name() != 'START' and local-name() != 'END' and local-name() != 'DRUM' and local-name() != 'WORDNET']"
+                        mode="lf-to-dot"&gt;
+                    &lt;!-- get the node ID of the role value --&gt;
+                    &lt;xsl:variable name="val-id"&gt;
+                        &lt;xsl:choose&gt;
+                            &lt;xsl:when test="@rdf:resource"&gt;
+                                &lt;xsl:value-of select="substring(@rdf:resource,2)"/&gt;
+                            &lt;/xsl:when&gt;
+                            &lt;xsl:otherwise&gt;
+                                &lt;xsl:value-of select="generate-id()"/&gt;
+                            &lt;/xsl:otherwise&gt;
+                        &lt;/xsl:choose&gt;
+                    &lt;/xsl:variable&gt;
+                    &lt;!-- make the node for the role value if necessary --&gt;
+                    &lt;xsl:if test="not(@rdf:resource)"&gt;
+                        &lt;xsl:text&gt;  "&lt;/xsl:text&gt;
+                        &lt;xsl:value-of select="$val-id"/&gt;
+                        &lt;xsl:text&gt;" [label="&lt;/xsl:text&gt;
+                        &lt;xsl:variable name="escaped-text"&gt;
+                            &lt;xsl:call-template name="str:replace"&gt;
+                                &lt;xsl:with-param name="string" select="text()"/&gt;
+                                &lt;xsl:with-param name="search" select="'&amp;quot;'"/&gt;
+                                &lt;xsl:with-param name="replace" select="'\&amp;quot;'"/&gt;
+                            &lt;/xsl:call-template&gt;
+                        &lt;/xsl:variable&gt;
+                        &lt;xsl:value-of select="exsl:node-set($escaped-text)"/&gt;
+                        &lt;xsl:text&gt;"]
+                        &lt;/xsl:text&gt;
+                    &lt;/xsl:if&gt;
+                    &lt;!-- make the edge --&gt;
+                    &lt;xsl:text&gt;  "&lt;/xsl:text&gt;
+                    &lt;xsl:value-of select="../@rdf:ID"/&gt;
+                    &lt;xsl:text&gt;" -&gt; "&lt;/xsl:text&gt;
+                    &lt;xsl:value-of select="$val-id"/&gt;
+                    &lt;xsl:text&gt;" [label=":&lt;/xsl:text&gt;
+                    &lt;xsl:value-of select="local-name()"/&gt;
+                    &lt;xsl:text&gt;"]
+                    &lt;/xsl:text&gt;
+                &lt;/xsl:template&gt;
+
+                &lt;xsl:template match="rdf:Description" mode="lf-to-dot"&gt;
+                    &lt;!-- term node --&gt;
+                    &lt;xsl:text&gt;  "&lt;/xsl:text&gt;
+                    &lt;xsl:value-of select="@rdf:ID"/&gt;
+                    &lt;xsl:text&gt;" [label="(&lt;/xsl:text&gt;
+                    &lt;xsl:value-of select="LF:indicator"/&gt;
+                    &lt;xsl:text&gt; &lt;/xsl:text&gt;
+                    &lt;xsl:choose&gt;
+                        &lt;xsl:when test="LF:word"&gt;
+                            &lt;xsl:text&gt;(:* &lt;/xsl:text&gt;
+                            &lt;xsl:value-of select="LF:type"/&gt;
+                            &lt;xsl:text&gt; &lt;/xsl:text&gt;
+                            &lt;xsl:value-of select="LF:word"/&gt;
+                            &lt;xsl:text&gt;)&lt;/xsl:text&gt;
+                        &lt;/xsl:when&gt;
+                        &lt;xsl:otherwise&gt;
+                            &lt;xsl:value-of select="LF:type"/&gt;
+                        &lt;/xsl:otherwise&gt;
+                    &lt;/xsl:choose&gt;
+                    &lt;xsl:text&gt;)"]
+                    &lt;/xsl:text&gt;
+                    &lt;xsl:apply-templates select="role:*" mode="lf-to-dot"/&gt;
+                &lt;/xsl:template&gt;
+
+
+                &lt;xsl:template match="terms"&gt;
+                    &lt;xsl:apply-templates select="rdf:RDF" mode="lf-to-dot" /&gt;
+                &lt;/xsl:template&gt;
+
+                &lt;xsl:template match="rdf:RDF" mode="lf-to-dot"&gt;
+                    &lt;html:pre class="dot"&gt;
+                        &lt;xsl:text&gt;digraph LFGraph {
+                            node [shape=none]
+                        &lt;/xsl:text&gt;
+                        &lt;xsl:apply-templates mode="lf-to-dot"/&gt;
+                        &lt;xsl:text&gt;
+                            }
+                        &lt;/xsl:text&gt;
+                    &lt;/html:pre&gt;
+                &lt;/xsl:template&gt;
+
+                &lt;xsl:template match="utt"&gt;
+                    &lt;xsl:apply-templates select="terms" /&gt;
+                &lt;/xsl:template&gt;
+
+                &lt;xsl:template match="/trips-parser-output"&gt;
+                    &lt;xsl:apply-templates /&gt;
+                &lt;/xsl:template&gt;
+
+            &lt;/xsl:stylesheet&gt;
+        </textarea></td>
+        <td><textarea id="xslt" cols="48" rows="16" class="code"></textarea></td>
+    </tr>
+    </tbody>
+</table>
+
+<p>Dot</p>
+<textarea id="x-dot-src" style="width: 600px; height: 400px;">
+digraph G {
+
+	subgraph cluster_0 {
+		style=filled;
+		color=lightgrey;
+		node [style=filled,color=white];
+		a0 -> a1 -> a2 -> a3;
+		label = "process #1";
+	}
+
+	subgraph cluster_1 {
+		node [style=filled];
+		b0 -> b1 -> b2 -> b3;
+		label = "process #2";
+		color=blue
+	}
+	start -> a0;
+	start -> b0;
+	a1 -> b3;
+	b2 -> a3;
+	a3 -> a0;
+	a3 -> end;
+	b3 -> end;
+
+	start [shape=Mdiamond];
+	end [shape=Msquare];
+}
+
+</textarea>
+<div id="x-output"></div>
+
+<footer>
+    <hr />
+    <p style="text-align:center">
+        Contacts:
+        <br/>&nbsp; &nbsp; <a target="_blank" class="nolink" href="http://www.cs.brandeis.edu/~jamesp/"> James Pustejovsky</a>
+        (<nonsense>jame</nonsense>sp@<nonsense>cs.</nonsense>brandeis.<nonsense></nonsense>edu)
+    </p>
+</footer>
+<p style="text-align:center">Copyright &copy; 2015 Brandeis University - All Rights Reserved</p>
+</body>
+</html>
+
+
+
+
