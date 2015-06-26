@@ -56,114 +56,23 @@
     head.js('http://mdaines.github.io/viz.js/viz.js');
     <!-- load xslt process -->
     head.js('http://jsxml.net/assets/class/Pub/js/app.js?2010052101');
-
-
-    var findnext = function(s, start, end, chr) {
-        for(var i = start; i ++; i < end) {
-            if(s[i] == chr)
-               return i;
-        }
-        return -1;
-    }
-
-    var findedge = function(s, start, end) {
-        for(var i = start; i ++; i < end) {
-            //if(s[i] == "(" || s[i] == ")" || s[i].trim() == "")
-            //   return i;
-            if(/\W/.test(s[i]))
-                return i;
-        }
-        return end;
-    }
-
-
-    var findmatch = function(s, start, end, left, right) {
-        var lstart = start;
-        while(s[lstart] != left) {
-           lstart ++;
-           if(lstart >= end)
-               return -1;
-        }
-        for (var i = lstart+1; i < end; i++) {
-            if(s[i] == right) {
-                return i;
-            } else if (s[i] == left) {
-                var subend = findmatch(s, i, end, left, right);
-                if(subend == -1) {
-                    return -1;
-                } else {
-                    i = subend;
-                }
-            }
-        }
-        return -1;
-    }
-
-    var mapcon = {};
-    var mapchild = {};
-
-    var parselisp = function(s, start, end, parent, mapcon, mapchild) {
-        mapchild[parent] = []; // fill empty array.
-        var len = s.length;
-        for(var i = 0; i < len; i ++) {
-            var chr = s[i];
-            if (chr == "\"") {
-                var childid = i;
-                mapchild[parent].append(childid);
-                var ridx = findnext(s, i, len, "\"");
-                var childcon = s.substring(i+1, ridx);
-                mapcon[childid] = childcon;
-            } else  (chr == "(") {
-                var childid = i;
-                mapchild[parent].append(childid);
-                var ridx = findmatch(s, i, len, "\"", "\"");
-                if (ridx > 0) {
-                    parselisp(s, i, ridx, childid, mapcon, mapchild);
-                }
-            } else  (chr == "[") {
-                var childid = i;
-                mapchild[parent].append(childid);
-                var ridx = findmatch(s, i, len, "[", "]");
-                var childcon = s.substring(i+1, ridx);
-                mapcon[childid] = childcon;
-            } else if (/\w/.test(chr)) { // valid name
-                var childid = i;
-                mapchild[parent].append(childid);
-                var ridx = findedge(s, i, len);
-                var childcon = s.substring(i+1, ridx);
-                mapcon[childid] = childcon;
-            } else {
-
-            }
-        }
-    }
-
-
-
-
-    var lisp2dot = function(lisp){
-        parselisp(lisp, 0, lisp.length, 0, mapcon, mapchild);
-        var dot = "digraph simpleDotFile {";
-        var stack = [];
-        stack.push(0);
-        while(stack.length > 0) {
-            var p = stack.pop();
-            if(p in mapchild) {
-                for(var i = 0; i < mapchild[p].length; i++) {
-
-                }
-            }
-        }
-
-
-    }
-
-
+    head.js('https://rawgit.com/brandeis-nlp/jldservice/api2.0/src/main/webapp/lisp2dot.js');
 
     <!-- set ready -->
     head.ready(function() {
         var listenTo = 'propertychange keyup input paste change';
+        var lisp = $('#lisp-src');
         var dot = $('#dot-src');
+
+        lisp.bind(listenTo, function() {
+            if(lisp.val().indexOf('(') >= 0) {
+                var ret = lisp2dot(lisp.val());
+                dot.val(ret);
+                dot.trigger("change");
+            }
+        });
+
+        //=======================================================================//
         var display = $('#output');
         var inputHandler = function() {
             if(dot.val().indexOf('{') > 0) {
@@ -224,6 +133,30 @@
 
 
 <h1  align="center">Dot to SVG Display</h1>
+
+
+
+<h2  align="center">Lisp to Dot</h2>
+
+<p>Please change the lisp in the textarea:
+    (<a href="https://en.wikipedia.org/wiki/Lisp_(programming_language)" target="_blank">Other Examples</a>)</p>
+
+
+<textarea id="lisp-src" style="width: 600px; height: 200px;">(ROOT [175.774]
+(S [175.622]
+(NP [13.221] (NN p53))
+(VP [161.266] (VBZ regulates)
+(S [147.606]
+(NP [30.788] (JJ human) (JJ insulin-like) (NN growth))
+(VP [114.881] (VB factor)
+(NP [34.330] (NNP II) (NN gene) (NN expression))
+(PP [68.310] (IN through)
+(NP [62.273]
+(NP [36.281] (JJ active) (NN P4) (NN promoter))
+(PP [25.450] (IN in)
+(NP [23.199] (NN rhabdomyosarcoma) (NNS cells))))))))
+(. .)))</textarea>
+
 
 
 <h2  align="center">Dot to SVG Display</h2>
