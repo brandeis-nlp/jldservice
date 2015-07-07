@@ -7,7 +7,7 @@
           def coref = lastviewanns.select{&."@type" != null && &."@type".contains("Coreference")}.features.mentions
           def markables = lastviewanns.select{&."@type" != null && &."@type".contains("Markable") && coref.toString().contains(&.id)}
 
-          text &$payload.text."@value" +  (parse == null||parse.size == 0||parse[0]==null?"":"\n\n\n"+parse[0])
+          text &$payload.text."@value" +  (parse == null||parse.size == 0||parse[0]==null?"":"\n~~~~\n"+parse[0])
 
           relations (lastviewanns.select{&."@type" != null && &."@type".contains("DependencyStructure")}.features.dependencies
                      .flatten().foreach{

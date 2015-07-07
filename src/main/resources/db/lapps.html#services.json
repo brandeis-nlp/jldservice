@@ -187,10 +187,10 @@
         "username" : "",
         "password" : ""
       }],
-      "LinePipe" : [{
-        "provider": "LinePipe",
+      "LingPipe" : [{
+        "provider": "LingPipe",
         "type":"Named-Entity-Recognizer",
-        "name": "LinePipe NER",
+        "name": "LingPipe NER",
         "version" : "v0.0.1",
         "server" : "Brandeis University",
         "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/lingpipe/0.0.1/services/LingPipeWS?wsdl",
@@ -477,9 +477,9 @@
     "LingPipe":{
       "Named-Entity-Recognizer":[
         {
-          "provider": "LinePipe",
+          "provider": "LingPipe",
           "type":"Named-Entity-Recognizer",
-          "name": "LinePipe NER",
+          "name": "LingPipe NER",
           "version" : "v0.0.1",
           "server" : "Brandeis University",
           "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/lingpipe/0.0.1/services/LingPipeWS?wsdl",

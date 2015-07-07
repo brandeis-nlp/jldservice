@@ -128,7 +128,13 @@
                     bratLocation + '/client/src/visualizer.js',
 
             // json2
-            'http://brat.nlplab.org/js/lib/json2.js'
+            'http://brat.nlplab.org/js/lib/json2.js',
+
+            // dot2svg
+            'http://mdaines.github.io/viz.js/viz.js',
+            'http://jsxml.net/assets/class/Pub/js/app.js?2010052101',
+            'https://rawgit.com/brandeis-nlp/jldservice/api2.0/src/main/webapp/lisp2dot.js'
+
     );  */
     // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
     // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< //
@@ -250,6 +256,19 @@
         }
     }
 
+    var renderDotDisplay = function(dotDisplayId, inputId) {
+        var docData = getCodeMirrorValue(inputId);
+        // When has parser result.
+        if (docData.indexOf("~~~~")) {
+            var docJSON = JSON.parse(docData.trim());
+            var lisp = docJSON.text.split("~~~~")[1];
+            var dot = lisp2dot(lisp);
+            var svg = Viz(dot, "svg");
+            var dotDisplay = $('#' + dotDisplayId);
+            dotDisplay.html("");
+            dotDisplay.prepend(svg);
+        }
+    }
 
     var confChangeHandler = function(liveDispatcher, textareaId) {
         var collInput = getCodeMirrorValue(textareaId);
@@ -276,7 +295,7 @@
         }
     }
 
-    var renderBratDisplay =  function (displayId, inputId, confInputId) {
+    var renderBratDisplay =  function (displayId, inputId, confInputId, dotDisplayId) {
         var docData = getCodeMirrorValue(inputId);
         var collData = getCodeMirrorValue(confInputId);
         // Time for some "real" brat coding, let's hook into the dispatcher
@@ -297,6 +316,7 @@
 
         codeMirrors[inputId].on('change', function() {
             docChangeHandler(liveDispatcher, inputId);
+            renderDotDisplay(dotDisplayId, inputId);
         });
 
         codeMirrors[confInputId].on('change', function() {
@@ -601,7 +621,7 @@
         /* Make damn sure to copy the objects before handing them to brat
          since we will modify them later on */
 
-        renderBratDisplay("instantbratdisplay", "docjson", "colljson");
+        renderBratDisplay("instantbratdisplay", "docjson", "colljson", "instantdotdisplay");
         // onchange setting.
         codeMirrors['resultjson'].on('change', function() {
             if(getCodeMirrorValue('resultjson').indexOf('@value') > 0)
@@ -740,6 +760,7 @@
     <table align="center" class="table table-bordered table-striped responsive-utilities" align="center" style="width:800px;">
         <tr><th> Brat Display </th></tr>
         <tr><td height="100px"><div id="instantbratdisplay"></div></td></tr>
+        <tr><td height="100px"><div id="instantdotdisplay"></div></td></tr>
     </table>
     <table align="center" class="table table-bordered table-striped responsive-utilities" align="center" style="width:800px">
         <tr><th>Tool Output</th> <th> Save Output </th> </tr>
@@ -780,7 +801,7 @@
          def coref = lastviewanns.select{&."@type" != null && &."@type".contains("Coreference")}.features.mentions
          def markables = lastviewanns.select{&."@type" != null && &."@type".contains("Markable") && coref.toString().contains(&.id)}
 
-         text &$payload.text."@value" +  (parse == null||parse.size == 0||parse[0]==null?"":"\n\n\n"+parse[0])
+         text &$payload.text."@value" +  (parse == null||parse.size == 0||parse[0]==null?"":"\n~~~~\n"+parse[0])
 
          relations (lastviewanns.select{&."@type" != null && &."@type".contains("DependencyStructure")}.features.dependencies
                     .flatten().foreach{
