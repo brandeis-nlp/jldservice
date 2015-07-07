@@ -6,8 +6,6 @@
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script style="javascript">
 
-
-
         var findPair = function (s, map, obj) {
             var stack = [];
             var cnt = 0;
@@ -145,12 +143,15 @@
     </script>
 </head>
 <body>
+<p>
 <textarea id="lisp">
 (begin (define r 10) (* pi (* r r)))
 </textarea>
+</p>
+<p>
 <textarea id="dot">
-
 </textarea>
+</p>
 <script>
     var listenTo = 'propertychange keyup input paste change';
     var updateHandler = function() {
