@@ -61,6 +61,7 @@
     <link rel="stylesheet" type="text/css" href="http://brat.nlplab.org/css/style.css"/>
     <link rel="stylesheet" type="text/css" href="http://brat.nlplab.org/css/jquery-theme/jquery-ui-redmond.css"/>
     <link rel="stylesheet" type="text/css" href="http://weaver.nlplab.org/~brat/demo/v1.3/style-vis.css"/>
+
     <script type="text/javascript" src="http://weaver.nlplab.org/~brat/demo/v1.3/client/lib/head.load.min.js"></script>
     <!-- =============================================================================================================== -->
     <script type="text/javascript" src="http://weaver.nlplab.org/~brat/demo/v1.3/client/lib/jquery.min.js"></script>
@@ -76,6 +77,10 @@
     <script type="text/javascript" src="http://brat.nlplab.org/js/lib/json2.js"></script>
     <script type="text/javascript" src="http://l2.io/ip.js?var=userip"></script>
     <!-- =============================================================================================================== -->
+    <!--// dot2svg-->
+    <script type="text/javascript" src="https://rawgit.com/brandeis-nlp/jldservice/api2.0/src/main/webapp/lisp2dot.js"></script>
+    <script type="text/javascript" src="http://mdaines.github.io/viz.js/viz.js"></script>
+
     <!--All the language services from Vassar College.-->
     <!--http://grid.anc.org:8080/service_manager/language-services-->
 
@@ -105,6 +110,19 @@
             box-shadow:none;
             background-clip: padding-box;
         }
+
+        #instantdotdisplay {
+            display:none;
+            width:800px;
+            height:400px;
+            overflow:scroll;
+        }
+        #instantdotdisplay svg {
+            width: auto;
+            height: auto;
+            border: 1px solid #7fa2ff;
+            font-size: 15px;
+        }
     </style>
 
     <!-- =============================================================================================================== -->
@@ -128,13 +146,7 @@
                     bratLocation + '/client/src/visualizer.js',
 
             // json2
-            'http://brat.nlplab.org/js/lib/json2.js',
-
-            // dot2svg
-            'http://mdaines.github.io/viz.js/viz.js',
-            'http://jsxml.net/assets/class/Pub/js/app.js?2010052101',
-            'https://rawgit.com/brandeis-nlp/jldservice/api2.0/src/main/webapp/lisp2dot.js'
-
+            'http://brat.nlplab.org/js/lib/json2.js'
     );  */
     // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
     // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< //
@@ -177,6 +189,7 @@
 
         return formatted;
     }
+
 
     var escapeXml = function(unsafe) {
         return unsafe.replace(/[<>&'"]/g, function (c) {
@@ -237,7 +250,7 @@
         var docInput = getCodeMirrorValue(textareaId);
         var docJSON;
         try {
-            docJSON = JSON.parse(docInput.trim());
+            docJSON = jQuery.parseJSON(docInput.trim());
             // docInput.css({'border': '2px inset'});
         } catch (e) {
             // docInput.css({'border': '2px solid red'});
@@ -259,14 +272,20 @@
     var renderDotDisplay = function(dotDisplayId, inputId) {
         var docData = getCodeMirrorValue(inputId);
         // When has parser result.
-        if (docData.indexOf("~~~~")) {
-            var docJSON = JSON.parse(docData.trim());
+        if (docData.indexOf("~~~~") > 0) {
+            var docJSON = jQuery.parseJSON(docData.trim());
             var lisp = docJSON.text.split("~~~~")[1];
+            console.log(lisp);
             var dot = lisp2dot(lisp);
             var svg = Viz(dot, "svg");
             var dotDisplay = $('#' + dotDisplayId);
             dotDisplay.html("");
-            dotDisplay.prepend(svg);
+            dotDisplay.html(svg);
+            dotDisplay.show();
+        } else {
+            var dotDisplay = $('#' + dotDisplayId);
+            dotDisplay.html("");
+            dotDisplay.hide();
         }
     }
 
@@ -274,7 +293,7 @@
         var collInput = getCodeMirrorValue(textareaId);
         var collJSON;
         try {
-            collJSON = JSON.parse(collInput.trim());
+            collJSON = jQuery.parseJSON(collInput.trim());
             // collInput.css({'border': '2px inset'});
         } catch (e) {
             // Not properly formatted JSON...
@@ -302,8 +321,8 @@
         var liveDispatcher;
         try{
             liveDispatcher = Util.embed(displayId,
-                $.extend({'collection': null}, JSON.parse(collData.trim())),
-                $.extend({}, JSON.parse(docData.trim())), webFontURLs);
+                $.extend({'collection': null}, jQuery.parseJSON(collData.trim())),
+                $.extend({}, jQuery.parseJSON(docData.trim())), webFontURLs);
             console.info("Finished: liveDispatch");
         }catch(e) {
             console.error("ERROR: "+e+" ;doc="+docData+"; coll="+collData);
@@ -334,10 +353,10 @@
             return s
         }
         // when input doc data changed
-        // liveDispatcher.post('requestRenderData', [$.extend({}, JSON.parse(docInput.val()))]);
+        // liveDispatcher.post('requestRenderData', [$.extend({}, jQuery.parseJSON(docInput.val()))]);
 
         // when config input coll data changed
-        // liveDispatcher.post('collectionLoaded',  [$.extend({'collection': null}, JSON.parse(collInput.val()))]);
+        // liveDispatcher.post('collectionLoaded',  [$.extend({'collection': null}, jQuery.parseJSON(collInput.val()))]);
     }
 
     // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
@@ -599,7 +618,7 @@
 
     var saveLappsServices = function(textareaId, accountId, passwordId, alertDivId) {
         var txt = getCodeMirrorValue(textareaId);
-        var json = JSON.parse(txt);
+        var json = jQuery.parseJSON(txt);
         if($("#"+accountId).val() == "brandeis" && $("#"+accountId).val() == "brandeis") {
             saveDB("services",json, function(ret){
                 $("#"+alertDivId).html("<div  class='alert alert-success' role='alert'><strong>Well done!</strong> You successfully save <a href='#' class='alert-link'>the data</a>.</div>");
@@ -760,7 +779,7 @@
     <table align="center" class="table table-bordered table-striped responsive-utilities" align="center" style="width:800px;">
         <tr><th> Brat Display </th></tr>
         <tr><td height="100px"><div id="instantbratdisplay"></div></td></tr>
-        <tr><td height="100px"><div id="instantdotdisplay"></div></td></tr>
+        <tr><td><div id="instantdotdisplay"></div></td></tr>
     </table>
     <table align="center" class="table table-bordered table-striped responsive-utilities" align="center" style="width:800px">
         <tr><th>Tool Output</th> <th> Save Output </th> </tr>
