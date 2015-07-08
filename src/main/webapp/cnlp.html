@@ -153,8 +153,7 @@
     </tr><tr>
     <td><input type="file" onchange="readFileTo(this.files[0], function(res){ setCodeMirrorValue('ta_input', res); } );"/>
     </td>
-    <td><button  class="btn btn-default" type="button" onclick="initDEPTrees(getCodeMirrorValue('ta_input'));" style="width:110px;height:30px;font-family:times;font-size:14px;">Process</button><br>
-        <button  class="btn btn-default" type="button" onclick="exportCanvas();" style="width:110px;height:30px;font-family:times;font-size:14px;">Export to PNG</button><br><br>
+    <td><button  class="btn btn-default" type="button" onclick="exportCanvas();" style="width:110px;height:30px;font-family:times;font-size:14px;">Export to PNG</button><br><br>
     </td>
     <td>
         <div align="center">
@@ -183,10 +182,12 @@
 </tr></table>
 
 <table class="table table-bordered" align="center" style="width:86%;"><tr>
-    <th>FILE</th>
+    <th>FILE Editing</th><th>Visualizing</th>
 </tr><tr>
     <td>
         <textarea id="ta_input"  style="height:615px"></textarea><script>coverCodeMirror("ta_input");</script>
+    </td>
+    <td style="vertical-align:top;width:80px;"><button  class="btn btn-default" type="button" onclick="initDEPTrees(getCodeMirrorValue('ta_input'));" style="width:110px;height:30px;font-family:times;font-size:14px;">Process</button><br>
     </td>
 </tr></table>
 
