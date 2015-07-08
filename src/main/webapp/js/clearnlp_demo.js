@@ -230,6 +230,8 @@ DEPTree.prototype.setCanvas = function(ctx, zoom)
 {
     ctx.canvas.width = this.r_lexica[this.size()-1].getMaxX() + INIT_X + 25;
     ctx.canvas.width *= zoom;
+    ctx.canvas.height = 400;
+    ctx.canvas.height *= zoom;
 };
 
 // Initializes all geometries needed to draw this tree to the specific canvas.
@@ -678,10 +680,11 @@ if (typeof String.prototype.startsWith != 'function')
 
 // ----------------------------------- Interface to HMTL5 -----------------------------------
 
-function initDEPTrees()
+function initDEPTrees(input)
 {
     // initialize dependency trees
-    var input = document.getElementById("ta_input").value.trim();
+    // var input = document.getElementById("ta_input").value.trim();
+    input = input.trim();
     var fields, lines = input.split(DELIM_NODE);
     var i, size = lines.length;
     var tree = new DEPTree();
@@ -844,6 +847,19 @@ function selectTreeID()
     drawDEPTree(ids.selectedIndex);
 }
 
+function readFileTo(f, setResultTo)
+{
+    var reader = new FileReader();
+    reader.readAsText(f);
+
+    reader.onload = function()
+    {
+        var text = reader.result;
+        setResultTo(text);
+        initDEPTrees(text);
+    };
+}
+
 function readFile(f)
 {
     var reader = new FileReader();
@@ -853,7 +869,7 @@ function readFile(f)
     {
         var text = reader.result;
         document.getElementById("ta_input").value = text;
-        initDEPTrees();
+        initDEPTrees(text);
     };
 }
 
