@@ -1,291 +1,315 @@
 {
-  "ServiceTypes" : {
+  "ServiceTypes": {
     "Sentence-Splitter": {
-    "Stanford-NLP" : [ {
-      "provider": "Stanford NLP",
-      "type":"Sentence-Splitter",
-      "name": "Stanford Sentence Splitter",
-      "version" : "v2.0.0",
-      "server" : "Brandeis University",
-      "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/Splitter?wsdl",
-      "username" : "",
-      "password" : ""
-    },{
-      "provider": "Stanford NLP",
-      "type":"Sentence-Splitter",
-      "name": "Stanford Sentence Splitter",
-      "version" : "v2.0.0",
-      "server" : "Vassar College",
-      "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.splitter_2.0.0",
-      "username" : "tester",
-      "password" : "tester"
-    }
-    ],
-    "OpenNLP": [
-      {
-        "provider": "OpenNLP",
-        "type":"Sentence-Splitter",
-        "name": "OpenNLP Sentence Splitter",
-        "version" : "v2.0.0",
-        "server" : "Brandeis University",
-        "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/Splitter?wsdl",
-        "username" : "",
-        "password" : ""
-      }
-    ],
-    "GATE" :[{
-      "provider": "GATE Plugin",
-      "type":"Sentence-Splitter",
-      "name": "Gate Sentence Splitter",
-      "version" : "v2.0.0",
-      "server" : "Vassar College",
-      "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:gate.splitter_2.0.0",
-      "username" : "tester",
-      "password" : "tester"
-    }]
-  },
-    "Tokenizer": {
-      "Stanford-NLP" : [{
-        "provider": "Stanford NLP",
-        "type":"Tokenizer",
-        "name": "Stanford Tokenizer",
-        "version" : "v2.0.0",
-        "server" : "Brandeis University",
-        "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/Tokenizer?wsdl",
-        "username" : "",
-        "password" : ""
-      },{
-        "provider": "Stanford NLP",
-        "type":"Tokenizer",
-        "name": "Stanford Tokenizer",
-        "version" : "v2.0.0",
-        "server" : "Vassar College",
-        "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.tokenizer_2.0.0",
-        "username" : "tester",
-        "password" : "tester"
-      }
+      "Stanford-NLP": [
+        {
+          "provider": "Stanford NLP",
+          "type": "Sentence-Splitter",
+          "name": "Stanford Sentence Splitter",
+          "version": "v2.0.0",
+          "server": "Brandeis University",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/Splitter?wsdl",
+          "username": "",
+          "password": ""
+        },
+        {
+          "provider": "Stanford NLP",
+          "type": "Sentence-Splitter",
+          "name": "Stanford Sentence Splitter",
+          "version": "v2.0.0",
+          "server": "Vassar College",
+          "wsdl": "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.splitter_2.0.0",
+          "username": "tester",
+          "password": "tester"
+        }
       ],
       "OpenNLP": [
         {
           "provider": "OpenNLP",
-          "type":"Tokenizer",
-          "name": "OpenNLP Tokenizer",
-          "version" : "v2.0.0",
-          "server" : "Brandeis University",
-          "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/Tokenizer?wsdl",
-          "username" : "",
-          "password" : ""
+          "type": "Sentence-Splitter",
+          "name": "OpenNLP Sentence Splitter",
+          "version": "v2.0.0",
+          "server": "Brandeis University",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/Splitter?wsdl",
+          "username": "",
+          "password": ""
         }
       ],
-      "GATE" :[{
-        "provider": "GATE Plugin",
-        "type":"Tokenizer",
-        "name": "Gate Tokenizer",
-        "version" : "v2.0.0",
-        "server" : "Vassar College",
-        "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:gate.tokenizer_2.0.0",
-        "username" : "tester",
-        "password" : "tester"
-      }]
+      "GATE": [
+        {
+          "provider": "GATE Plugin",
+          "type": "Sentence-Splitter",
+          "name": "Gate Sentence Splitter",
+          "version": "v2.0.0",
+          "server": "Vassar College",
+          "wsdl": "http://grid.anc.org:8080/service_manager/wsdl/anc:gate.splitter_2.0.0",
+          "username": "tester",
+          "password": "tester"
+        }
+      ]
+    },
+    "Tokenizer": {
+      "Stanford-NLP": [
+        {
+          "provider": "Stanford NLP",
+          "type": "Tokenizer",
+          "name": "Stanford Tokenizer",
+          "version": "v2.0.0",
+          "server": "Brandeis University",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/Tokenizer?wsdl",
+          "username": "",
+          "password": ""
+        },
+        {
+          "provider": "Stanford NLP",
+          "type": "Tokenizer",
+          "name": "Stanford Tokenizer",
+          "version": "v2.0.0",
+          "server": "Vassar College",
+          "wsdl": "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.tokenizer_2.0.0",
+          "username": "tester",
+          "password": "tester"
+        }
+      ],
+      "OpenNLP": [
+        {
+          "provider": "OpenNLP",
+          "type": "Tokenizer",
+          "name": "OpenNLP Tokenizer",
+          "version": "v2.0.0",
+          "server": "Brandeis University",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/Tokenizer?wsdl",
+          "username": "",
+          "password": ""
+        }
+      ],
+      "GATE": [
+        {
+          "provider": "GATE Plugin",
+          "type": "Tokenizer",
+          "name": "Gate Tokenizer",
+          "version": "v2.0.0",
+          "server": "Vassar College",
+          "wsdl": "http://grid.anc.org:8080/service_manager/wsdl/anc:gate.tokenizer_2.0.0",
+          "username": "tester",
+          "password": "tester"
+        }
+      ]
     },
     "POS-Tagger": {
-      "Stanford-NLP" : [ {
-        "provider": "Stanford NLP",
-        "type":"POS-Tagger",
-        "name": "Stanford POSTagger",
-        "version" : "v2.0.0",
-        "server" : "Brandeis University",
-        "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/POSTagger?wsdl",
-        "username" : "",
-        "password" : ""
-      },{
-        "provider": "Stanford NLP",
-        "type":"POS-Tagger",
-        "name": "Stanford POSTagger",
-        "version" : "v2.0.0",
-        "server" : "Vassar College",
-        "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.tagger_2.0.0",
-        "username" : "tester",
-        "password" : "tester"
-      }
+      "Stanford-NLP": [
+        {
+          "provider": "Stanford NLP",
+          "type": "POS-Tagger",
+          "name": "Stanford POSTagger",
+          "version": "v2.0.0",
+          "server": "Brandeis University",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/POSTagger?wsdl",
+          "username": "",
+          "password": ""
+        },
+        {
+          "provider": "Stanford NLP",
+          "type": "POS-Tagger",
+          "name": "Stanford POSTagger",
+          "version": "v2.0.0",
+          "server": "Vassar College",
+          "wsdl": "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.tagger_2.0.0",
+          "username": "tester",
+          "password": "tester"
+        }
       ],
       "OpenNLP": [
         {
           "provider": "OpenNLP",
-          "type":"POS-Tagger",
+          "type": "POS-Tagger",
           "name": "OpenNLP POSTagger",
-          "version" : "v2.0.0",
-          "server" : "Brandeis University",
-          "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/POSTagger?wsdl",
-          "username" : "",
-          "password" : ""
+          "version": "v2.0.0",
+          "server": "Brandeis University",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/POSTagger?wsdl",
+          "username": "",
+          "password": ""
         }
       ],
-      "GATE" :[{
-        "provider": "GATE Plugin",
-        "type":"POS-Tagger",
-        "name": "Gate POSTagger",
-        "version" : "v2.0.0",
-        "server" : "Vassar College",
-        "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:gate.tagger_2.0.0",
-        "username" : "tester",
-        "password" : "tester"
-      }]
-
+      "GATE": [
+        {
+          "provider": "GATE Plugin",
+          "type": "POS-Tagger",
+          "name": "Gate POSTagger",
+          "version": "v2.0.0",
+          "server": "Vassar College",
+          "wsdl": "http://grid.anc.org:8080/service_manager/wsdl/anc:gate.tagger_2.0.0",
+          "username": "tester",
+          "password": "tester"
+        }
+      ]
     },
-
     "Named-Entity-Recognizer": {
-      "Stanford-NLP" : [ {
-        "provider": "Stanford NLP",
-        "type":"Named-Entity-Recognizer",
-        "name": "Stanford NER",
-        "version" : "v2.0.0",
-        "server" : "Brandeis University",
-        "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/NamedEntityRecognizer?wsdl",
-        "username" : "",
-        "password" : ""
-      },{
-        "provider": "Stanford NLP",
-        "type":"Named-Entity-Recognizer",
-        "name": "Stanford NER",
-        "version" : "v2.0.0",
-        "server" : "Vassar College",
-        "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.ner_2.0.0",
-        "username" : "tester",
-        "password" : "tester"
-      }
+      "Stanford-NLP": [
+        {
+          "provider": "Stanford NLP",
+          "type": "Named-Entity-Recognizer",
+          "name": "Stanford NER",
+          "version": "v2.0.0",
+          "server": "Brandeis University",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/NamedEntityRecognizer?wsdl",
+          "username": "",
+          "password": ""
+        },
+        {
+          "provider": "Stanford NLP",
+          "type": "Named-Entity-Recognizer",
+          "name": "Stanford NER",
+          "version": "v2.0.0",
+          "server": "Vassar College",
+          "wsdl": "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.ner_2.0.0",
+          "username": "tester",
+          "password": "tester"
+        }
       ],
       "OpenNLP": [
         {
           "provider": "OpenNLP",
-          "type":"Named-Entity-Recognizer",
+          "type": "Named-Entity-Recognizer",
           "name": "OpenNLP NER",
-          "version" : "v2.0.0",
-          "server" : "Brandeis University",
-          "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/NamedEntityRecognizer?wsdl",
-          "username" : "",
-          "password" : ""
+          "version": "v2.0.0",
+          "server": "Brandeis University",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/NamedEntityRecognizer?wsdl",
+          "username": "",
+          "password": ""
         }
       ],
-      "GATE" :[{
-        "provider": "GATE Plugin",
-        "type":"Named-Entity-Recognizer",
-        "name": "Gate NER",
-        "version" : "v2.0.0",
-        "server" : "Vassar College",
-        "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:gate.ner_2.0.0",
-        "username" : "tester",
-        "password" : "tester"
-      }],
-      "GNAT" : [{
-        "provider": "Manchester Gnat",
-        "type":"Named-Entity-Recognizer",
-        "name": "GNAT NER",
-        "version" : "v0.0.1",
-        "server" : "Brandeis University",
-        "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/manchester-gnat/0.0.1/services/GnatWS?wsdl",
-        "username" : "",
-        "password" : ""
-      }],
-      "LingPipe" : [{
-        "provider": "LingPipe",
-        "type":"Named-Entity-Recognizer",
-        "name": "LingPipe NER",
-        "version" : "v0.0.1",
-        "server" : "Brandeis University",
-        "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/lingpipe/0.0.1/services/LingPipeWS?wsdl",
-        "username" : "",
-        "password" : ""
-      }],
-      "Abner" : [{
-        "provider": "Abner",
-        "type":"Named-Entity-Recognizer",
-        "name": "Abner NER",
-        "version" : "v0.0.1",
-        "server" : "Brandeis University",
-        "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/abner/services/AbnerWS?wsdl",
-        "username" : "",
-        "password" : ""
-      },
+      "GATE": [
+        {
+          "provider": "GATE Plugin",
+          "type": "Named-Entity-Recognizer",
+          "name": "Gate NER",
+          "version": "v2.0.0",
+          "server": "Vassar College",
+          "wsdl": "http://grid.anc.org:8080/service_manager/wsdl/anc:gate.ner_2.0.0",
+          "username": "tester",
+          "password": "tester"
+        }
+      ],
+      "GNAT": [
+        {
+          "provider": "Manchester Gnat",
+          "type": "Named-Entity-Recognizer",
+          "name": "GNAT NER",
+          "version": "v0.0.1",
+          "server": "Brandeis University",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/manchester-gnat/0.0.1/services/GnatWS?wsdl",
+          "username": "",
+          "password": ""
+        }
+      ],
+      "LingPipe": [
+        {
+          "provider": "LingPipe",
+          "type": "Named-Entity-Recognizer",
+          "name": "LingPipe NER",
+          "version": "v0.0.1",
+          "server": "Brandeis University",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/lingpipe/0.0.1/services/LingPipeWS?wsdl",
+          "username": "",
+          "password": ""
+        }
+      ],
+      "Abner": [
         {
           "provider": "Abner",
-          "type":"Named-Entity-Recognizer",
+          "type": "Named-Entity-Recognizer",
           "name": "Abner NER",
-          "version" : "v0.0.2",
-          "server" : "Brandeis University",
-          "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/abner/0.0.2/services/AbnerWS?wsdl",
-          "username" : "",
-          "password" : ""
+          "version": "v0.0.1",
+          "server": "Brandeis University",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/abner/services/AbnerWS?wsdl",
+          "username": "",
+          "password": ""
+        },
+        {
+          "provider": "Abner",
+          "type": "Named-Entity-Recognizer",
+          "name": "Abner NER",
+          "version": "v0.0.2",
+          "server": "Brandeis University",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/abner/0.0.2/services/AbnerWS?wsdl",
+          "username": "",
+          "password": ""
         }
       ]
     },
     "Parser": {
-      "Stanford-NLP" : [ {
-        "provider": "Stanford NLP",
-        "type":"Parser",
-        "name": "Stanford Parser",
-        "version" : "v2.0.0",
-        "server" : "Brandeis University",
-        "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/Parser?wsdl",
-        "username" : "",
-        "password" : ""
-      }],
-      "OpenNLP" : [ {
-        "provider": "OpenNLP",
-        "type":"Parser",
-        "name": "OpenNLP Parser",
-        "version" : "v2.0.0",
-        "server" : "Brandeis University",
-        "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/Parser?wsdl",
-        "username" : "",
-        "password" : ""
-      }]
+      "Stanford-NLP": [
+        {
+          "provider": "Stanford NLP",
+          "type": "Parser",
+          "name": "Stanford Parser",
+          "version": "v2.0.0",
+          "server": "Brandeis University",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/Parser?wsdl",
+          "username": "",
+          "password": ""
+        }
+      ],
+      "OpenNLP": [
+        {
+          "provider": "OpenNLP",
+          "type": "Parser",
+          "name": "OpenNLP Parser",
+          "version": "v2.0.0",
+          "server": "Brandeis University",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/Parser?wsdl",
+          "username": "",
+          "password": ""
+        }
+      ]
     },
     "DependencyParser": {
-      "Stanford-NLP" : [ {
-        "provider": "Stanford NLP",
-        "type":"DependencyParser ",
-        "name": "Stanford Dependency Parser",
-        "version" : "v2.0.0",
-        "server" : "Brandeis University",
-        "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/DependencyParser?wsdl",
-        "username" : "",
-        "password" : ""
-      }]
+      "Stanford-NLP": [
+        {
+          "provider": "Stanford NLP",
+          "type": "DependencyParser ",
+          "name": "Stanford Dependency Parser",
+          "version": "v2.0.0",
+          "server": "Brandeis University",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/DependencyParser?wsdl",
+          "username": "",
+          "password": ""
+        }
+      ]
     },
     "Coreference": {
-      "Stanford-NLP" : [ {
-        "provider": "Stanford NLP",
-        "type":"Coreference ",
-        "name": "Stanford Coreference",
-        "version" : "v2.0.0",
-        "server" : "Brandeis University",
-        "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/Coreference?wsdl",
-        "username" : "",
-        "password" : ""
-      }],
-
-      "OpenNLP" : [ {
-        "provider": "OpenNLP",
-        "type":"Coreference ",
-        "name": "OpenNLP Coreference",
-        "version" : "v2.0.0",
-        "server" : "Brandeis University",
-        "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/Coreference?wsdl",
-        "username" : "",
-        "password" : ""
-      }]
+      "Stanford-NLP": [
+        {
+          "provider": "Stanford NLP",
+          "type": "Coreference ",
+          "name": "Stanford Coreference",
+          "version": "v2.0.0",
+          "server": "Brandeis University",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/Coreference?wsdl",
+          "username": "",
+          "password": ""
+        }
+      ],
+      "OpenNLP": [
+        {
+          "provider": "OpenNLP",
+          "type": "Coreference ",
+          "name": "OpenNLP Coreference",
+          "version": "v2.0.0",
+          "server": "Brandeis University",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/Coreference?wsdl",
+          "username": "",
+          "password": ""
+        }
+      ]
     },
-    "Evaluation": {
-    },
-    "Converters": {
-
-    },
-    "OtherTypes": {
-    }
+    "Evaluation": {},
+    "Converters": {},
+    "OtherTypes": {}
   },
-  "EvaluationTypes" : {
-    "Gold-Standard-Evaluation" : {
+  "EvaluationTypes": {
+    "Gold-Standard-Evaluation": {
       "OAQA": [
         {
           "provider": "CMU",
@@ -300,208 +324,225 @@
       ]
     }
   },
-
-
-
-  "ServiceProviders" :{
+  "ServiceProviders": {
     "Apache-OpenNLP": {
-      "Sentence-Splitter" :[
-      {
-      "provider": "OpenNLP",
-      "type":"Sentence-Splitter",
-      "name": "OpenNLP Sentence Splitter",
-      "version" : "v2.0.0",
-      "server" : "Brandeis University",
-      "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/Splitter?wsdl",
-      "username" : "",
-      "password" : ""
-      }],
-      "Tokenizer" : [
-      {
-        "provider": "OpenNLP",
-        "type":"Tokenizer",
-        "name": "OpenNLP Tokenizer",
-        "version" : "v2.0.0",
-        "server" : "Brandeis University",
-        "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/Tokenizer?wsdl",
-        "username" : "",
-        "password" : ""
-      }],
+      "Sentence-Splitter": [
+        {
+          "provider": "OpenNLP",
+          "type": "Sentence-Splitter",
+          "name": "OpenNLP Sentence Splitter",
+          "version": "v2.0.0",
+          "server": "Brandeis University",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/Splitter?wsdl",
+          "username": "",
+          "password": ""
+        }
+      ],
+      "Tokenizer": [
+        {
+          "provider": "OpenNLP",
+          "type": "Tokenizer",
+          "name": "OpenNLP Tokenizer",
+          "version": "v2.0.0",
+          "server": "Brandeis University",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/Tokenizer?wsdl",
+          "username": "",
+          "password": ""
+        }
+      ],
       "POS-Tagger": [
         {
           "provider": "OpenNLP",
-          "type":"POS-Tagger",
+          "type": "POS-Tagger",
           "name": "OpenNLP POSTagger",
-          "version" : "v2.0.0",
-          "server" : "Brandeis University",
-          "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/POSTagger?wsdl",
-          "username" : "",
-          "password" : ""
-        }],
-      "Named-Entity-Recognizer":[
+          "version": "v2.0.0",
+          "server": "Brandeis University",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/POSTagger?wsdl",
+          "username": "",
+          "password": ""
+        }
+      ],
+      "Named-Entity-Recognizer": [
         {
           "provider": "OpenNLP",
-          "type":"Named-Entity-Recognizer",
+          "type": "Named-Entity-Recognizer",
           "name": "OpenNLP NER",
-          "version" : "v2.0.0",
-          "server" : "Brandeis University",
-          "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/NamedEntityRecognizer?wsdl",
-          "username" : "",
-          "password" : ""
-        }]
+          "version": "v2.0.0",
+          "server": "Brandeis University",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/NamedEntityRecognizer?wsdl",
+          "username": "",
+          "password": ""
+        }
+      ]
     },
     "Stanford-NLP": {
-      "Sentence-Splitter" :[{
-        "provider": "Stanford NLP",
-        "type":"Sentence-Splitter",
-        "name": "Stanford Sentence Splitter",
-        "version" : "v2.0.0",
-        "server" : "Vassar College",
-        "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.splitter_2.0.0",
-        "username" : "tester",
-        "password" : "tester"
-      }, {
-        "provider": "Stanford NLP",
-        "type":"Sentence-Splitter",
-        "name": "Stanford Sentence Splitter",
-        "version" : "v2.0.0",
-        "server" : "Brandeis University",
-        "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/Splitter?wsdl",
-        "username" : "",
-        "password" : ""
-      }],
-      "Tokenizer" : [{
-        "provider": "Stanford NLP",
-        "type":"Tokenizer",
-        "name": "Stanford Tokenizer",
-        "version" : "v2.0.0",
-        "server" : "Vassar College",
-        "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.tokenizer_2.0.0",
-        "username" : "tester",
-        "password" : "tester"
-      }, {
-        "provider": "Stanford NLP",
-        "type":"Tokenizer",
-        "name": "Stanford Tokenizer",
-        "version" : "v2.0.0",
-        "server" : "Brandeis University",
-        "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/Tokenizer?wsdl",
-        "username" : "",
-        "password" : ""
-      }],
-      "POS-Tagger": [{
-        "provider": "Stanford NLP",
-        "type":"POS-Tagger",
-        "name": "Stanford POSTagger",
-        "version" : "v2.0.0",
-        "server" : "Vassar College",
-        "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.tagger_2.0.0",
-        "username" : "tester",
-        "password" : "tester"
-      }, {
-        "provider": "Stanford NLP",
-        "type":"POS-Tagger",
-        "name": "Stanford POSTagger",
-        "version" : "v2.0.0",
-        "server" : "Brandeis University",
-        "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/POSTagger?wsdl",
-        "username" : "",
-        "password" : ""
-      }],
-      "Named-Entity-Recognizer":[{
-        "provider": "Stanford NLP",
-        "type":"Named-Entity-Recognizer",
-        "name": "Stanford NER",
-        "version" : "v2.0.0",
-        "server" : "Vassar College",
-        "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.ner_2.0.0",
-        "username" : "tester",
-        "password" : "tester"
-      }, {
-        "provider": "Stanford NLP",
-        "type":"Named-Entity-Recognizer",
-        "name": "Stanford NER",
-        "version" : "v2.0.0",
-        "server" : "Brandeis University",
-        "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/NamedEntityRecognizer?wsdl",
-        "username" : "",
-        "password" : ""
-      }]
+      "Sentence-Splitter": [
+        {
+          "provider": "Stanford NLP",
+          "type": "Sentence-Splitter",
+          "name": "Stanford Sentence Splitter",
+          "version": "v2.0.0",
+          "server": "Vassar College",
+          "wsdl": "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.splitter_2.0.0",
+          "username": "tester",
+          "password": "tester"
+        },
+        {
+          "provider": "Stanford NLP",
+          "type": "Sentence-Splitter",
+          "name": "Stanford Sentence Splitter",
+          "version": "v2.0.0",
+          "server": "Brandeis University",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/Splitter?wsdl",
+          "username": "",
+          "password": ""
+        }
+      ],
+      "Tokenizer": [
+        {
+          "provider": "Stanford NLP",
+          "type": "Tokenizer",
+          "name": "Stanford Tokenizer",
+          "version": "v2.0.0",
+          "server": "Vassar College",
+          "wsdl": "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.tokenizer_2.0.0",
+          "username": "tester",
+          "password": "tester"
+        },
+        {
+          "provider": "Stanford NLP",
+          "type": "Tokenizer",
+          "name": "Stanford Tokenizer",
+          "version": "v2.0.0",
+          "server": "Brandeis University",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/Tokenizer?wsdl",
+          "username": "",
+          "password": ""
+        }
+      ],
+      "POS-Tagger": [
+        {
+          "provider": "Stanford NLP",
+          "type": "POS-Tagger",
+          "name": "Stanford POSTagger",
+          "version": "v2.0.0",
+          "server": "Vassar College",
+          "wsdl": "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.tagger_2.0.0",
+          "username": "tester",
+          "password": "tester"
+        },
+        {
+          "provider": "Stanford NLP",
+          "type": "POS-Tagger",
+          "name": "Stanford POSTagger",
+          "version": "v2.0.0",
+          "server": "Brandeis University",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/POSTagger?wsdl",
+          "username": "",
+          "password": ""
+        }
+      ],
+      "Named-Entity-Recognizer": [
+        {
+          "provider": "Stanford NLP",
+          "type": "Named-Entity-Recognizer",
+          "name": "Stanford NER",
+          "version": "v2.0.0",
+          "server": "Vassar College",
+          "wsdl": "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.ner_2.0.0",
+          "username": "tester",
+          "password": "tester"
+        },
+        {
+          "provider": "Stanford NLP",
+          "type": "Named-Entity-Recognizer",
+          "name": "Stanford NER",
+          "version": "v2.0.0",
+          "server": "Brandeis University",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/NamedEntityRecognizer?wsdl",
+          "username": "",
+          "password": ""
+        }
+      ]
     },
     "GATE": {
-      "Sentence-Splitter" :[
+      "Sentence-Splitter": [
         {
           "provider": "GATE Plugin",
-          "type":"Sentence-Splitter",
+          "type": "Sentence-Splitter",
           "name": "Gate Sentence Splitter",
-          "version" : "v2.0.0",
-          "server" : "Vassar College",
-          "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:gate.splitter_2.0.0",
-          "username" : "tester",
-          "password" : "tester"
-        }],
-      "Tokenizer" : [
+          "version": "v2.0.0",
+          "server": "Vassar College",
+          "wsdl": "http://grid.anc.org:8080/service_manager/wsdl/anc:gate.splitter_2.0.0",
+          "username": "tester",
+          "password": "tester"
+        }
+      ],
+      "Tokenizer": [
         {
           "provider": "GATE Plugin",
-          "type":"Tokenizer",
+          "type": "Tokenizer",
           "name": "Gate Tokenizer",
-          "version" : "v2.0.0",
-          "server" : "Vassar College",
-          "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:gate.tokenizer_2.0.0",
-          "username" : "tester",
-          "password" : "tester"
-        }],
+          "version": "v2.0.0",
+          "server": "Vassar College",
+          "wsdl": "http://grid.anc.org:8080/service_manager/wsdl/anc:gate.tokenizer_2.0.0",
+          "username": "tester",
+          "password": "tester"
+        }
+      ],
       "POS-Tagger": [
         {
           "provider": "GATE Plugin",
-          "type":"POS-Tagger",
+          "type": "POS-Tagger",
           "name": "Gate POSTagger",
-          "version" : "v2.0.0",
-          "server" : "Vassar College",
-          "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:gate.tagger_2.0.0",
-          "username" : "tester",
-          "password" : "tester"
-        }],
-      "Named-Entity-Recognizer":[
+          "version": "v2.0.0",
+          "server": "Vassar College",
+          "wsdl": "http://grid.anc.org:8080/service_manager/wsdl/anc:gate.tagger_2.0.0",
+          "username": "tester",
+          "password": "tester"
+        }
+      ],
+      "Named-Entity-Recognizer": [
         {
           "provider": "GATE Plugin",
-          "type":"Named-Entity-Recognizer",
+          "type": "Named-Entity-Recognizer",
           "name": "Gate NER",
-          "version" : "v2.0.0",
-          "server" : "Vassar College",
-          "wsdl" : "http://grid.anc.org:8080/service_manager/wsdl/anc:gate.ner_2.0.0",
-          "username" : "tester",
-          "password" : "tester"
-        }]
+          "version": "v2.0.0",
+          "server": "Vassar College",
+          "wsdl": "http://grid.anc.org:8080/service_manager/wsdl/anc:gate.ner_2.0.0",
+          "username": "tester",
+          "password": "tester"
+        }
+      ]
     },
-    "LingPipe":{
-      "Named-Entity-Recognizer":[
+    "LingPipe": {
+      "Named-Entity-Recognizer": [
         {
           "provider": "LingPipe",
-          "type":"Named-Entity-Recognizer",
+          "type": "Named-Entity-Recognizer",
           "name": "LingPipe NER",
-          "version" : "v0.0.1",
-          "server" : "Brandeis University",
-          "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/lingpipe/0.0.1/services/LingPipeWS?wsdl",
-          "username" : "",
-          "password" : ""
-        }]
+          "version": "v0.0.1",
+          "server": "Brandeis University",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/lingpipe/0.0.1/services/LingPipeWS?wsdl",
+          "username": "",
+          "password": ""
+        }
+      ]
     },
-    "GNAT":{
-      "Named-Entity-Recognizer":[
+    "GNAT": {
+      "Named-Entity-Recognizer": [
         {
           "provider": "Manchester Gnat",
-          "type":"Named-Entity-Recognizer",
+          "type": "Named-Entity-Recognizer",
           "name": "GNAT NER",
-          "version" : "v0.0.1",
-          "server" : "Brandeis University",
-          "wsdl" : "http://eldrad.cs-i.brandeis.edu:8282/manchester-gnat/0.0.1/services/GnatWS?wsdl",
-          "username" : "",
-          "password" : ""
-        }]
+          "version": "v0.0.1",
+          "server": "Brandeis University",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/manchester-gnat/0.0.1/services/GnatWS?wsdl",
+          "username": "",
+          "password": ""
+        }
+      ]
     },
-    "OtherProviders": {
-
-    }
+    "OtherProviders": {}
   }
 }
