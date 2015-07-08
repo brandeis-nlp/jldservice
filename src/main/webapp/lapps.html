@@ -107,17 +107,26 @@
             background-clip: padding-box;
         }
 
-        #instantdotdisplay {
-            display:none;
-            width:800px;
-            height:400px;
-            overflow:scroll;
-        }
+
+
         #instantdotdisplay svg {
             width: auto;
             height: auto;
             border: 1px solid #7fa2ff;
             font-size: 15px;
+        }
+
+        .dotdisplaybox {
+            display:none;
+            width:800px;
+            height:400px;
+            overflow:scroll;
+        }
+
+        .dotdisplayfullscreen {
+            width:100%;
+            height:100%;
+            z-index:1000;
         }
     </style>
 
@@ -278,6 +287,9 @@
             dotDisplay.html("");
             dotDisplay.html(svg);
             dotDisplay.show();
+            dotDisplay.dblclick(function(){
+                $(this).toggleClass("dotdisplayfullscreen").toggleClass("dotdisplaybox");
+            });
         } else {
             var dotDisplay = $('#' + dotDisplayId);
             dotDisplay.html("");
@@ -644,6 +656,7 @@
         });
 
         var jquery2 = jQuery.noConflict( true );
+
     // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
     });  // {head.ready}
     // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  //
@@ -775,7 +788,7 @@
     <table align="center" class="table table-bordered table-striped responsive-utilities" align="center" style="width:800px;">
         <tr><th> Brat Display </th></tr>
         <tr><td height="100px"><div id="instantbratdisplay"></div></td></tr>
-        <tr><td><div id="instantdotdisplay"></div></td></tr>
+        <tr><td><div id="instantdotdisplay" class="dotdisplaybox"></div></td></tr>
     </table>
     <table align="center" class="table table-bordered table-striped responsive-utilities" align="center" style="width:800px">
         <tr><th>Tool Output</th> <th> Save Output </th> </tr>
