@@ -123,8 +123,8 @@
     <style  type="text/css">
         #css_deptree_canvas
         {
-            width: 98%;
-            margin-left: auto;
+            width: 86%;
+            margin-left: 10px;
             margin-right: auto;
             border: solid 1px #BDBDBD;
             background-color: white;
@@ -146,35 +146,49 @@
     <!--ClearNLP Visualization-->
 <!--</span></h2>-->
 
-<div id="css_deptree_canvas">
-    <canvas id="cv_deptree"></canvas>
-    <div align="center">
-        <button  class="btn btn-default"  onclick="clickBackward();" style="width:55px;height:48px" type="button">&lt;&lt;</button>
-        <button  class="btn btn-default"  onclick="clickPrevious();" style="width:55px;height:48px" type="button">&lt;</button>
-        <button  class="btn btn-default"  onclick="clickNext();"     style="width:55px;height:48px" type="button">&gt;</button>
-        <button  class="btn btn-default"  onclick="clickForward();"  style="width:55px;height:48px" type="button">&gt;&gt;</button>
-    </div>
-</div>
 
-<div id="css_input" align="center" class="panel-body">
-    <table><tr>
-        <td>
-            <textarea id="ta_input" style="width:700px;height:615px"></textarea><script>coverCodeMirror("ta_input");</script>
-        </td>
-        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-        <td style="vertical-align:top;"><br>
-            <input type="file" onchange="readFileTo(this.files[0], function(res){ setCodeMirrorValue('ta_input', res); } );"/>
-            <button  class="btn btn-default" type="button" onclick="initDEPTrees(getCodeMirrorValue('ta_input'));" style="width:110px;height:30px;font-family:times;font-size:14px;">Process</button><br>
-            <button  class="btn btn-default" type="button" onclick="exportCanvas();" style="width:110px;height:30px;font-family:times;font-size:14px;">Export</button><br><br>
-            <select id="st_treeId" multiple="multiple" style="width:110px;height:497px;" onchange="selectTreeID();"></select>
-        </td>
-        <td style="vertical-align:top;text-align:center;">
-            <h3>Control Panel</h3>
-            1 &#8672; Zoom &#8674; 4<br>
-            <input id="rg_deptree" type="range" width="100" min="1" max="4" step="0.2" value="1" onchange="selectTreeID()" oninput="changeZoom(this.value)"><br>
-        </td>
-    </tr></table>
+
+<table class="table table-bordered table-striped responsive-utilities" align="center" style="width:86%;"><tr>
+<th>OPEN CNLP File ...</th><th>Tools</th><th>Move</th><th>Scale</th>
+    </tr><tr>
+    <td><input type="file" onchange="readFileTo(this.files[0], function(res){ setCodeMirrorValue('ta_input', res); } );"/>
+    </td>
+    <td><button  class="btn btn-default" type="button" onclick="initDEPTrees(getCodeMirrorValue('ta_input'));" style="width:110px;height:30px;font-family:times;font-size:14px;">Process</button><br>
+        <button  class="btn btn-default" type="button" onclick="exportCanvas();" style="width:110px;height:30px;font-family:times;font-size:14px;">Export to PNG</button><br><br>
+    </td>
+    <td>
+        <div align="center">
+            <button  class="btn btn-default"  onclick="clickBackward();" style="width:55px;height:48px" type="button">&lt;&lt;</button>
+            <button  class="btn btn-default"  onclick="clickPrevious();" style="width:55px;height:48px" type="button">&lt;</button>
+            <button  class="btn btn-default"  onclick="clickNext();"     style="width:55px;height:48px" type="button">&gt;</button>
+            <button  class="btn btn-default"  onclick="clickForward();"  style="width:55px;height:48px" type="button">&gt;&gt;</button>
+        </div></td>
+    <td>1 &#8672; Zoom &#8674; 4<br>
+        <input id="rg_deptree" type="range" width="100" min="1" max="4" step="0.2" value="1" onchange="selectTreeID()" oninput="changeZoom(this.value)"><br>
+    </td>
+</tr></table>
+
+
+<table class="table table-bordered" style="width:86%;margin-left:96px;">
+<tr><th>NO.</th><th>Tree View</th></tr>
+    <tr>
+<td style="vertical-align:top;width:80px;">
+    <select id="st_treeId" multiple="multiple" onchange="selectTreeID();" style="width:80px; height:400px"></select>
+</td>
+<td align="left">
+<div id="css_deptree_canvas">
+    <canvas id="cv_deptree" style=" height:400px"></canvas>
 </div>
+</td>
+</tr></table>
+
+<table class="table table-bordered" align="center" style="width:86%;"><tr>
+    <th>FILE</th>
+</tr><tr>
+    <td>
+        <textarea id="ta_input"  style="height:615px"></textarea><script>coverCodeMirror("ta_input");</script>
+    </td>
+</tr></table>
 
 <!-- =============================================================================================================== -->
 <!-- =============================================================================================================== -->
