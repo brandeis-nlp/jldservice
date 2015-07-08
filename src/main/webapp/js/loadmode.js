@@ -1,3 +1,4 @@
+//https://codemirror.net/addon/mode/loadmode.js
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 

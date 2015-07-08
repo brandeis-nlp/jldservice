@@ -1,6 +1,6 @@
 'use strict';
 
-/**
+/** https://raw.githubusercontent.com/cfinke/Typo.js/master/typo/typo.js
  * Typo is a JavaScript implementation of a spellchecker using hunspell-style 
  * dictionaries.
  */

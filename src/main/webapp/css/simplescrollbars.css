@@ -1,3 +1,4 @@
+/*http://codemirror.net/addon/scroll/simplescrollbars.css*/
 .CodeMirror-simplescroll-horizontal div, .CodeMirror-simplescroll-vertical div {
   position: absolute;
   background: #ccc;

@@ -1,3 +1,4 @@
+//http://brat.nlplab.org/js/lib/json2.js
 /*
     json2.js
     2012-10-08
