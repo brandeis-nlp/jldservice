@@ -1,0 +1,1 @@
+YPR019W,Essential helicase component of heterohexameric MCM2-7 complexes; MCM2-7 complexes bind pre-replication complexes on DNA and melt DNA prior to replication; forms an Mcm4p-6p-7p subcomplex; shows nuclear accumulation in G1; homolog of S. pombe Cdc21p
