@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cytoscape Visualization</title>
+
+
+    <!-- =============================================================================================================== -->
+    <script src="js/cytoscape.js-2.4.3/build/cytoscape.min.js"></script>
+    <script src="js/cytoscape.js-2.4.3/lib/arbor.js"></script>
+    <script src="js/cytoscape.js-2.4.3/lib/cola.v3.min.js"></script>
+    <script src="js/cytoscape.js-2.4.3/lib/dagre.js"></script>
+    <script src="js/cytoscape.js-2.4.3/lib/foograph.js"></script>
+    <script src="js/cytoscape.js-2.4.3/lib/rhill-voronoi-core.js"></script>
+    <script src="js/cytoscape.js-2.4.3/lib/springy.js"></script>
+
+    <!-- =============================================================================================================== -->
+    <script src="js/jquery_1.11.3_jquery-1.11.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/head.js_head.load.min_1.0.3.js"></script>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+
+    <!-- =============================================================================================================== -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="css/theme.css" rel="stylesheet">
+
+    <script src="js/jquery_1.11.3_jquery-1.11.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- =============================================================================================================== -->
+    <link rel="stylesheet" href="css/codemirror.css">
+    <link rel="stylesheet" href="css/simplescrollbars.css">
+    <link rel="stylesheet" href="css/fullscreen.css">
+    <link rel="stylesheet" href="css/dialog.css">
+    <link rel="stylesheet" href="css/matchesonscrollbar.css">
+    <link rel="stylesheet" href="css/foldgutter.css" />
+    <script src="js/codemirror.js"></script>
+    <script src="js/simplescrollbars.js"></script>
+    <script src="js/markdown.js"></script>
+    <script src="js/xml.js"></script>
+    <script src="js/placeholder.js"></script>
+    <script src="js/fullscreen.js"></script>
+    <script src="js/javascript.js"></script>
+    <script src="js/active-line.js"></script>
+    <script src="js/matchbrackets.js"></script>
+    <script src="js/overlay.js"></script>
+    <script src="js/loadmode.js"></script>
+    <script src="js/meta.js"></script>
+    <script src="js/htmlmixed.js"></script>
+    <script src="js/dialog.js"></script>
+    <script src="js/searchcursor.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/annotatescrollbar.js"></script>
+    <script src="js/foldcode.js"></script>
+    <script src="js/foldgutter.js"></script>
+    <script src="js/brace-fold.js"></script>
+    <script src="js/xml-fold.js"></script>
+    <script src="js/markdown-fold.js"></script>
+    <script src="js/comment-fold.js"></script>
+    <script src="js/matchesonscrollbar.js"></script>
+    <script src="js/typo.js"></script>
+
+    <!-- =============================================================================================================== -->
+
+    <script src="js/lapps_201507.js"></script>
+
+
+    <script type="text/javascript">
+
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+
+
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+    head.ready(function() {
+    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< //
+
+
+
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+    });  // {head.ready}
+    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  //
+    </script>
+
+    <!-- =============================================================================================================== -->
+</head>
+
+
+
+<h1  align="center">Online Environment of LappsGrid</h1>
+<p style="text-align:center;font-size: 16pt;">
+    <rt> Brandeis University</rt>,<br />
+    LappsGrid, <var>Version 0.0.1</var>,  July 2015</p>
+
+
+
+
+<!--.............................................................................................................--->
+<div class="container">
+    <!--.............................................................................................................--->
+    <table align="center" class="table table-bordered table-striped responsive-utilities">
+        <tr><th> BioPax </th></tr>
+        <tr><td>
+        <textarea id="biopaxin"></textarea>
+        <script>coverCodeMirror("biopaxin");</script>
+    </td></tr></table>
+    <!--.............................................................................................................--->
+</div>
+
+
+
+<div class="container" id="resultpanel">
+    <table align="center" class="table table-bordered table-striped responsive-utilities">
+        <tr><th> Cytoscape Display </th></tr>
+        <tr><td height="100px"><div id="instantbratdisplay"></div></td></tr>
+        <tr><td><div id="instantdotdisplay" class="dotdisplaybox" style="display:none"></div></td></tr>
+    </table>
+    <table align="center" class="table table-bordered table-striped responsive-utilities">
+        <tr><th>Tool Output</th> <th> Save Output </th> </tr>
+        <tr><td>
+            <textarea id="cytojson">
+{
+        dataSchema: {
+            nodes: [ { name: "label", type: "string" },
+                     { name: "foo", type: "string" }
+                ],
+            edges: [ { name: "label", type: "string" },
+                     { name: "bar", type: "string" }
+            ]
+        },
+        data: {
+            nodes: [ { id: "1", label: "1", foo: "Is this the real life?" },
+                     { id: "2", label: "2", foo: "Is this just fantasy?" }
+            ],
+            edges: [ { id: "2to1", target: "1", source: "2", label: "2 to 1", bar: "Caught in a landslide..." }
+            ]
+        }
+}
+            </textarea><script>coverCodeMirror("cytojson");</script>
+        </td> <td style="width:100px"><button type="button" class="btn btn-default"
+                          onclick="saveResult('selectedinput', 'selectedtool', 'resultjson', 'savealert');">
+            <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Save Result >>
+        </button></td></tr>
+        <tr><td colspan="2" height="50px"><div id="savealert"></div></td></tr>
+    </table>
+</div>
+
+<!-- =============================================================================================================== -->
+<!-- =============================================================================================================== -->
+<footer>
+    <hr />
+    <p style="text-align:center">
+        Contacts:
+        <br/>&nbsp; &nbsp; <a target="_blank" class="nolink" href="http://www.cs.brandeis.edu/~jamesp/"> James Pustejovsky</a>
+        (<nonsense>jame</nonsense>sp@<nonsense>cs.</nonsense>brandeis.<nonsense></nonsense>edu)
+    </p>
+</footer>
+<p style="text-align:center">Copyright &copy; 2015 Brandeis University - All Rights Reserved</p>
+</body>
+</html>
