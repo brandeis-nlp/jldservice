@@ -6,9 +6,9 @@
           "provider": "Stanford NLP",
           "type": "Sentence-Splitter",
           "name": "Stanford Sentence Splitter",
-          "version": "v2.0.0",
+          "version": "v2.0.1",
           "server": "Brandeis University",
-          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/Splitter?wsdl",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.1/services/Splitter?wsdl",
           "username": "",
           "password": ""
         },
@@ -16,7 +16,7 @@
           "provider": "Stanford NLP",
           "type": "Sentence-Splitter",
           "name": "Stanford Sentence Splitter",
-          "version": "v2.0.0",
+          "version": "v2.0.1",
           "server": "Vassar College",
           "wsdl": "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.splitter_2.0.0",
           "username": "tester",
@@ -28,9 +28,9 @@
           "provider": "OpenNLP",
           "type": "Sentence-Splitter",
           "name": "OpenNLP Sentence Splitter",
-          "version": "v2.0.0",
+          "version": "v2.0.1",
           "server": "Brandeis University",
-          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/Splitter?wsdl",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.1/services/Splitter?wsdl",
           "username": "",
           "password": ""
         }
@@ -54,9 +54,9 @@
           "provider": "Stanford NLP",
           "type": "Tokenizer",
           "name": "Stanford Tokenizer",
-          "version": "v2.0.0",
+          "version": "v2.0.1",
           "server": "Brandeis University",
-          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/Tokenizer?wsdl",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.1/services/Tokenizer?wsdl",
           "username": "",
           "password": ""
         },
@@ -76,9 +76,9 @@
           "provider": "OpenNLP",
           "type": "Tokenizer",
           "name": "OpenNLP Tokenizer",
-          "version": "v2.0.0",
+          "version": "v2.0.1",
           "server": "Brandeis University",
-          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/Tokenizer?wsdl",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.1/services/Tokenizer?wsdl",
           "username": "",
           "password": ""
         }
@@ -102,9 +102,9 @@
           "provider": "Stanford NLP",
           "type": "POS-Tagger",
           "name": "Stanford POSTagger",
-          "version": "v2.0.0",
+          "version": "v2.0.1",
           "server": "Brandeis University",
-          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/POSTagger?wsdl",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.1/services/POSTagger?wsdl",
           "username": "",
           "password": ""
         },
@@ -112,7 +112,7 @@
           "provider": "Stanford NLP",
           "type": "POS-Tagger",
           "name": "Stanford POSTagger",
-          "version": "v2.0.0",
+          "version": "v2.0.1",
           "server": "Vassar College",
           "wsdl": "http://grid.anc.org:8080/service_manager/wsdl/anc:stanford.tagger_2.0.0",
           "username": "tester",
@@ -124,9 +124,9 @@
           "provider": "OpenNLP",
           "type": "POS-Tagger",
           "name": "OpenNLP POSTagger",
-          "version": "v2.0.0",
+          "version": "v2.0.1",
           "server": "Brandeis University",
-          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/POSTagger?wsdl",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.1/services/POSTagger?wsdl",
           "username": "",
           "password": ""
         }
@@ -150,9 +150,9 @@
           "provider": "Stanford NLP",
           "type": "Named-Entity-Recognizer",
           "name": "Stanford NER",
-          "version": "v2.0.0",
+          "version": "v2.0.1",
           "server": "Brandeis University",
-          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/NamedEntityRecognizer?wsdl",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.1/services/NamedEntityRecognizer?wsdl",
           "username": "",
           "password": ""
         },
@@ -172,9 +172,9 @@
           "provider": "OpenNLP",
           "type": "Named-Entity-Recognizer",
           "name": "OpenNLP NER",
-          "version": "v2.0.0",
+          "version": "v2.0.1",
           "server": "Brandeis University",
-          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/NamedEntityRecognizer?wsdl",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.1/services/NamedEntityRecognizer?wsdl",
           "username": "",
           "password": ""
         }
@@ -244,9 +244,9 @@
           "provider": "Stanford NLP",
           "type": "Parser",
           "name": "Stanford Parser",
-          "version": "v2.0.0",
+          "version": "v2.0.1",
           "server": "Brandeis University",
-          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/Parser?wsdl",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.1/services/Parser?wsdl",
           "username": "",
           "password": ""
         }
@@ -256,9 +256,9 @@
           "provider": "OpenNLP",
           "type": "Parser",
           "name": "OpenNLP Parser",
-          "version": "v2.0.0",
+          "version": "v2.0.1",
           "server": "Brandeis University",
-          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/Parser?wsdl",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.1/services/Parser?wsdl",
           "username": "",
           "password": ""
         }
@@ -270,9 +270,9 @@
           "provider": "Stanford NLP",
           "type": "DependencyParser ",
           "name": "Stanford Dependency Parser",
-          "version": "v2.0.0",
+          "version": "v2.0.1",
           "server": "Brandeis University",
-          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/DependencyParser?wsdl",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.1/services/DependencyParser?wsdl",
           "username": "",
           "password": ""
         }
@@ -284,9 +284,9 @@
           "provider": "Stanford NLP",
           "type": "Coreference ",
           "name": "Stanford Coreference",
-          "version": "v2.0.0",
+          "version": "v2.0.1",
           "server": "Brandeis University",
-          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/Coreference?wsdl",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.1/services/Coreference?wsdl",
           "username": "",
           "password": ""
         }
@@ -296,9 +296,9 @@
           "provider": "OpenNLP",
           "type": "Coreference ",
           "name": "OpenNLP Coreference",
-          "version": "v2.0.0",
+          "version": "v2.0.1",
           "server": "Brandeis University",
-          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/Coreference?wsdl",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.1/services/Coreference?wsdl",
           "username": "",
           "password": ""
         }
@@ -331,9 +331,9 @@
           "provider": "OpenNLP",
           "type": "Sentence-Splitter",
           "name": "OpenNLP Sentence Splitter",
-          "version": "v2.0.0",
+          "version": "v2.0.1",
           "server": "Brandeis University",
-          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/Splitter?wsdl",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.1/services/Splitter?wsdl",
           "username": "",
           "password": ""
         }
@@ -343,9 +343,9 @@
           "provider": "OpenNLP",
           "type": "Tokenizer",
           "name": "OpenNLP Tokenizer",
-          "version": "v2.0.0",
+          "version": "v2.0.1",
           "server": "Brandeis University",
-          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/Tokenizer?wsdl",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.1/services/Tokenizer?wsdl",
           "username": "",
           "password": ""
         }
@@ -355,9 +355,9 @@
           "provider": "OpenNLP",
           "type": "POS-Tagger",
           "name": "OpenNLP POSTagger",
-          "version": "v2.0.0",
+          "version": "v2.0.1",
           "server": "Brandeis University",
-          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/POSTagger?wsdl",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.1/services/POSTagger?wsdl",
           "username": "",
           "password": ""
         }
@@ -367,9 +367,9 @@
           "provider": "OpenNLP",
           "type": "Named-Entity-Recognizer",
           "name": "OpenNLP NER",
-          "version": "v2.0.0",
+          "version": "v2.0.1",
           "server": "Brandeis University",
-          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.0/services/NamedEntityRecognizer?wsdl",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/opennlp-web-service/2.0.1/services/NamedEntityRecognizer?wsdl",
           "username": "",
           "password": ""
         }
@@ -391,9 +391,9 @@
           "provider": "Stanford NLP",
           "type": "Sentence-Splitter",
           "name": "Stanford Sentence Splitter",
-          "version": "v2.0.0",
+          "version": "v2.0.1",
           "server": "Brandeis University",
-          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/Splitter?wsdl",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.1/services/Splitter?wsdl",
           "username": "",
           "password": ""
         }
@@ -413,9 +413,9 @@
           "provider": "Stanford NLP",
           "type": "Tokenizer",
           "name": "Stanford Tokenizer",
-          "version": "v2.0.0",
+          "version": "v2.0.1",
           "server": "Brandeis University",
-          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/Tokenizer?wsdl",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.1/services/Tokenizer?wsdl",
           "username": "",
           "password": ""
         }
@@ -435,9 +435,9 @@
           "provider": "Stanford NLP",
           "type": "POS-Tagger",
           "name": "Stanford POSTagger",
-          "version": "v2.0.0",
+          "version": "v2.0.1",
           "server": "Brandeis University",
-          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/POSTagger?wsdl",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.1/services/POSTagger?wsdl",
           "username": "",
           "password": ""
         }
@@ -457,9 +457,9 @@
           "provider": "Stanford NLP",
           "type": "Named-Entity-Recognizer",
           "name": "Stanford NER",
-          "version": "v2.0.0",
+          "version": "v2.0.1",
           "server": "Brandeis University",
-          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.0/services/NamedEntityRecognizer?wsdl",
+          "wsdl": "http://eldrad.cs-i.brandeis.edu:8282/stanfordnlp-web-service/2.0.1/services/NamedEntityRecognizer?wsdl",
           "username": "",
           "password": ""
         }
