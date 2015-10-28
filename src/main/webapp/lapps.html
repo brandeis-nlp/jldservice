@@ -828,15 +828,7 @@
     <tr>
         <td><textarea id="json2jsondsl_source" style="width:400px;height:300px;">{}</textarea><script>coverCodeMirror("json2jsondsl_source");</script>
         </td>
-        <td><textarea id="json2jsondsl_template" style="width:400px;height:300px;">/***********************************************************************************************************************
- [ &: ] refers to the who input
- [ &. ] refers to the local input
- [ %. ] refers to the toolkit.
-***********************************************************************************************************************/
-
-
-def idx = 0
-
+        <td><textarea id="json2jsondsl_template" style="width:400px;height:300px;">{
 def discriminator = &:discriminator
 def lastView = &:payload.views[-1]
 if (lastView == null) return
@@ -900,8 +892,7 @@ relations targetRelations
 equivs (targetEquivs)
 
 entities (targetEntities)
-
-
+}
 </textarea><script>coverCodeMirror("json2jsondsl_template");</script></td>
         <td><input type="button" value="Transform"
                    onclick="execService(wsdls['json2json'], 'json2jsondsl', ['json2jsondsl_source', 'json2jsondsl_template'], 'json2jsondsl_result')" /></td>
