@@ -65,7 +65,7 @@ if (txtIn != null && txtIn.trim().startsWith('{')) {
         // json object to text
         txtRet = new JsonBuilder(jsonObjRet).toString();
         // put into chache, only when no exception
-        if(!hasExp)
+        if(!txtRet.contains("Except"))
             Cache.put(txtIn, txtRet);
     }
 }
