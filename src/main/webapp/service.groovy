@@ -29,7 +29,7 @@ log.setLevel(Level.ALL);
 //log.addHandler(handler);
 
 
-def txtIn, jsonObjIn, jsonObjRet = [:], txtRet;
+def txtIn, jsonObjIn, jsonObjRet = [:], txtRet, hasExp = false;
 
 // read io parameter from request
 txtIn = request.getParameter("io");
@@ -60,11 +60,13 @@ if (txtIn != null && txtIn.trim().startsWith('{')) {
             log.info("Error:" + exp);
             jsonObjRet["Except"] = exp;
             jsonObjRet["Output"] = "";
+            hasExp = true;
         }
         // json object to text
         txtRet = new JsonBuilder(jsonObjRet).toString();
-        // put into chache
-        Cache.put(txtIn, txtRet);
+        // put into chache, only when no exception
+        if(!hasExp)
+            Cache.put(txtIn, txtRet);
     }
 }
 log.info("txtRet.length() : " + txtRet.length());
