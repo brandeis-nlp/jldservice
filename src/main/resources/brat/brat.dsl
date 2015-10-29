@@ -1,71 +1,73 @@
-/***********************************************************************************************************************
- [ &: ] refers to the who input
- [ &. ] refers to the local input
- [ %. ] refers to the toolkit.
-***********************************************************************************************************************/
-
-def discriminator = &:discriminator
-def lastView = &:payload.views[-1]
-if (lastView == null) return
-
-def isText = %.has( &:discriminator,  "http://vocab.lappsgrid.org/ns/media/text")
-def isLifTex = %.has( &:discriminator,  "http://vocab.lappsgrid.org/ns/media/jsonld#lif")
-def isCoref = %.has(lastView.metadata.contains,  "Coreference")
-def isDepParser = %.has(lastView.metadata.contains,  "DependencyStructure")
-def isParser = %.has(lastView.metadata.contains,  "Constituent")
-def isNer = %.has(lastView.metadata.contains,  "NamedEntity")
-def isTagger = %.has(lastView.metadata.contains,  "Token#pos")
-
-def lastViewAnns = lastView.annotations
-if (lastViewAnns == null) return
+{
+    /***********************************************************************************************************************
+     [ &: ] refers to the who input
+     [ &. ] refers to the local input
+     [ %. ] refers to the toolkit.
+    ***********************************************************************************************************************/
 
 
-def targetText = ""
-def targetRelations = []
-def targetEquivs = []
-def targetEntities = []
+    def discriminator = &:discriminator
+    def lastView = &:payload.views[-1]
+    if (lastView == null) return
 
-if (isText) targetText = &:payload
-if (isLifTex) targetText = &:payload.text."@value"
+    def isText = %.has( &:discriminator,  "http://vocab.lappsgrid.org/ns/media/text")
+    def isLifTex = %.has( &:discriminator,  "http://vocab.lappsgrid.org/ns/media/jsonld#lif")
+    def isCoref = %.has(lastView.metadata.contains,  "Coreference")
+    def isDepParser = %.has(lastView.metadata.contains,  "DependencyStructure")
+    def isParser = %.has(lastView.metadata.contains,  "Constituent")
+    def isNer = %.has(lastView.metadata.contains,  "NamedEntity")
+    def isTagger = %.has(lastView.metadata.contains,  "Token#pos")
 
-if (isParser) {
-    targetText +=  "\n~~~~\n" + lastViewAnns.select{ %.has(&."@type", "PhraseStructure") }.features.penntree[0]
-}
+    def lastViewAnns = lastView.annotations
+    if (lastViewAnns == null) return
 
-if (isDepParser) {
-    def dependencies = lastViewAnns.select{%.has(&."@type", "DependencyStructure")}.features.dependencies.flatten()
-    targetRelations = lastViewAnns.select{ &.id in dependencies}.foreach {
-        [&.id, %.toUpper(&.label), [["Governor", &.features.governor], ["Dependent", &.features.dependent]]]
+
+    def targetText = ""
+    def targetRelations = []
+    def targetEquivs = []
+    def targetEntities = []
+
+    if (isText) targetText = &:payload
+    if (isLifTex) targetText = &:payload.text."@value"
+
+    if (isParser) {
+        targetText +=  "\n~~~~\n" + lastViewAnns.select{ %.has(&."@type", "PhraseStructure") }.features.penntree[0]
     }
-}
 
-if (isCoref) {
-    def corefFeatures = lastViewAnns.select{ %.has(&."@type", "Coreference") }.features
-    targetEquivs += corefFeatures.flatten().foreach { ["*", "Coreference", &.mentions[0], &.mentions[1]] }
-
-    targetEntities += lastViewAnns.select{%.has(&."@type", "Markable") && (&.id in corefFeatures.mentions.flatten())}.unique{&.start+" "+&.end}.foreach{
-                          [&.id, "MENTION", [[&.start.toInteger(), &.end.toInteger()]]]
+    if (isDepParser) {
+        def dependencies = lastViewAnns.select{%.has(&."@type", "DependencyStructure")}.features.dependencies.flatten()
+        targetRelations = lastViewAnns.select{ &.id in dependencies}.foreach {
+            [&.id, %.toUpper(&.label), [["Governor", &.features.governor], ["Dependent", &.features.dependent]]]
     }
-}
 
-if (isNer) {
-       targetEntities += lastViewAnns.select{ %.hasAny(&."@type", "Date", "Person", "Location", "Organization" )}.unique{ &.start + " " + &.end }.foreach {
-            [&.id, %.toUpper(%.lastWord(&."@type")), [[&.start.toInteger(), &.end.toInteger()]]]
-       }
-}
+    if (isCoref) {
+        def corefFeatures = lastViewAnns.select{ %.has(&."@type", "Coreference") }.features
+        targetEquivs += corefFeatures.flatten().foreach { ["*", "Coreference", &.mentions[0], &.mentions[1]] }
 
-//if (isTagger) {
-    targetEntities += lastViewAnns.select{&.features != null && &.features.pos != null}.unique{ &.start + " " + &.end }.foreach {
-        [&.id, %.toUpper(&.features.pos), [[&.start.toInteger(), &.end.toInteger()]]]
+        targetEntities += lastViewAnns.select{%.has(&."@type", "Markable") && (&.id in corefFeatures.mentions.flatten())}.unique{&.start+" "+&.end}.foreach{
+                              [&.id, "MENTION", [[&.start.toInteger(), &.end.toInteger()]]]
+        }
     }
-//}
 
-text  targetText
+    if (isNer) {
+           targetEntities += lastViewAnns.select{ %.hasAny(&."@type", "Date", "Person", "Location", "Organization" )}.unique{ &.start + " " + &.end }.foreach {
+                [&.id, %.toUpper(%.lastWord(&."@type")), [[&.start.toInteger(), &.end.toInteger()]]]
+           }
+    }
 
-relations targetRelations
+    //if (isTagger) {
+        targetEntities += lastViewAnns.select{&.features != null && &.features.pos != null}.unique{ &.start + " " + &.end }.foreach {
+            [&.id, %.toUpper(&.features.pos), [[&.start.toInteger(), &.end.toInteger()]]]
+        }
+    //}
 
-equivs (targetEquivs)
+    text  targetText
 
-entities (targetEntities)
+    relations targetRelations
+
+    equivs (targetEquivs)
+
+    entities (targetEntities)
 
 
+}
